@@ -57,9 +57,12 @@ namespace Shunxi.App.CellMachine.ViewModels
         public void Navigate(string navigatePath)
         {
             if (navigatePath == null) return;
+            App.BC.IsBusy = true;
+
             _regionManager.RequestNavigate("ContentRegion", navigatePath, result =>
             {
                 CurrPage = result.Context.Uri.OriginalString;
+                App.BC.IsBusy = false;
             });
         }
 
@@ -84,8 +87,8 @@ namespace Shunxi.App.CellMachine.ViewModels
             return new ObservableCollection<ModuleViewModelBase>() {
                 new ModuleViewModelBase( "首页", "Index", this, "DevicesCheck", Color.FromArgb(0xFF, 0x00, 0x87, 0x9C)),
                 new ModuleViewModelBase( "参数设置", "DevicesStatus", this, "DevicesSetting", Color.FromArgb(0xFF, 0xCC, 0x6D, 0x00)),
-                new ModuleViewModelBase( "统计", "ChartView", this, "Chart", Color.FromArgb(0xFF, 0x40, 0x40, 0x40)),
-                new ModuleViewModelBase( "培养记录", "CultivateRecordView", this, "CultivateRecord", Color.FromArgb(0xFF, 0x00, 0x73, 0xC4))
+                new ModuleViewModelBase( "统计", "DataChart", this, "Chart", Color.FromArgb(0xFF, 0x40, 0x40, 0x40)),
+                new ModuleViewModelBase( "培养记录", "HistoryRecord", this, "CultivateRecord", Color.FromArgb(0xFF, 0x00, 0x73, 0xC4))
             };
         }
     }

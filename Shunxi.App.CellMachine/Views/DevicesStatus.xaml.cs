@@ -72,16 +72,8 @@ namespace Shunxi.App.CellMachine.Views
             xTimer.Interval = TimeSpan.FromSeconds(1);
             xTimer.Tick += XTimer_Tick;
             xTimer.Start();
-        }
 
-        protected void OnNavigatedTo(NavigationEventArgs e)
-        {
             LogFactory.Create().Info("HomePage STATUS->" + CurrentContext.Status);
-//            if (e.Parameter != null && e.Parameter.ToString() == "start")
-//            {
-//                await ReStart();
-//                return;
-//            }
 
             InitData();
             InitControl();

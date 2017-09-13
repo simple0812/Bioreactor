@@ -27,6 +27,8 @@ namespace Shunxi.App.CellMachine
         {
             _container.RegisterTypeForNavigation<Index>();
             _container.RegisterTypeForNavigation<DevicesStatus>();
+            _container.RegisterTypeForNavigation<DataChart>();
+            _container.RegisterTypeForNavigation<HistoryRecord>();
         }
     }
 }

@@ -328,15 +328,14 @@
             <Canvas x:Name="cvsSys" >
                 <StackPanel  Canvas.Left="350" Orientation="Vertical">
                     <TextBlock Text="名称" HorizontalAlignment="Center"></TextBlock>
-                    <Border Width="150" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
+                    <Border Width="150" Height="30" Background="White" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
+                        <i:Interaction.Triggers>
+                            <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <interactivity:InvokeCommandAction Command="{Binding EditCellCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-
-                            <i:Interaction.Triggers>
-                                <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <interactivity:InvokeCommandAction Command="{Binding EditCellCommand}" TriggerParameterPath="AddedItems" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                           
                             <TextBlock  HorizontalAlignment="Center"
                                         VerticalAlignment="Center"

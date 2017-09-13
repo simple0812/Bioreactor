@@ -22,10 +22,19 @@ namespace Shunxi.App.CellMachine.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IRegionManager _regionManager;
         public MainWindow(IRegionManager regionManager)
         {
+            _regionManager = regionManager;
             InitializeComponent();
-            regionManager.RegisterViewWithRegion("ContentRegion", typeof(Index));
+            //regionManager.RegisterViewWithRegion("ContentRegion", typeof(Index));
+            this.Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            _regionManager.RequestNavigate("ContentRegion", "Index");
+//            _regionManager.RegisterViewWithRegion("ContentRegion", typeof(Index));
         }
     }
 }

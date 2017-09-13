@@ -147,3 +147,4 @@ _pkginfo.txt
 src/SqliteApp/*
 node/FileManager/node_modules/*
 node/FileManager/files/*
+/.vs

@@ -98,44 +98,14 @@ namespace Shunxi.App.CellMachine.ViewModels
         {
             var view = GetViewByType(device.DeviceType);
             var p = view as IEditDeviceView;
-            var ret =  p?.ShowView(device) ?? false;
-
-            if (ret)
-            {
-                if (CurrentContext.Status == SysStatusEnum.Ready || CurrentContext.Status == SysStatusEnum.Completed)
-                {
-                    var t = Devices.FirstOrDefault(each => each.DeviceId == device.DeviceId);
-                    //device.ClonePropertiesTo(t);
-                    Debug.WriteLine(device == t);
-                }
-            }
+            p?.ShowView(device);
         }
 
-
-                        public void EditCell()
-                        {
-//                            var viewModel = new DeviceEditViewModel<CellCultivation>();
-//                            var supportParentViewModel = (ISupportParentViewModel)viewModel;
-//                            supportParentViewModel.ParentViewModel = this;
-//                
-//                            var supportParameter = viewModel as ISupportParameter;
-//                            supportParameter.Parameter = CellCultivation;
-//                
-//                            var dialogCommands = new[] { new UICommand("Edit", "Edit", viewModel.SaveAndCloseCommand, true, false),
-//                                new UICommand("Cancel", "Cancel", viewModel.CancelAndCloseCommand, false, true) };
-//                
-//                            var dialogServiceResult = await DialogService.ShowDialogAsync(dialogCommands, "编辑", "CellCultivation", viewModel);
-//                            if (dialogServiceResult != null && dialogServiceResult.Id.ToString() == "Edit")
-//                            {
-//                                if (CurrentContext.Status == SysStatusEnum.Ready || CurrentContext.Status == SysStatusEnum.Completed)
-//                                {
-//                                    CellCultivation.Name = viewModel.Entity.Name;
-//                                    CellCultivation.UserName = viewModel.Entity.UserName;
-//                                    CellCultivation.Cell = viewModel.Entity.Cell;
-//                                    CellCultivation.Description = viewModel.Entity.Description;
-//                                }
-//                            }
-                        }
+        public void EditCell()
+        {
+            var p = new EditCellCultivation();
+            p.ShowView(CellCultivation);
+        }
 
         private IEditViewModel GetViewModelByType(TargetDeviceTypeEnum enumType)
         {

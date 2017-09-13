@@ -39,10 +39,10 @@ namespace Shunxi.App.CellMachine
             bootstrapper.Run();
 
             Config.DetectorId = 0x01;
-//            using (var ctx = new IotContext())
-//            {
-//                LogFactory.Create().Info("database cellmanager create success");
-//            }
+            using (var ctx = new IotContext())
+            {
+                LogFactory.Create().Info("database create success");
+            }
         }
     }
 

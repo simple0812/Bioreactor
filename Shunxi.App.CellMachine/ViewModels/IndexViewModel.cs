@@ -1,31 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Newtonsoft.Json.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
-using Shunxi.App.CellMachine.Common.Behaviors;
-using Shunxi.App.CellMachine.Views;
 using Shunxi.Business.Enums;
-using Shunxi.Business.Models;
 using Shunxi.Business.Models.cache;
 using Shunxi.Business.Models.devices;
-using Shunxi.Business.Protocols;
 using Shunxi.Business.Protocols.Directives;
 using Shunxi.Business.Protocols.Helper;
 using Shunxi.Business.Protocols.SimDirectives;
 using Shunxi.Common.Log;
 using Shunxi.Infrastructure.Common.Configuration;
-using Shunxi.Infrastructure.Common.Extension;
 
 namespace Shunxi.App.CellMachine.ViewModels
 {
@@ -131,8 +122,6 @@ namespace Shunxi.App.CellMachine.ViewModels
                 ph,
                 xdo
             };
-
-            Debug.WriteLine(Entities.Count);
         }
 
         public async void OnNavigatedTo(NavigationContext navigationContext)
@@ -151,7 +140,7 @@ namespace Shunxi.App.CellMachine.ViewModels
             {
                 CanCheck = false;
                 IsBusy = false;
-            ShowBusyDialog(false);
+                ShowBusyDialog(false);
                 return;
             }
 
@@ -161,7 +150,7 @@ namespace Shunxi.App.CellMachine.ViewModels
             if (Entities.All(each => each.IsEnabled))
             {
                 IsBusy = false;
-            ShowBusyDialog(false);
+                ShowBusyDialog(false);
                 return;
             }
             ;

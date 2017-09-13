@@ -42,6 +42,15 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Geared, Version=1.2.8.2, Culture=neutral, PublicKeyToken=7292f245d14ab8bf, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Geared.1.2.8.2\lib\net45\LiveCharts.Geared.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -122,6 +131,9 @@
     <Compile Include="Common\Behaviors\EnumItemsSourceBehavior.cs" />
     <Compile Include="Common\Behaviors\WaitIndicatorService.cs" />
     <Compile Include="Common\Maybe.cs" />
+    <Compile Include="Controls\EditCellCultivation.xaml.cs">
+      <DependentUpon>EditCellCultivation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ModalDialog.xaml.cs">
       <DependentUpon>ModalDialog.xaml</DependentUpon>
     </Compile>
@@ -144,10 +156,13 @@
     <Compile Include="Converters\IntToDoubleConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NullableIntConverter.cs" />
+    <Compile Include="Converters\OpacityConverter.cs" />
     <Compile Include="Converters\ProcessModeToVisibilityConverter.cs" />
+    <Compile Include="Converters\ReverseConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Converters\TextSingleLineConverter.cs" />
     <Compile Include="ViewModels\Common\DeviceEditViewModel.cs" />
+    <Compile Include="ViewModels\DataChartViewModel.cs" />
     <Compile Include="ViewModels\DevicesStatusViewModel.cs" />
     <Compile Include="ViewModels\Devices\DoViewModel.cs" />
     <Compile Include="ViewModels\Devices\GasViewModel.cs" />
@@ -156,9 +171,13 @@
     <Compile Include="ViewModels\Devices\PumpViewModel.cs" />
     <Compile Include="ViewModels\Devices\RockerViewModel.cs" />
     <Compile Include="ViewModels\Devices\TemperatureViewModel.cs" />
+    <Compile Include="ViewModels\HistoryRecordViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewsModule.cs" />
+    <Compile Include="Views\DataChart.xaml.cs">
+      <DependentUpon>DataChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DevicesStatus.xaml.cs">
       <DependentUpon>DevicesStatus.xaml</DependentUpon>
     </Compile>
@@ -181,6 +200,9 @@
       <DependentUpon>EditTemperature.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Devices\IEditDeviceView.cs" />
+    <Compile Include="Views\HistoryRecord.xaml.cs">
+      <DependentUpon>HistoryRecord.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
@@ -192,6 +214,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Page Include="Controls\EditCellCultivation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ModalDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -207,6 +233,10 @@
     <Page Include="Themes\Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DataChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DevicesStatus.xaml">
       <SubType>Designer</SubType>
@@ -233,6 +263,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Devices\EditTemperature.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HistoryRecord.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

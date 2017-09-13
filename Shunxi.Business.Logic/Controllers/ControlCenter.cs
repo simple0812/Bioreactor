@@ -153,14 +153,12 @@ namespace Shunxi.Business.Logic.Controllers
 
 
             var pumpCtrls = Controllers.Where(each => each.Device.DeviceType == TargetDeviceTypeEnum.Pump).Select(each => each as PumpController).ToList();
-            if (pumpCtrls == null) return;
 
             var nonPumpCtrls =
                 Controllers.Where(each => each.Device.DeviceType != TargetDeviceTypeEnum.Pump).ToList();
 
             foreach (var ctrl in nonPumpCtrls)
             {
-                Debug.WriteLine(ctrl.Device.DeviceType);
                 var p = await ctrl.Start();
                 if (!p.Status && p.Code == "CANCEL") return;
             }
@@ -181,7 +179,7 @@ namespace Shunxi.Business.Logic.Controllers
         {
             var now = DateTime.Now;
             var pumpCtrls = Controllers.Where(each => each.Device.DeviceType == TargetDeviceTypeEnum.Pump).Select(each => each as PumpController).ToList();
-            if(pumpCtrls == null || pumpCtrls.Count == 0) return;
+            if(pumpCtrls.Count == 0) return;
             var p = pumpCtrls.OrderBy(each => each.PumpCultivation.Device.StartTime).FirstOrDefault();
             if(p == null) return;
 
