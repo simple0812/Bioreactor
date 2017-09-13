@@ -26,6 +26,7 @@
                      Background="#E8E8E8" 
                      ItemsSource="{Binding Entities}" 
                      SelectionMode="Single"
+                     ItemContainerStyle="{StaticResource NormalListBoxItemStyle}"
                      Style="{StaticResource LeftPanelTileBartyle}">
                 <i:Interaction.Triggers>
                     <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->

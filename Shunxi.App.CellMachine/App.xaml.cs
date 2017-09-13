@@ -5,7 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Practices.Unity;
 using Prism.Mvvm;
+using Prism.Regions;
 using Shunxi.Common.Log;
 using Shunxi.DataAccess;
 using Shunxi.Infrastructure.Common.Configuration;
@@ -38,17 +40,20 @@ namespace Shunxi.App.CellMachine
             var bootstrapper = new Bootstrapper();
             bootstrapper.Run();
 
+            var _regionManager = bootstrapper.Container.Resolve<IRegionManager>();
+            _regionManager?.RequestNavigate("ContentRegion", "Index");
+
             Config.DetectorId = 0x01;
             using (var ctx = new IotContext())
             {
-                LogFactory.Create().Info("database create success");
+                ctx.Database.Exists();
             }
         }
     }
 
     public class BusyCls : BindableBase
     {
-        public bool isBusy;
+        public bool isBusy = true;
 
         public bool IsBusy
         {

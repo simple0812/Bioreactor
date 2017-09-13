@@ -24,10 +24,7 @@ namespace Shunxi.App.CellMachine.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        public BusyCls BC
-        {
-            get { return App.BC; }
-        }
+        public BusyCls BC => App.BC;
 
         public DelegateCommand<string> NavigateCommand { get; private set; }
         public DelegateCommand<object[]> SelectedCommand { get; private set; }
@@ -57,12 +54,10 @@ namespace Shunxi.App.CellMachine.ViewModels
         public void Navigate(string navigatePath)
         {
             if (navigatePath == null) return;
-            App.BC.IsBusy = true;
 
             _regionManager.RequestNavigate("ContentRegion", navigatePath, result =>
             {
                 CurrPage = result.Context.Uri.OriginalString;
-                App.BC.IsBusy = false;
             });
         }
 

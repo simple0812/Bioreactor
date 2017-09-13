@@ -39,6 +39,20 @@
                                     <TextBlock VerticalAlignment="Center" FontSize="18"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf058;" Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityConverter}}" ></TextBlock>
                                     <TextBlock VerticalAlignment="Center" FontSize="18"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf057;" Visibility="{Binding IsEnabled, Converter={StaticResource InverseBoolToVisibilityConverter}}"></TextBlock>
                                 </StackPanel>
+                                <TextBlock Name="tbProgress" Text="&#xf269;" FontSize="16" FontFamily="{StaticResource FontAwesomeFontFamily}"  Visibility="{Binding IsRunning, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock.RenderTransform>
+                                        <RotateTransform Angle="0" CenterX="8" CenterY="8"></RotateTransform>
+                                    </TextBlock.RenderTransform>
+                                    <TextBlock.Triggers>
+                                        <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard  TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)">
+                                                    <DoubleAnimation   RepeatBehavior="Forever" From="0" To="360" Duration="0:0:0.5" ></DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </TextBlock.Triggers>
+                                </TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

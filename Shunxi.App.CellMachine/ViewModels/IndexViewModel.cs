@@ -49,19 +49,11 @@ namespace Shunxi.App.CellMachine.ViewModels
             set => SetProperty(ref _CanCheck, value);
         }
 
-        private bool _IsBusy;
-        public bool IsBusy
-        {
-            get => _IsBusy;
-            set => SetProperty(ref _IsBusy, value);
-        }
-
         public string QrCode => $"http://{Config.SERVER_ADDR}:{Config.SERVER_PORT}/api/iot/qrcode?deviceid=" + Shunxi.Common.Utility.Common.GetUniqueId();
         #endregion
 
         private void CheckHandle()
         {
-            IsBusy = true;
             ShowBusyDialog(true);
             SendCheckDirectives();
         }
@@ -126,7 +118,7 @@ namespace Shunxi.App.CellMachine.ViewModels
 
         public async void OnNavigatedTo(NavigationContext navigationContext)
         {
-            IsBusy = true;
+            LogFactory.Create().Info("aaaaaaaaaaaaaaaaaaaa================");
             ShowBusyDialog(true);
             //await new UsbSerial().Build();
             //SimWorker.Instance.GetLocation();
@@ -139,7 +131,6 @@ namespace Shunxi.App.CellMachine.ViewModels
                 && CurrentContext.Status != SysStatusEnum.Completed)
             {
                 CanCheck = false;
-                IsBusy = false;
                 ShowBusyDialog(false);
                 return;
             }
@@ -149,7 +140,6 @@ namespace Shunxi.App.CellMachine.ViewModels
 
             if (Entities.All(each => each.IsEnabled))
             {
-                IsBusy = false;
                 ShowBusyDialog(false);
                 return;
             }
@@ -259,14 +249,11 @@ namespace Shunxi.App.CellMachine.ViewModels
             //所有设备都检测完毕
             if (Entities.All(p => p.IsChecked))
             {
-                IsBusy = false;
                 ShowBusyDialog(false);
                 CanCheck = true;
                 CheckInfo = Entities.All(p => p.IsEnabled) ? "设备正常，请扫描二维码添加耗材" : "设备异常，请重试或者检查设备";
-
             }
         }
-
 
         private void SendCheckDirectives()
         {
