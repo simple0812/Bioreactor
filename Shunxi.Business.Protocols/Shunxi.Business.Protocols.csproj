@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BE2FFF44-63EE-436D-B5F3-84EC21250B29}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Shunxi.Business.Protocols</RootNamespace>
+    <AssemblyName>Shunxi.Business.Protocols</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Directives\BaseDirective.cs" />
+    <Compile Include="Directives\CloseDirective.cs" />
+    <Compile Include="Directives\IdleDirective.cs" />
+    <Compile Include="Directives\PausingDirective.cs" />
+    <Compile Include="Directives\RunningDirective.cs" />
+    <Compile Include="Directives\TryPauseDirective.cs" />
+    <Compile Include="Directives\TryStartDirective.cs" />
+    <Compile Include="Enums\ProtocolVersion.cs" />
+    <Compile Include="Helper\DirectiveHelper.cs" />
+    <Compile Include="Helper\DirectiveWorker.cs" />
+    <Compile Include="Helper\QrCodeWorker.cs" />
+    <Compile Include="Helper\SimWorker.cs" />
+    <Compile Include="IProtocol.cs" />
+    <Compile Include="IProtocolFacotry.cs" />
+    <Compile Include="ISerial.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolFactory.cs" />
+    <Compile Include="SimDirectives\BaseSimDirective.cs" />
+    <Compile Include="SimDirectives\CengReadDirective.cs" />
+    <Compile Include="SimDirectives\CengWriteDirective.cs" />
+    <Compile Include="SimDirectives\CompositeDirective.cs" />
+    <Compile Include="SimDirectives\CregDirective.cs" />
+    <Compile Include="SimDirectives\HttpActionGetDirective.cs" />
+    <Compile Include="SimDirectives\HttpBearerCloseDirective.cs" />
+    <Compile Include="SimDirectives\HttpBearerOpenDirective.cs" />
+    <Compile Include="SimDirectives\HttpBearerQueryDirective.cs" />
+    <Compile Include="SimDirectives\HttpCompositeDirective.cs" />
+    <Compile Include="SimDirectives\HttpInitDirective.cs" />
+    <Compile Include="SimDirectives\HttpParaCidDirective.cs" />
+    <Compile Include="SimDirectives\HttpParaUrlDirective.cs" />
+    <Compile Include="SimDirectives\HttpReadDirective.cs" />
+    <Compile Include="SimDirectives\HttpTermDirective.cs" />
+    <Compile Include="SimDirectives\LocationCompositeDirective.cs" />
+    <Compile Include="SimDirectives\SimDirectiveResult.cs" />
+    <Compile Include="SimDirectives\SimDirectiveType.cs" />
+    <Compile Include="UsbSerial.cs" />
+    <Compile Include="V485_1\GasFeedbackResolver.cs" />
+    <Compile Include="V485_1\IFeedbackResolver.cs" />
+    <Compile Include="V485_1\PumpFeedbackResolver.cs" />
+    <Compile Include="V485_1\ResolverFactory.cs" />
+    <Compile Include="V485_1\RockerFeedbackResolver.cs" />
+    <Compile Include="V485_1\ThemometerFeedbackResolver.cs" />
+    <Compile Include="V485_1\V485_1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shunxi.Business\Shunxi.Business.csproj">
+      <Project>{8030cf64-d011-4385-a5de-175a6b46255b}</Project>
+      <Name>Shunxi.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shunxi.Common\Shunxi.Common.csproj">
+      <Project>{ef8e04d6-1ce9-4309-bf48-ddc16893c30e}</Project>
+      <Name>Shunxi.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

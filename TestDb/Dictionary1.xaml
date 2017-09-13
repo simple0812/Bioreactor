@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:TestDb"
+                    xmlns:controls="clr-namespace:TestDb.Controls">
+    <Style TargetType="controls:CustomControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:CustomControl">
+                    <Grid ShowGridLines="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="10"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="10"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="10"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="10"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="10"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="First Content"></TextBlock>
+                        <ContentPresenter x:Name="firstContentPresenter" Content="{TemplateBinding Content1}" Grid.Row="1" Grid.Column="3"></ContentPresenter>
+
+
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="First Content"></TextBlock>
+                        <ContentPresenter x:Name="secondContentPresenter"  Content="{TemplateBinding Content2}"  Grid.Row="3" Grid.Column="3"></ContentPresenter>
+
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="First Content"></TextBlock>
+                        <ContentPresenter x:Name="thirdContentPresenter"  Content="{TemplateBinding Content3}"  Grid.Row="5" Grid.Column="3"></ContentPresenter>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

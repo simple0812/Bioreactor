@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="TestDb.Controls.ModerButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TestDb.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Template>
+        <ControlTemplate TargetType="UserControl">
+            <Button Content="{TemplateBinding Content}">
+                
+                <Button.Template >
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="{Binding Size,
+                                    ElementName=_modernButton}"
+                                Height="{Binding Size,
+                                     ElementName=_modernButton}"
+                                BorderBrush="Black"
+                                BorderThickness="0.8,0.8,3,3">
+                            <Grid Background="{Binding BackgroundColor, ElementName=_modernButton}">
+                                <ContentPresenter />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

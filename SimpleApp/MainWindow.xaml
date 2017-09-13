@@ -1,0 +1,112 @@
+﻿<Window x:Class="SimpleApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="768" Width="1024">
+    <StackPanel>
+        <Border BorderThickness="1" BorderBrush="Black" Padding="20">
+            <StackPanel Orientation="Vertical" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="摇床" VerticalAlignment="Center"></TextBlock>
+                    <CheckBox x:Name="cbRocker" Margin="10 0 0 0"></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>转速：</TextBlock>
+                    <TextBox x:Name="txtSpeed" Width="140" Text="5"></TextBox>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black" Padding="20">
+        <StackPanel Orientation="Vertical" Margin="0 10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="温度" VerticalAlignment="Center"></TextBlock>
+                    <CheckBox x:Name="cbTemp" Margin="10 0 0 0"></CheckBox>
+                <RadioButton Content="1台设备" IsChecked="True" GroupName="rbTemp"></RadioButton>
+                <RadioButton Content="2台设备" x:Name="rb2" GroupName="rbTemp"></RadioButton>
+                <RadioButton Content="3台设备" x:Name="rb3" GroupName="rbTemp"></RadioButton>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>温度：</TextBlock>
+                <TextBox x:Name="txtTemperature" Width="140" Text="37"></TextBox>
+                <ComboBox x:Name="cbLv">
+                    <ComboBoxItem>200</ComboBoxItem>
+                    <ComboBoxItem IsSelected="True">500</ComboBoxItem>
+                    <ComboBoxItem>1000</ComboBoxItem>
+                    <ComboBoxItem>1500</ComboBoxItem>
+                    <ComboBoxItem>2000</ComboBoxItem>
+                </ComboBox>
+
+            </StackPanel>
+        </StackPanel>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black" Padding="20">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="气体" VerticalAlignment="Center"></TextBlock>
+                        <CheckBox x:Name="cbGas" Margin="10 0 0 0"></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>浓度：</TextBlock>
+                    <TextBox x:Name="txtCon" Width="140" Text="5.2"></TextBox>
+                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="16">%</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>流量：</TextBlock>
+                    <TextBox x:Name="txtFlowrate" Width="140" Text="400"></TextBox>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border BorderThickness="1" BorderBrush="Black" Padding="20">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="350">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="pump1" VerticalAlignment="Center"></TextBlock>
+                        <CheckBox x:Name="cbPump1" Margin="10 0 0 0"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>加液量：</TextBlock>
+                        <TextBox x:Name="txtPump1Volume" Width="140" Text="50"></TextBox>
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="16">ml</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Margin="6 0">流量：</TextBlock>
+                        <TextBox x:Name="txtPump1Flowrate" Width="140" Text="10"></TextBox>
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="16">ml/min</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="pump3" VerticalAlignment="Center"></TextBlock>
+                        <CheckBox x:Name="cbPump3" Margin="10 0 0 0"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>加液量：</TextBlock>
+                        <TextBox x:Name="txtPump3Volume" Width="140" Text="50"></TextBox>
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="16">ml</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="6 0">流量：</TextBlock>
+                        <TextBox x:Name="txtPump3Flowrate" Width="140" Text="10"></TextBox>
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold" FontSize="16">ml/min</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="开始" Width="140" Height="70" x:Name="btnStart" Click="BtnStart_OnClick"></Button>
+            <Button Content="停止" Width="140" Height="70" Margin="10" x:Name="btnStop" Click="BtnStop_OnTapped"></Button>
+        </StackPanel>
+        <StackPanel Orientation="Vertical">
+            <TextBlock x:Name="txtTemp90"></TextBlock>
+            <TextBlock x:Name="txtTempa0"></TextBlock>
+            <TextBlock x:Name="txtTempa1"></TextBlock>
+            <TextBlock x:Name="txtRocker"></TextBlock>
+            <TextBlock x:Name="txtPump1"></TextBlock>
+            <TextBlock x:Name="txtPump3"></TextBlock>
+            <TextBlock x:Name="txtGas"></TextBlock>
+        </StackPanel>
+    </StackPanel>
+</Window>

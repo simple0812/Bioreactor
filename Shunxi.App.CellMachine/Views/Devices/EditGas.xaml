@@ -1,0 +1,38 @@
+﻿<Window x:Class="Shunxi.App.CellMachine.Views.Devices.EditGas"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Shunxi.App.CellMachine.Views.Devices"
+        mc:Ignorable="d"
+        Title="EditGas"  Height="600" Width="800">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center"  Margin="0 50">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Concentration" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+            <TextBox Width="290"
+                     VerticalContentAlignment="Center" 
+                     VerticalAlignment="Center"
+                     Height="30" 
+                     TextWrapping="NoWrap" 
+                     Text="{Binding Entity.Concentration, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" >
+            <TextBlock Text="Flow Rate" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+            <TextBox Width="290"
+                     VerticalContentAlignment="Center" 
+                     VerticalAlignment="Center"
+                     Height="30" 
+                     TextWrapping="NoWrap" 
+                     Text="{Binding Entity.FlowRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Is Enable" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+            <CheckBox VerticalAlignment="Center" x:Name="ck" IsChecked="{Binding Entity.IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <TextBlock Text="{Binding ValidMsg}" Margin="0 5" FontSize="14" Foreground="Red"></TextBlock>
+        <StackPanel Orientation="Horizontal" Margin="120 0">
+            <Button Content="Ok" IsEnabled="{Binding CanSaveEntity}" Width="140" Height="50" x:Name="btnSave" Click="BtnSave_OnClick"></Button>
+            <Button Content="Cancel" Width="140" Height="50" x:Name="btnCancel" Click="BtnCancel_OnClick" Margin="10"></Button>
+        </StackPanel>
+    </StackPanel>
+</Window>

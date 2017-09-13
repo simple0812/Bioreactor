@@ -1,0 +1,133 @@
+﻿<Window x:Class="Shunxi.App.CellMachine.Views.Devices.EditPump"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Shunxi.App.CellMachine.Views.Devices"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:Shunxi.App.CellMachine.Common.Behaviors"
+        xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="EditPump"  Height="600" Width="800">
+    <Grid Margin="0 40">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical"  HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="培养模式" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <ComboBox x:Name="cbProcessMode" Width="180" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                    <i:Interaction.Behaviors>
+                        <behaviors:EnumItemsSourceBehavior EnumAssembly="Shunxi.Business" 
+                                                           EnumType="Shunxi.Business.Enums.ProcessModeEnum" 
+                                                           SelectedItem="{Binding Entity.ProcessMode, Mode=TwoWay}"/>
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="初始量" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <TextBox Width="180"
+                         VerticalContentAlignment="Center" 
+                         VerticalAlignment="Center"
+                         Height="30" 
+                         TextWrapping="NoWrap" 
+                         Text="{Binding Entity.InitialVolume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="初始流速" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <TextBox Width="180"
+                         VerticalContentAlignment="Center" 
+                         VerticalAlignment="Center"
+                         Height="30" 
+                         TextWrapping="NoWrap" 
+                         Text="{Binding Entity.InitialFlowRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"  Visibility="{Binding Path=SelectedItem, ElementName=cbProcessMode, Converter={StaticResource processModeToVisibilityConverter}}">
+                <TextBlock Text="初始间隔" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <TextBox Width="120"
+                         VerticalContentAlignment="Center" 
+                         VerticalAlignment="Center"
+                         Height="30" 
+                         TextWrapping="NoWrap" 
+                         Text="{Binding Entity.FirstSpan, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                <TextBlock Text ="{Binding ElementName=cbTimeType, Path=SelectedItem.Name}" VerticalAlignment="Center" Margin="10 0"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"  Visibility="{Binding Path=SelectedItem, ElementName=cbProcessMode, Converter={StaticResource processModeToVisibilityConverter}}">
+                <TextBlock Text="加液周期" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <TextBox Width="120"
+                         VerticalContentAlignment="Center" 
+                         VerticalAlignment="Center"
+                         Height="30" 
+                         TextWrapping="NoWrap" 
+                         Text="{Binding Entity.Period, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                <TextBlock Text ="{Binding ElementName=cbTimeType, Path=SelectedItem.Name}" VerticalAlignment="Center" Margin="10 0"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Visibility="{Binding Path=SelectedItem, ElementName=cbProcessMode, Converter={StaticResource processModeToVisibilityConverter}}">
+                <TextBlock Text="时间类型" Width="100" TextAlignment="Right" Margin="10" FontSize="14" ></TextBlock>
+                <ComboBox x:Name="cbTimeType" Width="180" Height="30"  VerticalAlignment="Center" VerticalContentAlignment="Center">
+                    <i:Interaction.Behaviors>
+                        <behaviors:EnumItemsSourceBehavior 
+                            EnumAssembly="Shunxi.Business" 
+                            EnumType="Shunxi.Business.Enums.TimeType" 
+                            SelectedItem="{Binding Entity.TimeType, Mode=TwoWay}"/>
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Visibility="{Binding Path=SelectedItem, ElementName=cbProcessMode, Converter={StaticResource processModeToVisibilityConverter}}">
+                <TextBlock Text="加液量" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <TextBox Width="180"
+                         VerticalContentAlignment="Center" 
+                         VerticalAlignment="Center"
+                         Height="30" 
+                         TextWrapping="NoWrap" 
+                         Text="{Binding Entity.Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"  Visibility="{Binding Path=SelectedItem, ElementName=cbProcessMode, Converter={StaticResource processModeToVisibilityConverter}}">
+                <TextBlock Text="流速" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <TextBox Width="180"
+                         VerticalContentAlignment="Center" 
+                         VerticalAlignment="Center"
+                         Height="30" 
+                         TextWrapping="NoWrap" 
+                         Text="{Binding Entity.FlowRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+            <StackPanel  HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding ValidMsg, Converter={StaticResource EmptyStringToVisibilityConverter}}">
+                <TextBlock Text="{Binding ValidMsg}" Foreground="Red"></TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" Text="开始时间" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <xctk:DateTimePicker Width="200" 
+                                     ShowButtonSpinner ="False"
+                                     AllowSpin="False"
+                                     AutoCloseCalendar="True" 
+                                     UpdateValueOnEnterKey="True"
+                                     Value="{Binding Entity.StartTime,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FormatString="yyyy-MM-dd HH:mm:ss"></xctk:DateTimePicker>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" Text="结束时间" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <xctk:DateTimePicker Width="200" 
+                                     ShowButtonSpinner ="False"
+                                     AllowSpin="False"
+                                     AutoCloseCalendar="True" 
+                                     UpdateValueOnEnterKey="True"
+                                     Value="{Binding Entity.EndTime,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FormatString="yyyy-MM-dd HH:mm:ss"></xctk:DateTimePicker>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Button Content="Ok" IsEnabled="{Binding CanSaveEntity}" Width="140" Height="50" x:Name="btnSave" Click="BtnSave_OnClick"></Button>
+            <Button Content="Cancel" Width="140" Height="50" x:Name="btnCancel" Click="BtnCancel_OnClick" Margin="10"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
