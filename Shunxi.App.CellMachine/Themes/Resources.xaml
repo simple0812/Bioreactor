@@ -48,8 +48,8 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        <Setter Property="Height" Value="80"/>
-        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Height" Value="70"/>
+        <Setter Property="Margin" Value="2"/>
         <Setter Property="Padding" Value="0"/>
     </Style>
 
