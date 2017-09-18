@@ -118,7 +118,6 @@ namespace Shunxi.App.CellMachine.ViewModels
 
         public async void OnNavigatedTo(NavigationContext navigationContext)
         {
-            LogFactory.Create().Info("aaaaaaaaaaaaaaaaaaaa================");
             ShowBusyDialog(true);
             //await new UsbSerial().Build();
             //SimWorker.Instance.GetLocation();

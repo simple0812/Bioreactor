@@ -125,6 +125,7 @@ namespace Shunxi.Business.Logic.Controllers
                 {
                     DeviceService.SaveGasRecord(new GasRecord()
                     {
+                        CellCultivationId = CultivationService.GetLastCultivationId(),
                         Concentration = x.Concentration,
                         FlowRate = x.Flowrate,
                         CreatedAt = DateTime.Now

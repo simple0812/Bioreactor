@@ -3,33 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         xmlns:local="clr-namespace:TestDb"
         xmlns:controls="clr-namespace:TestDb.Controls"
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="800" Width="1024">
     <StackPanel>
         <Button Content="show" Click="Button_Click" ></Button>
-        <controls:ModerButton>
-            <TextBlock Text="abcd"></TextBlock>
-        </controls:ModerButton>
+        <dxe:TextEdit EditValue="aaaaaa"></dxe:TextEdit>
         <StackPanel Orientation="Horizontal">
             <Button Content="db" x:Name="btnDb" Click="BtnDb_OnClick"></Button>
         </StackPanel>
-        
     </StackPanel>
 </Window>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

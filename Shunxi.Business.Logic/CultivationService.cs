@@ -29,8 +29,19 @@ namespace Shunxi.Business.Logic
             {
                 var p = db.CellCultivations.OrderByDescending(each => each.CreatedAt).FirstOrDefault();
                 if (p == null) return string.Empty;
-
                 return p.CreatedAt + ".db";
+            }
+        }
+
+        public static int GetLastCultivationId()
+        {
+            var id = CurrentContext.SysCache?.System?.CellCultivation?.Id ?? 0;
+            if (id > 0) return id;
+
+            using (var db = new IotContext())
+            {
+                var p = db.CellCultivations.LastOrDefault();
+                return p?.Id ?? 0;
             }
         }
 
@@ -46,6 +57,7 @@ namespace Shunxi.Business.Logic
         {
             return JsonConvert.DeserializeObject<Pump>(content);
         }
+
         private static BaseCultivation ConvertCultivation(string content)
         {
             var obj = JObject.Parse(content);

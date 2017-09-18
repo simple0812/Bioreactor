@@ -36,6 +36,7 @@ namespace Shunxi.DataAccess
         {
             SQLiteConnectionStringBuilder connstr = new SQLiteConnectionStringBuilder(this.Database.Connection.ConnectionString);
             string path = AppDomain.CurrentDomain.BaseDirectory + connstr.DataSource;
+            
             System.IO.FileInfo fi = new System.IO.FileInfo(path);
             if (!System.IO.Directory.Exists(fi.DirectoryName))
             {
@@ -53,6 +54,7 @@ namespace Shunxi.DataAccess
                 string cmdText = @"
                 CREATE TABLE IF NOT EXISTS AppExceptions (
                     Id INTEGER  primary key autoincrement, 
+                    CellCultivationId INTEGER,
                     ModuleName varchar(50),
                     Priority INTEGER ,
                     CreatedAt TimeStamp NOT NULL DEFAULT (datetime('now','localtime')) ,
@@ -142,6 +144,7 @@ namespace Shunxi.DataAccess
                 CREATE TABLE IF NOT EXISTS TemperatureRecords (
                     Id INTEGER  primary key autoincrement, 
                     DeviceId INTEGER,
+                    CellCultivationId INTEGER,
                     CreatedAt TimeStamp NOT NULL DEFAULT (datetime('now','localtime')) ,
                     HeaterTemperature double,
                     EnvTemperature double,
@@ -151,6 +154,7 @@ namespace Shunxi.DataAccess
                 CREATE TABLE IF NOT EXISTS GasRecords (
                     Id INTEGER  primary key autoincrement, 
                     DeviceId INTEGER,
+                    CellCultivationId INTEGER,
                     CreatedAt TimeStamp NOT NULL DEFAULT (datetime('now','localtime')) ,
                     Concentration double,
                     FlowRate double
@@ -160,6 +164,7 @@ namespace Shunxi.DataAccess
                     Id INTEGER  primary key autoincrement, 
                     DeviceId INTEGER,
                     IsManual INTEGER,
+                    CellCultivationId INTEGER,
                     StartTime TimeStamp NOT NULL DEFAULT (datetime('now','localtime')) ,
                     EndTime TimeStamp NOT NULL DEFAULT (datetime('now','localtime')) ,
                     Volume double,

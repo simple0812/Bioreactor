@@ -348,10 +348,16 @@ namespace Shunxi.App.CellMachine.Views
                 {
                     case SysStatusEnum.Unknown:
                     case SysStatusEnum.Discarded:
-                    case SysStatusEnum.Completed:
                     case SysStatusEnum.Ready:
                     {
                         btnStart.Visibility = Visibility.Visible;
+                        btnPauseAll.Visibility = Visibility.Collapsed;
+                        break;
+                    }
+
+                    case SysStatusEnum.Completed:
+                    {
+                        btnStart.Visibility = Visibility.Collapsed;
                         btnPauseAll.Visibility = Visibility.Collapsed;
                         break;
                     }

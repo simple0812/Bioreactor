@@ -5,6 +5,7 @@ namespace Shunxi.Business.Tables
     public class PumpRecord
     {
         public int Id { get; set; }
+        public int CellCultivationId { get; set; }
         public int DeviceId { get; set; }
         public bool IsManual { get; set; }
         public double FlowRate { get; set; }

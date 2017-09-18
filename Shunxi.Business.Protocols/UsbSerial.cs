@@ -96,6 +96,8 @@ namespace Shunxi.Business.Protocols
                 }
                 catch (Exception ex)
                 {
+                    SerialPort.DataReceived -= SerialPort_DataReceived;
+                    SerialPort.ErrorReceived -= SerialPort_ErrorReceived;
                     Status = SerialPortStatus.Initialled;
                     SerialPort?.Close();
                     SerialPort?.Dispose();
@@ -113,23 +115,28 @@ namespace Shunxi.Business.Protocols
                 Status = SerialPortStatus.Opening;
                 var dis = SerialPort.GetPortNames();
                 if (!dis.Any()) return;
-                foreach (var portName in dis)
+
+                foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo())
                 {
+                    Console.WriteLine($"{comPort.Name} – {comPort.Description}");
+                    if(comPort.Description.IndexOf("USB", StringComparison.Ordinal) == -1
+                        && comPort.Description.IndexOf("Virtual Serial Port", StringComparison.Ordinal) == -1) continue;
+
                     try
                     {
+                        var portName = comPort.Name.Split("->".ToCharArray())[0];
                         LogFactory.Create().Info("portname:" + portName);
 
-                        var p = dis.FirstOrDefault(each => each.IndexOf(portName, StringComparison.Ordinal) != -1);
-                        if (p == null) return;
-                        SerialPort = new SerialPort(p);
+                        SerialPort = new SerialPort(portName);
+                        if (SerialPort == null) continue;
 
-//                        SerialPort.WriteTimeout = 20;
-//                        SerialPort.ReadTimeout = 20;
                         SerialPort.BaudRate = 9600;
                         SerialPort.Parity = Parity.None;
                         SerialPort.StopBits = StopBits.One;
                         SerialPort.DataBits = 8;
                         SerialPort.Handshake = Handshake.None;
+                        SerialPort.WriteBufferSize = 1024;
+                        SerialPort.ReadBufferSize = 1024;
 
                         SerialPort.DataReceived += SerialPort_DataReceived;
                         SerialPort.ErrorReceived += SerialPort_ErrorReceived;
@@ -161,6 +168,12 @@ namespace Shunxi.Business.Protocols
                     }
                     catch (Exception ex)
                     {
+                        if (SerialPort != null)
+                        {
+                            SerialPort.DataReceived -= SerialPort_DataReceived;
+                            SerialPort.ErrorReceived -= SerialPort_ErrorReceived;
+                        }
+
                         Status = SerialPortStatus.Initialled;
                         SerialPort?.Close();
                         SerialPort?.Dispose();

@@ -12,6 +12,7 @@ namespace Shunxi.Business.Tables
         public string StackTrace { get; set; }
         public int Status { get; set; }
         // 新的培养周期批号
+        public int CellCultivationId { get; set; }
         public string BatchNumber { get; set; }
         public string Type { get; set; }
     }

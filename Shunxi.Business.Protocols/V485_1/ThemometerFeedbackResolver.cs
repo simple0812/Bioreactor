@@ -53,7 +53,7 @@ namespace Shunxi.Business.Protocols.V485_1
 
             data.CenterTemperature = DirectiveHelper.Parse2BytesToNumber(bytes.Skip(2).Take(2).ToArray()) / 10;
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(4).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(6).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Temperature;
 
             ret.Data = data;
             ret.SourceDirectiveType = DirectiveTypeEnum.Idle;
@@ -76,7 +76,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.DeviceId = bytes[0];
             data.DirectiveType = (DirectiveTypeEnum)bytes[1];
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(2).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(4).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Temperature;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.TryStart;
             ret.Data = data;
@@ -100,7 +100,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.DeviceId = bytes[0];
             data.DirectiveType = (DirectiveTypeEnum)bytes[1];
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(2).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(4).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Temperature;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.TryPause;
             ret.Data = data;
@@ -140,7 +140,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.EnvTemperature = DirectiveHelper.Parse2BytesToNumber(bytes.Skip(6).Take(2).ToArray()) / 10;
             data.DeviceStatus = bytes.Skip(6).Take(1).FirstOrDefault();
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(8).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(10).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Temperature;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.Running;
             ret.Data = data;
@@ -166,7 +166,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.CenterTemperature = DirectiveHelper.Parse2BytesToNumber(bytes.Skip(4).Take(2).ToArray()) / 10;
             data.DeviceStatus = bytes.Skip(6).Take(1).FirstOrDefault();
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(7).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(9).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Temperature;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.Pausing;
             ret.Data = data;

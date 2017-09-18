@@ -52,7 +52,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.DirectiveType = (DirectiveTypeEnum)bytes[1];
             data.Flowrate = DirectiveHelper.Parse2BytesToNumber(bytes.Skip(2).Take(2).ToArray()) / 10;
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(4).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(6).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Gas;
 
             ret.Data = data;
             ret.SourceDirectiveType = DirectiveTypeEnum.Idle;
@@ -75,7 +75,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.DeviceId = bytes[0];
             data.DirectiveType = (DirectiveTypeEnum)bytes[1];
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(2).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(4).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Gas;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.TryStart;
             ret.Data = data;
@@ -99,7 +99,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.DeviceId = bytes[0];
             data.DirectiveType = (DirectiveTypeEnum)bytes[1];
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(2).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(4).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Gas;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.TryPause;
             ret.Data = data;
@@ -122,7 +122,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.DeviceId = bytes[0];
             data.DirectiveType = (DirectiveTypeEnum)bytes[1];
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(2).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(4).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Gas;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.Close;
             ret.Data = data;
@@ -148,7 +148,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.Flowrate = DirectiveHelper.Parse2BytesToNumber(bytes.Skip(4).Take(2).ToArray());
             data.DeviceStatus = bytes.Skip(6).Take(1).FirstOrDefault();
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(8).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(10).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Gas;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.Running;
             ret.Data = data;
@@ -174,7 +174,7 @@ namespace Shunxi.Business.Protocols.V485_1
             data.Flowrate = DirectiveHelper.Parse2BytesToNumber(bytes.Skip(4).Take(2).ToArray());
             data.DeviceStatus = bytes.Skip(6).Take(1).FirstOrDefault();
             data.DirectiveId = (int)DirectiveHelper.Parse2BytesToNumber(bytes.Skip(7).Take(2).ToArray());
-            data.DeviceType = (TargetDeviceTypeEnum)bytes.Skip(9).Take(1).FirstOrDefault();
+            data.DeviceType = TargetDeviceTypeEnum.Gas;
 
             ret.SourceDirectiveType = DirectiveTypeEnum.Pausing;
             ret.Data = data;

@@ -350,6 +350,7 @@ namespace Shunxi.Business.Logic.Controllers
         {
             DeviceService.SavePumpRecord(new PumpRecord()
             {
+                CellCultivationId = CultivationService.GetLastCultivationId(),
                 DeviceId = Device.DeviceId,
                 StartTime = StartTime,
                 EndTime = DateTime.Now,

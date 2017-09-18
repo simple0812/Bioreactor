@@ -17,7 +17,7 @@ namespace Shunxi.Common.Log
         Error
     }
 
-    [LogProvider(typeof(NetLog))]
+    [LogProvider(typeof(LocalLog))]
     public static class LogFactory
     {
         private static ILog _log = null;

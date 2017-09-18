@@ -125,6 +125,7 @@ namespace Shunxi.Business.Logic.Controllers
                 {
                     DeviceService.SaveTemperatureRecord(new TemperatureRecord()
                     {
+                        CellCultivationId = CultivationService.GetLastCultivationId(),
                         Temperature = x.CenterTemperature,
                         CreatedAt = DateTime.Now
                     });
