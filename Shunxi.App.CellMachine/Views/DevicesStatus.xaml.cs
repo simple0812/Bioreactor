@@ -356,7 +356,7 @@ namespace Shunxi.App.CellMachine.Views
                     }
 
                     case SysStatusEnum.Completed:
-                    {
+                        {
                         btnStart.Visibility = Visibility.Collapsed;
                         btnPauseAll.Visibility = Visibility.Collapsed;
                         break;
@@ -389,18 +389,21 @@ namespace Shunxi.App.CellMachine.Views
         private async void BtnRestart_OnClick(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as DevicesStatusViewModel;
-//            if (vm != null)
-//            {
-//                var ret = await vm.MessageBoxService.ShowAsync("要中断正在运行的任务吗？点击Yes后该任务将不可恢复", "警告", MessageButton.YesNo);
-//                if (ret == MessageResult.No) return;
-//            }
+            if (vm == null) return;
+
+            if (MessageBox.Show("要中断正在运行的任务吗？点击Yes后该任务将不可恢复",
+                    "警告", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            {
+                return;
+            }
 
             await ReStart();
         }
 
         private async Task ReStart()
         {
-//            dialog = await CommonMsgDialog.InitAndShowAsync();
+            App.BC.IsBusy = true;
+
             RemoveHandler();
             try
             {
@@ -421,8 +424,7 @@ namespace Shunxi.App.CellMachine.Views
                     DeviceService.InitData();
                     InitData();
                     InitControl();
-
-//                    dialog.Hide();
+                    App.BC.IsBusy = false;
                 });
             }
         }

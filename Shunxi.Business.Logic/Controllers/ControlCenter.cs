@@ -84,7 +84,6 @@ namespace Shunxi.Business.Logic.Controllers
             }
 
             var pumpCtrls = Controllers.Where(each => each.Device.DeviceType == TargetDeviceTypeEnum.Pump).Select(each => each as PumpController).ToList();
-            if(pumpCtrls == null) return;
 
             //如果是暂停后重新开始 需要修正暂停的时间
             pumpCtrls.ForEach(each =>
