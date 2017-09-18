@@ -27,7 +27,7 @@
                      VerticalAlignment="Center"
                      Height="30" 
                      TextWrapping="NoWrap" 
-                     Text="{Binding Entity.Temperature, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                     Text="{Binding Entity.Temperature, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"></TextBox>
         </StackPanel>
         
         <StackPanel Orientation="Horizontal">

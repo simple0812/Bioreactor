@@ -12,6 +12,7 @@
     <SolidColorBrush x:Key="GrayForegroundBrush" Color="#FF787878"/>
 
     <converters:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+    <converters:DoubleToStringConverter  x:Key="DoubleToStringConverter"></converters:DoubleToStringConverter>
     <converters:TextSingleLineConverter x:Key="TextSingleLineConverter"/>
     <converters:EmptyImageToVisibilityConverter x:Key="EmptyImageToVisibilityConverter"/>
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"></converters:DateTimeToStringConverter>

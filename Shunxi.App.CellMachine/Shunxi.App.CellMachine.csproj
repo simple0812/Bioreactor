@@ -151,6 +151,7 @@
     <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\DateTimeToVisibilityConverter.cs" />
+    <Compile Include="Converters\DoubleToStringConverter.cs" />
     <Compile Include="Converters\EmptyImageToVisibilityConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="Converters\HalfValueConverter.cs" />

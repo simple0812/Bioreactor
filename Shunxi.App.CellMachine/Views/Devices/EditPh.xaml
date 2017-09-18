@@ -14,7 +14,7 @@
                      VerticalAlignment="Center"
                      Height="30" 
                      TextWrapping="NoWrap" 
-                     Text="{Binding Entity.PH, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                     Text="{Binding Entity.PH, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Is Enable" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
