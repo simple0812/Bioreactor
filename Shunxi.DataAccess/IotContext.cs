@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.Diagnostics;
 using Shunxi.Business.Models.devices;
 using Shunxi.Business.Tables;
+using Shunxi.Common.Log;
 
 namespace Shunxi.DataAccess
 {
@@ -36,16 +37,24 @@ namespace Shunxi.DataAccess
         {
             SQLiteConnectionStringBuilder connstr = new SQLiteConnectionStringBuilder(this.Database.Connection.ConnectionString);
             string path = AppDomain.CurrentDomain.BaseDirectory + connstr.DataSource;
+
+            try
+            {
+                System.IO.FileInfo fi = new System.IO.FileInfo(path);
+                if (!System.IO.Directory.Exists(fi.DirectoryName))
+                {
+                    System.IO.Directory.CreateDirectory(fi.DirectoryName);
+                }
+                if (!System.IO.File.Exists(fi.FullName))
+                {
+                    SQLiteConnection.CreateFile(fi.FullName);
+                }
+            }
+            catch (Exception e)
+            {
+                LogFactory.Create().Error(e.Message);
+            }
             
-            System.IO.FileInfo fi = new System.IO.FileInfo(path);
-            if (!System.IO.Directory.Exists(fi.DirectoryName))
-            {
-                System.IO.Directory.CreateDirectory(fi.DirectoryName);
-            }
-            if (!System.IO.File.Exists(fi.FullName))
-            {
-                SQLiteConnection.CreateFile(fi.FullName);
-            }
 
             connstr.DataSource = path;
             //connstr.Password = "admin";//设置密码，SQLite ADO.NET实现了数据库密码保护

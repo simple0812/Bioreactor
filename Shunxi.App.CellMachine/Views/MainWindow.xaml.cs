@@ -26,5 +26,19 @@ namespace Shunxi.App.CellMachine.Views
         {
             InitializeComponent();
         }
+
+        private void TbExpand_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.MainWindow.GoFullscreen();
+            tbExpand.Visibility = Visibility.Collapsed;
+            tbCompress.Visibility = Visibility.Visible;
+        }
+
+        private void TbCompress_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.MainWindow.ExitFullscreen();
+            tbExpand.Visibility = Visibility.Visible;
+            tbCompress.Visibility = Visibility.Collapsed;
+        }
     }
 }

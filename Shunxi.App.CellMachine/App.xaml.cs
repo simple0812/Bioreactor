@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Practices.Unity;
@@ -11,7 +13,6 @@ using Prism.Regions;
 using Shunxi.Common.Log;
 using Shunxi.DataAccess;
 using Shunxi.Infrastructure.Common.Configuration;
-using ThicknessConverter = Xceed.Wpf.DataGrid.Converters.ThicknessConverter;
 
 namespace Shunxi.App.CellMachine
 {
@@ -32,13 +33,22 @@ namespace Shunxi.App.CellMachine
             MessageBox.Show(e.Exception.Message + e.Exception.Source + e.Exception.StackTrace);
             e.Handled = true;
         }
-
+        bool createdNew;
         protected override void OnStartup(StartupEventArgs e)
         {
+
+           var  singleInstanceWatcher = new Semaphore( 0,  1,  Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
+            if (!createdNew)
+            {
+                MessageBox.Show("程序运行，请关闭后重试");
+                Environment.Exit(-2);
+            }
+
             base.OnStartup(e);
 
             var bootstrapper = new Bootstrapper();
             bootstrapper.Run();
+            Application.Current.MainWindow.GoFullscreen();
 
             var _regionManager = bootstrapper.Container.Resolve<IRegionManager>();
             _regionManager?.RequestNavigate("ContentRegion", "Index");

@@ -25,13 +25,6 @@ namespace Shunxi.App.CellMachine
 
         }
 
-        protected override void ConfigureContainer()
-        {
-            base.ConfigureContainer();
-
-//            Container.RegisterType<IWaitIndicatorService, WaitIndicatorService>();
-        }
-
         protected override void ConfigureModuleCatalog()
         {
             var catalog = (ModuleCatalog)ModuleCatalog;

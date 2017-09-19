@@ -20,7 +20,22 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" Background="#E8E8E8">
+        <Grid Grid.Row="0" Background="#E8E8E8">
+            <Grid.Resources>
+                <Style TargetType="{x:Type StackPanel}" >
+                    <Setter Property="Opacity" Value="0"/>
+                    <Style.Triggers>
+                        <!--鼠标滑过时字体为红色-->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="30"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
             <ListBox BorderThickness="0" 
                      Height="120" 
                      Background="#E8E8E8" 
@@ -29,7 +44,6 @@
                      ItemContainerStyle="{StaticResource NormalListBoxItemStyle}"
                      Style="{StaticResource LeftPanelTileBartyle}">
                 <i:Interaction.Triggers>
-                    <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->
                     <i:EventTrigger EventName="SelectionChanged">
                         <prism:InvokeCommandAction Command="{Binding SelectedCommand}" TriggerParameterPath="AddedItems" />
                     </i:EventTrigger>
@@ -40,7 +54,11 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-        </StackPanel>
+            <StackPanel Name="spx"  Grid.Column="1" VerticalAlignment="Top" Width="30" Height="30" HorizontalAlignment="Right" FlowDirection="RightToLeft"   >
+                <TextBlock Name="tbExpand" FontSize="20"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf065;"  Visibility="Collapsed" MouseLeftButtonDown="TbExpand_OnMouseLeftButtonDown"/>
+                <TextBlock Name="tbCompress" FontSize="20"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf066;"  MouseLeftButtonDown="TbCompress_OnMouseLeftButtonDown"/>
+            </StackPanel>
+        </Grid>
         <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" Margin="5"  />
         <xctk:BusyIndicator Name="BusyIndicator" IsBusy="{Binding BC.IsBusy}" Grid.Row="0" Grid.RowSpan="2">
             <xctk:BusyIndicator.OverlayStyle>

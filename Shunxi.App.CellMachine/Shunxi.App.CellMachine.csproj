@@ -163,6 +163,7 @@
     <Compile Include="Converters\ReverseConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Converters\TextSingleLineConverter.cs" />
+    <Compile Include="ExpendMethod.cs" />
     <Compile Include="ViewModels\Common\DeviceEditViewModel.cs" />
     <Compile Include="ViewModels\DataChartViewModel.cs" />
     <Compile Include="ViewModels\DevicesStatusViewModel.cs" />
@@ -299,6 +300,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -307,9 +309,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Resource Include="Themes\FontAwesome.otf" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\ArrowLeft.png" />
