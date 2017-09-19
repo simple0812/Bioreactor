@@ -134,7 +134,11 @@ namespace Shunxi.Business.Logic.Controllers
 
         public async Task Start()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             InitControllers();
+            sw.Stop();
+            LogFactory.Create().Info($"init controllers {sw.ElapsedMilliseconds} ms");
             if (CurrentContext.SysCache.System == null)
             {
                 LogFactory.Create().Warnning("SysCache.System is null");
@@ -148,6 +152,7 @@ namespace Shunxi.Business.Logic.Controllers
             }
 
             OnSystemStatusChange(new RunStatusChangeEventArgs() {SysStatus = SysStatusEnum.Starting});
+            CultivationService.SaveCultivations(CurrentContext.SysCache.System);
             SyncSysStatusWithServer();
 
 
@@ -225,7 +230,7 @@ namespace Shunxi.Business.Logic.Controllers
         private async Task StopDevices()
         {
             OnSystemStatusChange(new RunStatusChangeEventArgs() { SysStatus = SysStatusEnum.Discarding });
-            var nonPumpCtrls = Controllers.Where(each => each.Device.DeviceType != TargetDeviceTypeEnum.Pump);
+            var nonPumpCtrls = Controllers.Where(each => each.Device.DeviceType != TargetDeviceTypeEnum.Pump && each.Device.DeviceType != TargetDeviceTypeEnum.Rocker);
             foreach (var each in nonPumpCtrls)
             {
                 await each.Stop();
@@ -238,6 +243,12 @@ namespace Shunxi.Business.Logic.Controllers
             {
                 OnSystemStatusChange(new RunStatusChangeEventArgs() { SysStatus = SysStatusEnum.Discarded });
                 SyncDeviceDataWithServer();
+            }
+            var ctrls = Controllers.Where(each => each.Device.DeviceType == TargetDeviceTypeEnum.Rocker).ToList();
+
+            foreach (var each in ctrls)
+            {
+                await each.Pause();
             }
         }
 

@@ -41,9 +41,9 @@ namespace Shunxi.Business.Logic.Controllers
             throw new NotImplementedException();
         }
 
-        public override Task<DeviceIOResult> Pause()
+        public override async Task<DeviceIOResult> Pause()
         {
-            var p = base.Pause();
+            var p = await base.Pause();
             StartIdleLoop();
             return p;
         }
@@ -122,31 +122,22 @@ namespace Shunxi.Business.Logic.Controllers
         public override void OnCommunication(CommunicationEventArgs e)
         {
             base.OnCommunication(e);
-            if (e.Data.DirectiveType != DirectiveTypeEnum.Running) return;
 
-            HandleDeviceStatusChange(new IoStatusChangeEventArgs()
+            if (e.Data.DirectiveType == DirectiveTypeEnum.Running 
+                || e.Data.DirectiveType == DirectiveTypeEnum.Idle 
+                || e.Data.DirectiveType == DirectiveTypeEnum.Pausing)
             {
-                DeviceId = e.DeviceId,
-                DeviceType = e.DeviceType,
-                IoStatus = e.DeviceStatus,
-                Delta = 0,
-                Feedback = e.Data
-            });
+                HandleDeviceStatusChange(new IoStatusChangeEventArgs()
+                {
+                    DeviceId = e.DeviceId,
+                    DeviceType = e.DeviceType,
+                    IoStatus = e.DeviceStatus,
+                    Delta = 0,
+                    Feedback = e.Data
+                });
 
-            Center.SyncRockerWithServer();
-        }
-
-        public override void OnCommunicationChange(CommunicationEventArgs e)
-        {
-            base.OnCommunicationChange(e);
-            HandleDeviceStatusChange(new IoStatusChangeEventArgs()
-            {
-                DeviceId = e.DeviceId,
-                DeviceType = e.DeviceType,
-                IoStatus = e.DeviceStatus,
-                Delta = 1,//speed和running都改变了
-                Feedback = e.Data
-            });
+                Center.SyncRockerWithServer();
+            }
         }
 
         private void HandleDeviceStatusChange(IoStatusChangeEventArgs e)

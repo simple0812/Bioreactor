@@ -88,24 +88,20 @@ namespace Shunxi.App.CellMachine.Views
         }
 
         #region 运行状态监控事件
-        public async void InstanceSystemStatusChangeEvent(object sender, RunStatusChangeEventArgs e)
+        public void InstanceSystemStatusChangeEvent(object sender, RunStatusChangeEventArgs e)
         {
             LogFactory.Create().Info($"==================sys->{e.SysStatus}==================");
 
-            await this.Dispatcher.InvokeAsync(async () =>
+            Dispatcher.Invoke(() =>
             {
                 SwitchCommandStatus(e.SysStatus);
 
                 txtStatus.Text = e.SysStatus.ToString().ToLower();
                 if (e.SysStatus == SysStatusEnum.Completed)
                 {
-                    var vm = DataContext as DevicesStatusViewModel;
-                    if (vm != null)
-                    {
-                        await Task.Delay(1000);
-                       // vm.NavigationService.Navigate("ChartView");
-
-                    }
+                   // MessageBox.Show("细胞培养流程已完成");
+                    LogFactory.Create().Info("细胞培养流程已完成");
+                    //await ReStart();
                 }
             });
         }
@@ -236,7 +232,7 @@ namespace Shunxi.App.CellMachine.Views
                 if (CurrentContext.SysCache?.SystemRealTimeStatus.Rocker.IsRunning ?? false)
                 {
                     if (GetAnimateStatus(sb) == ClockState.Stopped)
-                            sb.Begin(this, true);
+                        sb.Begin(this, true);
                 }
                 else
                 {
@@ -355,6 +351,7 @@ namespace Shunxi.App.CellMachine.Views
                         break;
                     }
 
+                    case SysStatusEnum.Starting:
                     case SysStatusEnum.Completed:
                         {
                         btnStart.Visibility = Visibility.Collapsed;

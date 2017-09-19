@@ -129,13 +129,12 @@ namespace Shunxi.App.CellMachine.ViewModels
             set => SetProperty(ref _CanStart, value);
         }
 
-        private void Start()
+        private async void Start()
         {
             LogFactory.Create().Info("start start directive");
             if (CurrentContext.Status != SysStatusEnum.Paused)
             {
-                CultivationService.SaveCultivations(CurrentContext.SysCache.System);
-                ControlCenter.Instance.Start().IgnorCompletion();
+               await ControlCenter.Instance.Start();
             }
             else
             {

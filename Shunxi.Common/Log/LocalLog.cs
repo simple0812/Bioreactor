@@ -47,7 +47,7 @@ namespace Shunxi.Common.Log
 
         private async Task WriteToFile(string msg)
         {
-            var fi = new FileInfo(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/cellmanager_log");
+            var fi = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "/cellmachine.log");
             using (var sw = fi.AppendText())
             {
                 await sw.WriteLineAsync(msg);

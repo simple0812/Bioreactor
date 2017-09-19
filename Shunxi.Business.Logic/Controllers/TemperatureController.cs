@@ -44,9 +44,9 @@ namespace Shunxi.Business.Logic.Controllers
             throw new NotImplementedException();
         }
 
-        public override Task<DeviceIOResult> Pause()
+        public override async Task<DeviceIOResult> Pause()
         {
-            var p = base.Pause();
+            var p = await base.Pause();
             StartRunningLoop();
             return p;
         }
