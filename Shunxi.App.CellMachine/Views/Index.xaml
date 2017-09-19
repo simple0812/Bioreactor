@@ -68,7 +68,27 @@
                     Height="40" 
                     FlowDirection ="RightToLeft"
                     VerticalAlignment="Bottom">
-            <Button Content="Check"  Width="50" x:Name="btnStart" Margin="30 0 0 0" Command="{Binding CheckCommand, Mode=OneWay}" IsEnabled="{Binding CanCheck}"></Button>
+            <Button Width="40" Content="&#xf04b;" x:Name="btnStart" Margin="30 0 0 0" Command="{Binding CheckCommand, Mode=OneWay}" IsEnabled="{Binding CanCheck}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Ellipse Name="faceEllipse" Width="{TemplateBinding Button.Width}" Height="{TemplateBinding Control.Height}"  Fill="{TemplateBinding Button.Background}"/>
+                            <TextBlock Name="txtBlock" FontFamily="{StaticResource FontAwesomeFontFamily}" 
+                                       Margin="{TemplateBinding Button.Padding}" 
+                                       VerticalAlignment="Center"  
+                                       HorizontalAlignment="Center"  
+                                       FontSize="20"
+                                       Text="{TemplateBinding Button.Content}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger  Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Button.Foreground" Value="Red" />
+                                <Setter Property="Button.Background" Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </StackPanel>
         
     </Grid>

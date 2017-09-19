@@ -488,9 +488,69 @@
                    Height="40" 
                    FlowDirection ="RightToLeft"
                    VerticalAlignment="Bottom">
-            <Button Content="Restart" Width="50" x:Name="btnRestart" Margin="50 0 0 0" Click="BtnRestart_OnClick"></Button>
-            <Button Content="Pause" Width="50"  x:Name="btnPauseAll"  Margin="30 0 0 0" Command="{Binding PauseCommand, Mode=OneWay}"></Button>
-            <Button Content="Start" Width="50" x:Name="btnStart" Margin="30 0 0 0" Command="{Binding StartCommand, Mode=OneWay}"></Button>
+            <Button Content="&#xf021;" Width="40" x:Name="btnRestart" Margin="50 0 0 0" Click="BtnRestart_OnClick">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Ellipse Name="faceEllipse" Width="{TemplateBinding Button.Width}" Height="{TemplateBinding Control.Height}"  Fill="{TemplateBinding Button.Background}"/>
+                            <TextBlock Name="txtBlock" FontFamily="{StaticResource FontAwesomeFontFamily}" 
+                                       Margin="{TemplateBinding Button.Padding}" 
+                                       VerticalAlignment="Center"  
+                                       HorizontalAlignment="Center"  
+                                       FontSize="20"
+                                       Text="{TemplateBinding Button.Content}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger  Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Button.Foreground" Value="Red" />
+                                <Setter Property="Button.Background" Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Content="&#xf04c;" Width="40"  x:Name="btnPauseAll"  Margin="30 0 0 0" Command="{Binding PauseCommand, Mode=OneWay}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Ellipse Name="faceEllipse" Width="{TemplateBinding Button.Width}" Height="{TemplateBinding Control.Height}"  Fill="{TemplateBinding Button.Background}"/>
+                            <TextBlock Name="txtBlock" FontFamily="{StaticResource FontAwesomeFontFamily}" 
+                                       Margin="{TemplateBinding Button.Padding}" 
+                                       VerticalAlignment="Center"  
+                                       HorizontalAlignment="Center"  
+                                       FontSize="20"
+                                       Text="{TemplateBinding Button.Content}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger  Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Button.Foreground" Value="Red" />
+                                <Setter Property="Button.Background" Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Content="&#xf04b;" Width="40" x:Name="btnStart" Margin="30 0 0 0" Command="{Binding StartCommand, Mode=OneWay}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Ellipse Name="faceEllipse" Width="{TemplateBinding Button.Width}" Height="{TemplateBinding Control.Height}"  Fill="{TemplateBinding Button.Background}"/>
+                            <TextBlock Name="txtBlock" FontFamily="{StaticResource FontAwesomeFontFamily}" 
+                                       Margin="{TemplateBinding Button.Padding}" 
+                                       VerticalAlignment="Center"  
+                                       HorizontalAlignment="Center"  
+                                       FontSize="20"
+                                       Text="{TemplateBinding Button.Content}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger  Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Button.Foreground" Value="Red" />
+                                <Setter Property="Button.Background" Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>
