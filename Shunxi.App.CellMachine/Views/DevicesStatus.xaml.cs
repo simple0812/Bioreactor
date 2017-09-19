@@ -428,5 +428,20 @@ namespace Shunxi.App.CellMachine.Views
                 });
             }
         }
+
+        private void ImgLeft_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            rootGd.ColumnDefinitions[0].Width = new GridLength(0D);
+           
+            imgLeft.Visibility = Visibility.Collapsed;
+            imgRight.Visibility = Visibility.Visible;
+        }
+
+        private void ImgRight_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            rootGd.ColumnDefinitions[0].Width = new GridLength(210D);
+            imgLeft.Visibility = Visibility.Visible;
+            imgRight.Visibility = Visibility.Collapsed;
+        }
     }
 }

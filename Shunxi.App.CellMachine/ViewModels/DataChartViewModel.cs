@@ -36,12 +36,13 @@ namespace Shunxi.App.CellMachine.ViewModels
         private void initData()
         {
             Series = new SeriesCollection();
+            var lastId = CultivationService.GetLastCultivationId();
             using (var ctx = new IotContext())
             {
-                var p = ctx.TemperatureRecords.ToList().Select(each => each.Temperature);
-                var x = ctx.TemperatureRecords.ToList().Select(each => each.EnvTemperature);
-                var t = ctx.TemperatureRecords.ToList().Select(each => each.HeaterTemperature);
-                var gas = ctx.GasRecords.ToList().Select(each => each.Concentration);
+                var p = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.Temperature);
+                var x = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.EnvTemperature);
+                var t = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.HeaterTemperature);
+                var gas = ctx.GasRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.Concentration);
                 Series.Add(new StackedAreaSeries
                 {
                     Title = "中心温度",
@@ -78,6 +79,7 @@ namespace Shunxi.App.CellMachine.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
+            Series.Clear();
         }
     }
 

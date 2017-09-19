@@ -34,10 +34,6 @@ namespace Shunxi.Business.Logic.Controllers
             Device.TryStart();
             StartEvent = new TaskCompletionSource<DeviceIOResult>();
             return await StartEvent.Task;
-            //            var p = await StartEvent.WaitAsync(CancellationTokenSource.Token);
-            //            StartEvent.Reset();
-            //
-            //            return p;
         }
 
         public override Task<DeviceIOResult> Close()
@@ -113,24 +109,14 @@ namespace Shunxi.Business.Logic.Controllers
 
         public override void ProcessPausingResult(DirectiveData data, CommunicationEventArgs comEventArgs)
         {
-            var ret = data as RockerDirectiveData;
-            
-            //摇床真正的停止
-            if (ret != null && ret.Speed <= 0)
-            {
-                comEventArgs.DeviceStatus = DeviceStatusEnum.Idle;
-                comEventArgs.Description = IdleDesc.Paused.ToString();;
-                SetStatus(DeviceStatusEnum.Idle);
 
-                StopEvent.TrySetResult(new DeviceIOResult(true));
+            comEventArgs.DeviceStatus = DeviceStatusEnum.Idle;
+            comEventArgs.Description = IdleDesc.Paused.ToString(); ;
+            SetStatus(DeviceStatusEnum.Idle);
 
-                OnCommunicationChange(comEventArgs);
-            }
-            else
-            {
-                comEventArgs.DeviceStatus = DeviceStatusEnum.Pausing;
-                StartPauseLoop();
-            }
+            StopEvent.TrySetResult(new DeviceIOResult(true));
+
+            OnCommunicationChange(comEventArgs);
         }
 
         public override void OnCommunication(CommunicationEventArgs e)

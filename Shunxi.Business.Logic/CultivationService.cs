@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -40,7 +41,7 @@ namespace Shunxi.Business.Logic
 
             using (var db = new IotContext())
             {
-                var p = db.CellCultivations.LastOrDefault();
+                var p = db.CellCultivations.OrderByDescending(doc => doc.Id).FirstOrDefault();
                 return p?.Id ?? 0;
             }
         }

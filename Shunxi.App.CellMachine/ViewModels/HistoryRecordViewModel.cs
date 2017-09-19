@@ -33,7 +33,7 @@ namespace Shunxi.App.CellMachine.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-           
+            Entities.Clear();
         }
     }
 }

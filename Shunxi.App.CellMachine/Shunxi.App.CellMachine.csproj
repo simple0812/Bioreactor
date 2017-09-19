@@ -311,7 +311,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\ArrowLeft.png" />
+    <Resource Include="Assets\ArrowRight.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shunxi.Business.Logic\Shunxi.Business.Logic.csproj">
       <Project>{88a07614-afbf-4b73-904b-a9b2ff5face3}</Project>
