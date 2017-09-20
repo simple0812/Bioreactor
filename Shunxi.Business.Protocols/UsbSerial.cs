@@ -200,6 +200,12 @@ namespace Shunxi.Business.Protocols
             var comBuffer = new byte[bytes];
             comPort.Read(comBuffer, 0, bytes);
 
+            //排除噪声干扰
+            if (comBuffer.Length == 0 || (comBuffer.Length == 1 && comBuffer[0] == 0x00))
+            {
+                return;
+            }
+
             LogFactory.Create().Info($"receive ->{Shunxi.Common.Utility.Common.BytesToString(comBuffer)}<- receive end");
 
             if (Status == SerialPortStatus.Opening || Status == SerialPortStatus.Initialled)
