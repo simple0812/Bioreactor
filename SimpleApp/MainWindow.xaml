@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="768" Width="1024">
     <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="串口" VerticalAlignment="Center"></TextBlock>
+            <TextBox Width="100" Height="30" x:Name="txtPort" VerticalAlignment="Center" VerticalContentAlignment="Center"></TextBox>
+            <Button Content="open" Click="ButtonBase_OnClick"></Button>
+            <TextBlock Name="tbPortStatus"></TextBlock>
+        </StackPanel>
         <Border BorderThickness="1" BorderBrush="Black" Padding="20">
             <StackPanel Orientation="Vertical" >
                 <StackPanel Orientation="Horizontal">

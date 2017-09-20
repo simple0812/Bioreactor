@@ -19,22 +19,20 @@ namespace Shunxi.App.CellMachine.Controls
     /// </summary>
     public partial class ModalDialog : Window
     {
-        ContentPresenter logo;
         public ModalDialog()
         {
             InitializeComponent();
-            logo = (ContentPresenter)GetTemplateChild("logo");
         }
 
-        public object TitleLogo
+        public void Show(string msg)
         {
-            get { return (object)GetValue(TitleLogoProperty); }
-            set { SetValue(TitleLogoProperty, value); }
+            txtMsg.Text = msg;
+            this.ShowDialog();
         }
 
-        public static readonly DependencyProperty TitleLogoProperty =
-            DependencyProperty.Register("TitleLogo", typeof(object), typeof(ModalDialog),
-                new PropertyMetadata(null));
-
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

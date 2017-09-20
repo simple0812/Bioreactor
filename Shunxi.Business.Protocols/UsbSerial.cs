@@ -73,17 +73,19 @@ namespace Shunxi.Business.Protocols
                     Status = SerialPortStatus.Opening;
                     var dis = SerialPort.GetPortNames();
                     if (!dis.Any()) return;
-                    var p = dis.FirstOrDefault(each => each.IndexOf(portName, StringComparison.Ordinal) != -1);
+                    var p = dis.FirstOrDefault(each => each.IndexOf(portName, StringComparison.OrdinalIgnoreCase) != -1);
                     if (p == null) return;
                     SerialPort = new SerialPort(p);
 
-                    SerialPort.WriteTimeout = 20;
-                    SerialPort.ReadTimeout = 20;
+                    SerialPort.WriteTimeout = 50;
+                    SerialPort.ReadTimeout = 50;
                     SerialPort.BaudRate = 9600;
                     SerialPort.Parity = Parity.None;
                     SerialPort.StopBits = StopBits.One;
                     SerialPort.DataBits = 8;
                     SerialPort.Handshake = Handshake.None;
+                    SerialPort.WriteBufferSize = 1024;
+                    SerialPort.ReadBufferSize = 1024;
 
                     SerialPort.DataReceived += SerialPort_DataReceived;
                     SerialPort.ErrorReceived += SerialPort_ErrorReceived;
@@ -92,7 +94,7 @@ namespace Shunxi.Business.Protocols
                     SerialPort.Open();
 
                     Status = SerialPortStatus.Opened;
-                    LogFactory.Create().Info($"Serial Port {portName} Opened");
+                    LogFactory.Create().Info($"Serial Port {portName} {Status}");
                 }
                 catch (Exception ex)
                 {
@@ -130,6 +132,8 @@ namespace Shunxi.Business.Protocols
                         SerialPort = new SerialPort(portName);
                         if (SerialPort == null) continue;
 
+                        SerialPort.WriteTimeout = 50;
+                        SerialPort.ReadTimeout = 50;
                         SerialPort.BaudRate = 9600;
                         SerialPort.Parity = Parity.None;
                         SerialPort.StopBits = StopBits.One;

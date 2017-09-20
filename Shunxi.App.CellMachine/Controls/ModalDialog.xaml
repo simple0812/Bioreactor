@@ -6,8 +6,13 @@
         xmlns:local="clr-namespace:Shunxi.App.CellMachine.Controls"
         xmlns:regions="http://prismlibrary.com/"
         mc:Ignorable="d"
-        Title="ModalDialog" Height="300" Width="300">
-   <StackPanel>
-       <TextBlock Text="abc"></TextBlock>
-   </StackPanel>
+        Title="ModalDialog" Height="600" Width="800">
+   <Grid>
+       <Grid.RowDefinitions>
+            <RowDefinition Height="300"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+       </Grid.RowDefinitions>
+       <TextBlock Text="abc" x:Name="txtMsg" Padding="60"></TextBlock>
+       <Button Grid.Row="1" Content="Close" Width="140" Height="40" Click="ButtonBase_OnClick"></Button>
+   </Grid>
 </Window>

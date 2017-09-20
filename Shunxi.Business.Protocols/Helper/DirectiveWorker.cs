@@ -27,7 +27,7 @@ namespace Shunxi.Business.Protocols.Helper
         private static readonly object Locker = new object();
         private static readonly object ParseLocker = new object();
         private bool _isRetry = true;
-        private ISerial _serialPort = new UsbSerial();
+        public ISerial _serialPort = new UsbSerial();
 
         private DirectiveWorker()
         {
@@ -145,6 +145,7 @@ namespace Shunxi.Business.Protocols.Helper
                     var item = tuple.Directive;
                     try
                     {
+                        await Task.Delay(20, token);//#TODO 需要测试
                         await Send(item, tuple.RetrySendTimes);
                     }
                     catch (CustomException ce)
@@ -329,7 +330,8 @@ namespace Shunxi.Business.Protocols.Helper
         //解析指令，如果成功则清空DirtyData
         //如果失败则先判断是否上一次是否也解析失败 如果没有则将该次指令保存到DirtyData
         //如果有则将该次指令与DirtyData合并在一起解析 如果仍然失败 则清空DirtyData
-        private void ParseResultAndNotify(byte[] b)
+        //注意该方法只能解析 完整指令分被为2段的情况
+        private void ParseResultAndNotifyx(byte[] b)
         {
             lock (ParseLocker)
             {
@@ -372,6 +374,62 @@ namespace Shunxi.Business.Protocols.Helper
                 {
                     _dirtyDirective.Clear();
                     HandleFeedback(recvData, b);
+                }
+            }
+        }
+
+        //该方法能解析完整指令分为任意段的情况
+        private void ParseResultAndNotify(byte[] b)
+        {
+            lock (ParseLocker)
+            {
+                var ret = resolveDirtyData(b);
+            }
+        }
+
+        //根据dirtyData的第二位获取指令长度并验证是否为正确的指令 如果是则解析并从dirtyData删除 
+        //否则删除dirtyData第一位数据并从新解析 直到dirtyData的长度为2或者长度不够指令长度
+        private bool resolveDirtyData(byte[] dirtyData)
+        {
+            _dirtyDirective.AddRange(dirtyData);
+
+            while (true)
+            {
+                if (_dirtyDirective.Count <= 2) return false;
+                //指令头字节为设备编号 如果为00x00 则该指令无法解析
+                if (_dirtyDirective[0] == 0x00)
+                {
+                    _dirtyDirective.RemoveAt(0);
+                    continue;
+                }
+
+                //根据指令类型获取指令长度
+                var len = ((DirectiveTypeEnum)_dirtyDirective[1]).GetFeedbackLength();
+                //如果指令长度为0 则该指令无法解析 需要移除头字节后重新解析
+                if (len == 0)
+                {
+                    _dirtyDirective.RemoveAt(0);
+                    continue;
+                }
+
+                if (_dirtyDirective.Count >= len)
+                {
+                    var arr = _dirtyDirective.GetRange(0, len).ToArray();
+                    var ret = _protocolProvider.ResolveFeedback(arr);
+                    if (ret.Status)
+                    {
+                        HandleFeedback(ret, arr);
+                        _dirtyDirective.RemoveRange(0, len);
+                        return true;
+                    }
+
+                    //解析失败后 移除头字节后重新解析
+                    _dirtyDirective.RemoveAt(0);
+                    LogFactory.Create().Info(".....recvData is error.....");
+                }
+                else//一条指令被分为几段收到 前几段会被保存到_dirtyDirective里面 直到整段指令完整后一起解析
+                {
+                    return false;
                 }
             }
         }

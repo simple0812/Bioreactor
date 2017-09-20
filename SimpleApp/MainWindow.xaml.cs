@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Shunxi.Business.Enums;
 using Shunxi.Business.Models;
+using Shunxi.Business.Protocols;
 using Shunxi.Business.Protocols.Directives;
 using Shunxi.Business.Protocols.Helper;
 
@@ -37,17 +38,11 @@ namespace SimpleApp
 
         private void Worker_SerialPortEvent(SerialPortEventArgs args)
         {
-//            if (!args.IsSucceed)
-//            {
-//                if (args.Message == "128" || args.Message == "144")
-//                {
-//                    _xtimer?.Dispose();
-//                    DirectiveWorker.Instance.Clean();
-//                    start();
-//                }
-//
-//                return;
-//            }
+            if (!args.IsSucceed)
+            {
+
+                return;
+            }
 
             Dispatcher.Invoke( () =>
             {
@@ -244,7 +239,28 @@ namespace SimpleApp
             if (isPump3)
                 DirectiveWorker.Instance.PrepareDirective(new TryPauseDirective(0x03));
         }
-       
+
+        private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (DirectiveWorker.Instance._serialPort.Status == SerialPortStatus.Opened ||
+                DirectiveWorker.Instance._serialPort.Status == SerialPortStatus.Opening)
+            {
+                tbPortStatus.Text = "串口已打开";
+                return;
+            }
+            var serial = DirectiveWorker.Instance._serialPort as UsbSerial;
+            if(serial == null) return;
+
+            await serial.Open(txtPort.Text);
+            if (serial.Status == SerialPortStatus.Opened)
+            {
+                tbPortStatus.Text = "串口已打开";
+            }
+            else
+            {
+                tbPortStatus.Text = "串口失败";
+            }
+        }
     }
 }
 

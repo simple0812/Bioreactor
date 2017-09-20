@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Shunxi.App.CellMachine.Controls;
 using Shunxi.App.CellMachine.ViewModels;
 using Shunxi.Business.Enums;
 using Shunxi.Business.Logic;
@@ -92,14 +93,14 @@ namespace Shunxi.App.CellMachine.Views
         {
             LogFactory.Create().Info($"==================sys->{e.SysStatus}==================");
 
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke( () =>
             {
                 SwitchCommandStatus(e.SysStatus);
 
                 txtStatus.Text = e.SysStatus.ToString().ToLower();
                 if (e.SysStatus == SysStatusEnum.Completed)
                 {
-                   // MessageBox.Show("细胞培养流程已完成");
+                    //new ModalDialog().Show("细胞培养流程已完成");
                     LogFactory.Create().Info("细胞培养流程已完成");
                     //await ReStart();
                 }
