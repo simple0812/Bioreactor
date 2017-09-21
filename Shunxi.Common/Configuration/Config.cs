@@ -7,11 +7,11 @@
         public static byte DetectorId = 0x80;
 
         //Define all Pump names and Ids
-        public static readonly string Pump1Name = "Pump 1";
+        public static readonly string Pump1Name = "Pump A";
         public static readonly int Pump1Id = 1;
         public static readonly string Pump2Name = "Pump 2";
         public static readonly int Pump2Id = 2;
-        public static readonly string Pump3Name = "Pump 3";
+        public static readonly string Pump3Name = "Pump B";
         public static readonly int Pump3Id = 3;
         public static readonly string Pump4Name = "Pump 4";
         public static readonly int Pump4Id = 4;

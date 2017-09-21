@@ -119,16 +119,16 @@ namespace Shunxi.Business.Logic.Controllers
             Controllers.Add(new TemperatureController(this, new TemperatureDevice(),
                 CurrentContext.SysCache.System.TemperatureGauge));
 
-            Controllers.Add(new RockerController(this, new Shunxi.Business.Logic.Devices.RockerDevice(),
+            Controllers.Add(new RockerController(this, new RockerDevice(),
                 CurrentContext.SysCache.System.Rocker));
 
-            Controllers.Add(new GasController(this, new Shunxi.Business.Logic.Devices.GasDevice(),
+            Controllers.Add(new GasController(this, new GasDevice(),
                 CurrentContext.SysCache.System.Gas));
 
-            Controllers.Add(new PumpController(this, new PumpDevice { DeviceId = 0x01, Direction = DirectionEnum.In },
+            Controllers.Add(new PumpController(this, new PumpDevice { DeviceId = 0x01 },
                 CurrentContext.SysCache.System.PumpIn));
 
-            Controllers.Add(new PumpController(this, new PumpDevice { DeviceId = 0x03, Direction = DirectionEnum.Out },
+            Controllers.Add(new PumpController(this, new PumpDevice { DeviceId = 0x03 },
                 CurrentContext.SysCache.System.PumpOut));
         }
 

@@ -22,7 +22,7 @@ namespace Shunxi.Business.Logic.Devices
 
         protected override TryStartDirective GenerateTryStartDirective()
         {
-            return new TryStartDirective(DeviceId, Flowrate, Concentration * 10, (int)DirectionEnum.In, DeviceType);
+            return new TryStartDirective(DeviceId, Flowrate, Concentration * 10, (int)DirectionEnum.Anticlockwise, DeviceType);
         }
     }
 }

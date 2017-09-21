@@ -152,14 +152,14 @@ namespace Shunxi.Business.Logic.Controllers
         private async Task<DeviceIOResult> ExecStart(double flowrate, double volume)
         {
             //出液泵开启前摇床要停止，出液泵停止后泵摇床开始
-            if (PumpCultivation.Device.Direction == DirectionEnum.Out && CurrentContext.SysCache.System.Rocker.IsEnabled)
+            if (PumpCultivation.Device.Direction == DirectionEnum.Clockwise && CurrentContext.SysCache.System.Rocker.IsEnabled)
             {
                 await Center.StopRockerAndThermometer();
             }
 
             Flowrate = flowrate;
             Volume = volume;
-            ((PumpDevice)Device).SetParams(Flowrate, Volume);
+            ((PumpDevice)Device).SetParams(Flowrate, Volume, PumpCultivation.Device.Direction);
 
             StartTime = DateTime.Now;
             SetStatus(DeviceStatusEnum.PreStart);
@@ -415,7 +415,7 @@ namespace Shunxi.Business.Logic.Controllers
                             StartIdleLoop();
                         }
 
-                        if (PumpCultivation.Device.Direction == DirectionEnum.Out)
+                        if (PumpCultivation.Device.Direction == DirectionEnum.Clockwise)
                         {
                             Center.StartRockerAndThermometer().IgnorCompletion();
                         }

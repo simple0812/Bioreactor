@@ -89,7 +89,7 @@ namespace DirectiveTest
                 {
                     case "开始":
                     {
-                        DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(id, rate, angle, (int)DirectionEnum.In, type));
+                        DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(id, rate, angle, (int)DirectionEnum.Anticlockwise, type));
                     }
                         break;
 
@@ -119,12 +119,12 @@ namespace DirectiveTest
                         break;
                     case "正转":
                     {
-                        DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(id, rate, angle, (int)DirectionEnum.In, type));
+                        DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(id, rate, angle, (int)DirectionEnum.Anticlockwise, type));
                         break;
                     }
                     case "反转":
                     {
-                        DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(id, rate, angle, (int)DirectionEnum.Out, type));
+                        DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(id, rate, angle, (int)DirectionEnum.Clockwise, type));
                         break;
                     }
 

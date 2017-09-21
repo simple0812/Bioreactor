@@ -10,17 +10,17 @@ namespace Shunxi.Business.Logic.Devices
         public double Volume { get; set; } = 20;
         public DirectionEnum Direction { get; set; }
 
-        public PumpDevice(int deviceId = 0x01, DirectionEnum direction = DirectionEnum.In)
+        public PumpDevice(int deviceId = 0x01)
         {
             DeviceType = TargetDeviceTypeEnum.Pump;
             DeviceId = deviceId;
-            Direction = direction;
         }
 
-        public PumpDevice SetParams(double flowRate, double volume)
+        public PumpDevice SetParams(double flowRate, double volume, DirectionEnum direction)
         {
             FlowRate = flowRate;
             Volume = volume;
+            Direction = direction;
 
             return this;
         }

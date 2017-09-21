@@ -173,15 +173,15 @@ namespace SimpleApp
                     temperature * 10, lv + 1, TargetDeviceTypeEnum.Temperature));
             if (isGas)
                 DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(0x91, flowrate, con * 10,
-                    (int)DirectionEnum.In, TargetDeviceTypeEnum.Gas));
+                    (int)DirectionEnum.Anticlockwise, TargetDeviceTypeEnum.Gas));
 
             if (isPump1)
                 DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(0x01, pump1Flowrate, pump1Volume,
-                    (int)DirectionEnum.In, TargetDeviceTypeEnum.Gas));
+                    (int)DirectionEnum.Anticlockwise, TargetDeviceTypeEnum.Gas));
 
             if (isPump3)
                 DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(0x03, pump3Flowrate, pump3Volume,
-                    (int)DirectionEnum.In, TargetDeviceTypeEnum.Gas));
+                    (int)DirectionEnum.Anticlockwise, TargetDeviceTypeEnum.Gas));
 
             _xtimer?.Dispose();
 

@@ -48,6 +48,16 @@
                          TextWrapping="NoWrap" 
                          Text="{Binding Entity.InitialFlowRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"></TextBox>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="转动方向" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
+                <ComboBox x:Name="cbDirection" Width="180" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                    <i:Interaction.Behaviors>
+                        <behaviors:EnumItemsSourceBehavior EnumAssembly="Shunxi.Business" 
+                                                           EnumType="Shunxi.Business.Enums.DirectionEnum" 
+                                                           SelectedItem="{Binding Entity.Direction, Mode=TwoWay}"/>
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+            </StackPanel>
 
             <StackPanel Orientation="Horizontal"  Visibility="{Binding Path=SelectedItem, ElementName=cbProcessMode, Converter={StaticResource processModeToVisibilityConverter}}">
                 <TextBlock Text="初始间隔" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>

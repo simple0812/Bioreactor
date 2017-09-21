@@ -488,7 +488,7 @@
                    Height="40" 
                    FlowDirection ="RightToLeft"
                    VerticalAlignment="Bottom">
-            <Button Content="&#xf021;" Width="40" x:Name="btnRestart" Margin="50 0 0 0" Click="BtnRestart_OnClick">
+            <Button Content="&#xf04d;" Width="40" x:Name="btnRestart" Margin="50 0 0 0" Click="BtnRestart_OnClick">
                 <Button.Template>
                     <ControlTemplate>
                         <Grid>
@@ -497,7 +497,7 @@
                                        Margin="{TemplateBinding Button.Padding}" 
                                        VerticalAlignment="Center"  
                                        HorizontalAlignment="Center"  
-                                       FontSize="20"
+                                       FontSize="16"
                                        Text="{TemplateBinding Button.Content}" />
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -518,7 +518,7 @@
                                        Margin="{TemplateBinding Button.Padding}" 
                                        VerticalAlignment="Center"  
                                        HorizontalAlignment="Center"  
-                                       FontSize="20"
+                                       FontSize="16"
                                        Text="{TemplateBinding Button.Content}" />
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -539,7 +539,28 @@
                                        Margin="{TemplateBinding Button.Padding}" 
                                        VerticalAlignment="Center"  
                                        HorizontalAlignment="Center"  
-                                       FontSize="20"
+                                       FontSize="18"
+                                       Text="{TemplateBinding Button.Content}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger  Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Button.Foreground" Value="Red" />
+                                <Setter Property="Button.Background" Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Content="&#xf25a;" Width="40" x:Name="btnManual" Margin="300 0 0 0" Click="BtnManual_OnClick">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Ellipse Name="faceEllipse" Width="{TemplateBinding Button.Width}" Height="{TemplateBinding Control.Height}"  Fill="{TemplateBinding Button.Background}"/>
+                            <TextBlock Name="txtBlock" FontFamily="{StaticResource FontAwesomeFontFamily}" 
+                                       Margin="{TemplateBinding Button.Padding}" 
+                                       VerticalAlignment="Center"  
+                                       HorizontalAlignment="Center"  
+                                       FontSize="18"
                                        Text="{TemplateBinding Button.Content}" />
                         </Grid>
                         <ControlTemplate.Triggers>

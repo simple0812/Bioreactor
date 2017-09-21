@@ -220,15 +220,30 @@ namespace Shunxi.Business.Protocols
 
         private void SerialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
-            Status = SerialPortStatus.Initialled;
-            _serialHelpers.Clear();
-            LogFactory.Create().Info("SerialPort Received Error" + e.EventType);
+            LogFactory.Create().Error("SerialPort Received Error" + e.EventType);
         }
 
         public void Send(byte[] buffer, CancellationToken token)
         {
-            LogFactory.Create().Info($"send ->{Shunxi.Common.Utility.Common.BytesToString(buffer)}<- send end");
-            SerialPort?.Write(buffer, 0, buffer.Length);
+            //运行过程中串口异常
+            try
+            {
+                LogFactory.Create().Info($"send ->{Shunxi.Common.Utility.Common.BytesToString(buffer)}<- send end");
+                SerialPort.Write(buffer, 0, buffer.Length);
+            }
+            catch (Exception ex)
+            {
+                if (SerialPort != null)
+                {
+                    SerialPort.DataReceived -= SerialPort_DataReceived;
+                    SerialPort.ErrorReceived -= SerialPort_ErrorReceived;
+                }
+
+                Status = SerialPortStatus.Initialled;
+                SerialPort?.Close();
+                SerialPort?.Dispose();
+                LogFactory.Create().Error("usb serial port send msg error" + ex.Message);
+            }
         }
 
         public void Cancel()

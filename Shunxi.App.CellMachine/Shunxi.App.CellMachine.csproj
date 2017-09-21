@@ -135,6 +135,9 @@
     <Compile Include="Controls\EditCellCultivation.xaml.cs">
       <DependentUpon>EditCellCultivation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ManualSet.xaml.cs">
+      <DependentUpon>ManualSet.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ModalDialog.xaml.cs">
       <DependentUpon>ModalDialog.xaml</DependentUpon>
     </Compile>
@@ -218,6 +221,10 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Page Include="Controls\EditCellCultivation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ManualSet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

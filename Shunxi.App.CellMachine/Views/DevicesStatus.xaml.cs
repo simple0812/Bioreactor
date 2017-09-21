@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -341,6 +342,8 @@ namespace Shunxi.App.CellMachine.Views
         {
             try
             {
+                btnManual.Visibility = status == SysStatusEnum.Ready ? Visibility.Visible : Visibility.Collapsed;
+
                 switch (status)
                 {
                     case SysStatusEnum.Unknown:
@@ -440,6 +443,12 @@ namespace Shunxi.App.CellMachine.Views
             rootGd.ColumnDefinitions[0].Width = new GridLength(210D);
             imgLeft.Visibility = Visibility.Visible;
             imgRight.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnManual_OnClick(object sender, RoutedEventArgs e)
+        {
+            var manual = new ManualSet();
+            manual.ShowDialog();
         }
     }
 }
