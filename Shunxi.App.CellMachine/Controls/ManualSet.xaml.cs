@@ -85,8 +85,7 @@ namespace Shunxi.App.CellMachine.Controls
 
         private void BtnFastFilling_OnClick(object sender, RoutedEventArgs e)
         {
-            DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(Config.GasId, 0x00, 0x00, 1, TargetDeviceTypeEnum.Gas));
-            
+            DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(Config.GasId, 200, 50, 1, TargetDeviceTypeEnum.Gas));
         }
 
         private void StopGas()
