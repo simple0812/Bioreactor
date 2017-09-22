@@ -146,6 +146,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Shunxi.Business\Shunxi.Business.csproj">
+      <Project>{8030cf64-d011-4385-a5de-175a6b46255b}</Project>
+      <Name>Shunxi.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shunxi.Common\Shunxi.Common.csproj">
+      <Project>{ef8e04d6-1ce9-4309-bf48-ddc16893c30e}</Project>
+      <Name>Shunxi.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Shunxi.DataAccess\Shunxi.DataAccess.csproj">
       <Project>{c00316cd-b50a-4d3d-b862-b4214de05a4e}</Project>
       <Name>Shunxi.DataAccess</Name>

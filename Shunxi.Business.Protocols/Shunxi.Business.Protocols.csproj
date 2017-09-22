@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SuperSocket.ProtoBase, Version=1.7.0.17, Culture=neutral, PublicKeyToken=6c80000676988ebb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.ProtoBase.1.7.0.17\lib\net45\SuperSocket.ProtoBase.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -57,6 +60,7 @@
     <Compile Include="IProtocol.cs" />
     <Compile Include="IProtocolFacotry.cs" />
     <Compile Include="ISerial.cs" />
+    <Compile Include="NetSerial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolFactory.cs" />
     <Compile Include="SimDirectives\BaseSimDirective.cs" />
@@ -95,6 +99,9 @@
       <Project>{ef8e04d6-1ce9-4309-bf48-ddc16893c30e}</Project>
       <Name>Shunxi.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
