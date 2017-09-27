@@ -54,10 +54,13 @@ namespace Shunxi.App.CellMachine
             _regionManager?.RequestNavigate("ContentRegion", "Index");
 
             Config.DetectorId = 0x01;
-            using (var ctx = new IotContext())
+            Task.Run(() =>
             {
-                ctx.Database.Exists();
-            }
+                using (var ctx = new IotContext())
+                {
+                    ctx.Initialize();
+                }
+            });
         }
     }
 

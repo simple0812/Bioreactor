@@ -152,12 +152,12 @@ namespace Shunxi.Business.Protocols
             return true;
         }
 
-        void ReceiveCallback(IAsyncResult result)
+        private void ReceiveCallback(IAsyncResult result)
         {
             try
             {
-                Socket ts = (Socket) result.AsyncState;
-                int len = ts.EndReceive(result);
+                var ts = (Socket) result.AsyncState;
+                var len = ts.EndReceive(result);
                 result.AsyncWaitHandle.Close();
                 if (len > 0)
                 {
@@ -184,7 +184,7 @@ namespace Shunxi.Business.Protocols
 
         public bool Send(byte[] bs)
         {
-            int len = -1;
+            var len = -1;
             try
             {
                 LogFactory.Create().Info("send ->" + Common.Utility.Common.BytesToString(bs) + "<- send end");
@@ -192,7 +192,7 @@ namespace Shunxi.Business.Protocols
             }
             catch (Exception)
             {
-                //
+                return false;
             }
 
             return len > 0;
@@ -213,7 +213,7 @@ namespace Shunxi.Business.Protocols
             }
             catch (Exception)
             {
-                //
+                return false;
             }
             return true;
         }

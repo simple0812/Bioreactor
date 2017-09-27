@@ -134,11 +134,7 @@ namespace Shunxi.Business.Logic.Controllers
 
         public async Task Start()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             InitControllers();
-            sw.Stop();
-            LogFactory.Create().Info($"init controllers {sw.ElapsedMilliseconds} ms");
             if (CurrentContext.SysCache.System == null)
             {
                 LogFactory.Create().Warnning("SysCache.System is null");
@@ -154,7 +150,6 @@ namespace Shunxi.Business.Logic.Controllers
             OnSystemStatusChange(new RunStatusChangeEventArgs() {SysStatus = SysStatusEnum.Starting});
             CultivationService.SaveCultivations(CurrentContext.SysCache.System);
             SyncSysStatusWithServer();
-
 
             var pumpCtrls = Controllers.Where(each => each.Device.DeviceType == TargetDeviceTypeEnum.Pump).Select(each => each as PumpController).ToList();
 
