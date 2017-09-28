@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Shunxi.Business.Models.devices;
 using Shunxi.Common.Log;
 
@@ -49,6 +50,11 @@ namespace Shunxi.Business.Logic.Cultivations
             }
         }
 
+
+        public bool hasNearStartTime(DateTime now)
+        {
+            return Schedules.Any(each => Math.Abs((each -now).TotalSeconds) < 5);
+        }
         #endregion
     }
 }

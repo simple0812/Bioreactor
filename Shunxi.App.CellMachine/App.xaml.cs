@@ -35,12 +35,11 @@ namespace Shunxi.App.CellMachine
             MessageBox.Show(e.Exception.Message + e.Exception.Source + e.Exception.StackTrace);
             e.Handled = true;
         }
-        bool createdNew;
         protected override void OnStartup(StartupEventArgs e)
         {
-            var  singleInstanceWatcher = new Semaphore( 0,  1,  Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
-//            var mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
-            if (!createdNew)
+            var processName = Assembly.GetExecutingAssembly().GetName().Name;
+            int processCount = Process.GetProcessesByName(processName).Length;
+            if (processCount > 1)
             {
                 MessageBox.Show("程序运行中，请关闭后重试");
                 Environment.Exit(-2);
@@ -50,7 +49,7 @@ namespace Shunxi.App.CellMachine
 
             var bootstrapper = new Bootstrapper();
             bootstrapper.Run();
-            Application.Current.MainWindow.GoFullscreen();
+//            Application.Current.MainWindow.GoFullscreen();
 
             var _regionManager = bootstrapper.Container.Resolve<IRegionManager>();
             _regionManager?.RequestNavigate("ContentRegion", "Index");

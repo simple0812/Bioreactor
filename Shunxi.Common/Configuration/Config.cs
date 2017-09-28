@@ -46,10 +46,14 @@
 
 
 #if DEBUG
-        public const string SERVER_ADDR = "211.152.35.57";
-        public const string REMOTE_CONTROL_SERVER_PORT = "8103";
-        public const string LOG_PORT = "8104";
-        public const string SERVER_PORT = "8101";
+        public const string SERVER_ADDR = "10.0.0.15";
+        public const string REMOTE_CONTROL_SERVER_PORT = "6003";
+        public const string LOG_PORT = "6004";
+        public const string SERVER_PORT = "6007";
+        //        public const string SERVER_ADDR = "211.152.35.57";
+        //        public const string REMOTE_CONTROL_SERVER_PORT = "8103";
+        //        public const string LOG_PORT = "8104";
+        //        public const string SERVER_PORT = "8101";
 #endif
 
 #if !DEBUG

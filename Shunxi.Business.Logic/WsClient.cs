@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -8,14 +9,15 @@ using Shunxi.Business.Logic.Controllers;
 using Shunxi.Business.Models.cache;
 using Shunxi.Common.Log;
 using Shunxi.Infrastructure.Common.Configuration;
-using Shunxi.Infrastructure.Common.Extension;
+using SuperSocket.ClientEngine;
+using WebSocket4Net;
+using WebSocket = WebSocket4Net.WebSocket;
+using WebSocketState = WebSocket4Net.WebSocketState;
 
 namespace Shunxi.Business.Logic
 {
     public class WsClient
     {
-//        private MessageWebSocket _messageWebSocket;
-//        private DataWriter _messageWriter;
         public static readonly WsClient Instance = new WsClient();
         public readonly ConcurrentQueue<string> MsgQueue = new ConcurrentQueue<string>();
         private DeviceInfo _deviceInfo;
@@ -23,196 +25,89 @@ namespace Shunxi.Business.Logic
         public event Action<object> SaveScheduleHandler;
         public event Action<string, object> ControlHandler;
 
+        byte[] bytes = new byte[1024];
+        private readonly WebSocket websocket;
+
         private WsClient()
         {
-//            _reconnectTimer = new Timer(obj =>
-//            {
-//                LogFactory.Create().Info("reconnect");
-//                Task.Run(() =>
-//                {
-//                    Open().IgnorCompletion();
-//                });
-//
-//            }, null, Timeout.Infinite, Timeout.Infinite);
-            //            try
-            //            {
-            //                Task.Run(async () =>
-            //                {
-            //                    await Open();
-            //                    while (true)
-            //                    {
-            //                        var msg = "";
-            //
-            //                        if (messageWriter == null || messageWebSocket == null)
-            //                        {
-            //                            await Task.Delay(10);
-            //                            continue;
-            //                        }
-            //
-            //                        msgQueue.TryDequeue(out msg);
-            //                        if (string.IsNullOrWhiteSpace(msg))
-            //                        {
-            //                            await Task.Delay(10);
-            //                            continue;
-            //                        }
-            //
-            //                        try
-            //                        {
-            //                            messageWriter.WriteString(msg);
-            //                            await messageWriter.StoreAsync();
-            //                        }
-            //                        catch (Exception ex)
-            //                        {
-            //                            msgQueue.Enqueue(msg);
-            //                            messageWriter?.DetachStream();
-            //                            messageWriter?.DetachBuffer();
-            //                            messageWriter?.Dispose();
-            //                            messageWriter = null;
-            //
-            //                            messageWebSocket?.Dispose();
-            //                            messageWebSocket = null;
-            //
-            //                            WebErrorStatus status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
-            //
-            //                            switch (status)
-            //                            {
-            //                                case WebErrorStatus.CannotConnect:
-            //                                case WebErrorStatus.NotFound:
-            //                                case WebErrorStatus.RequestTimeout:
-            //                                    LogFactory.Create().Info("Cannot connect to the server. Please make sure " +
-            //                                        "to run the server setup script before running the sample.");
-            //                                    break;
-            //                                case WebErrorStatus.Unknown:
-            //
-            //                                    break;
-            //                                default:
-            //                                    LogFactory.Create().Info("Error: " + status);
-            //                                    break;
-            //                            }
-            //                        }
-            //
-            //                        await Task.Delay(10);
-            //                    }
-            //
-            //                });
-            //
-            //            }
-            //            catch (Exception)
-            //            {
-            //                // 
-            //            }
+//            websocket = new WebSocket($"ws://{Config.SERVER_ADDR}:{Config.REMOTE_CONTROL_SERVER_PORT}/");
+//            websocket.Opened += websocket_Opened;
+//            websocket.Error += Websocket_Error;
+//            websocket.Closed += Websocket_Closed;
+//            websocket.MessageReceived += Websocket_MessageReceived;
+//            websocket.Open();
+//            Init();
         }
 
-//        public async Task Open()
-//        {
-////            try
-////            {
-////                if (_messageWebSocket != null || Config.IsLocal) return;
-////
-////                _messageWebSocket = new MessageWebSocket();
-////                _messageWebSocket.Control.MessageType = SocketMessageType.Utf8;
-////                _messageWebSocket.MessageReceived += MessageReceived;
-////                _messageWebSocket.Closed += MessageWebSocket_Closed;
-////
-////                Uri uri;
-////                var ret = TryGetUri($"ws://{Config.SERVER_ADDR}:{Config.REMOTE_CONTROL_SERVER_PORT}", out uri);
-////                if (!ret) return;
-////                await _messageWebSocket.ConnectAsync(uri);
-////                LogFactory.Create().Info("wsclient open success");
-////
-////                _reconnectTimer.Change(Timeout.Infinite, Timeout.Infinite);
-////                _messageWriter = new DataWriter(_messageWebSocket.OutputStream);
-////                _deviceInfo = new DeviceInfo()
-////                {
-////                    clientId = Infrastructure.Common.Utility.Common.GetUniqueId(),
-////                    description = Infrastructure.Common.Utility.Common.GetLocalIp(),
-////                    payload = CurrentContext.SysCache?.SystemRealTimeStatus
-////                };
-////                Send(_deviceInfo, "first_conn");
-////            }
-////            catch (Exception ex)
-////            {
-////                _messageWriter?.DetachStream();
-////                _messageWriter?.DetachBuffer();
-////                _messageWriter?.Dispose();
-////                _messageWriter = null;
-////
-////                _messageWebSocket?.Dispose();
-////                _messageWebSocket = null;
-////
-////                var status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
-////
-////                switch (status)
-////                {
-////                    case WebErrorStatus.CannotConnect:
-////                    case WebErrorStatus.NotFound:
-////                    case WebErrorStatus.RequestTimeout:
-////                        LogFactory.Create().Info("Cannot connect to the server. Please make sure to run the server setup script before running the sample.");
-////                        break;
-////                    case WebErrorStatus.Unknown:
-////                        break;
-////                    default:
-////                        LogFactory.Create().Info("Error: " + status);
-////                        break;
-////                }
-////            }
-//        }
+        private void Init()
+        {
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    if (websocket.State == WebSocketState.Open && MsgQueue.TryDequeue(out string msg))
+                    {
+                        try
+                        {
+                            websocket.Send(msg);
+                        }
+                        catch (Exception e)
+                        {
+                            LogFactory.Create().Info("send log err " + e.Message);
+                        }
+                    }
+                    else if (websocket.State != WebSocketState.Connecting && websocket.State != WebSocketState.Open)
+                    {
+                        try
+                        {
+                            websocket.Open();
+                        }
+                        catch (Exception e)
+                        {
+                            LogFactory.Create().Info("open log err " + e.Message);
+                        }
+                    }
 
-//        private void MessageWebSocket_Closed(IWebSocket sender, WebSocketClosedEventArgs args)
-//        {
-////            LogFactory.Create().Info("ws close");
-////            _messageWriter?.DetachStream();
-////            _messageWriter?.DetachBuffer();
-////            _messageWriter?.Dispose();
-////            _messageWriter = null;
-////
-////            _messageWebSocket?.Dispose();
-////            _messageWebSocket = null;
-////
-////            _reconnectTimer.Change(0, 1000);
-//           
-//        }
+                    await Task.Delay(10);
+                }
+            });
+        }
 
+        private void websocket_Opened(object sender, EventArgs e)
+        {
+            LogFactory.Create().Info("open success");
+        }
+
+        private void Websocket_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            try
+            {
+                var ret = JsonConvert.DeserializeObject<SocketData>(e.Message);
+                if (ret == null) return;
+                OnReceiveHandler(ret);
+            }
+            catch (Exception exception)
+            {
+                LogFactory.Create().Info(exception.Message);
+            }
+        }
+
+        private void Websocket_Closed(object sender, EventArgs e)
+        {
+            LogFactory.Create().Info("ws close");
+        }
+
+        private void Websocket_Error(object sender, ErrorEventArgs ex)
+        {
+            LogFactory.Create().Info("ws error " + ex.Exception.Message);
+        }
 
         public void Send(object msg, string action = "")
         {
 //            var message = new SocketData(msg, action).PackRaw();
-//            if (msgQueue.Count < 100)
-//                msgQueue.Enqueue(message);
+//            if (MsgQueue.Count < 100)
+//                MsgQueue.Enqueue(message);
         }
-
-//        private void MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
-//        {
-//            try
-//            {
-//                using (DataReader reader = args.GetDataReader())
-//                {
-//                    reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
-//
-//                    string read = reader.ReadString(reader.UnconsumedBufferLength);
-//                    var ret  = JsonConvert.DeserializeObject<SocketData>(read);
-//
-//                    if (ret == null) return;
-//                    OnReceiveHandler(ret);
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                WebErrorStatus status = WebSocketError.GetStatus(ex.GetBaseException().HResult);
-//                LogFactory.Create().Info("MessageReceived ERROR:" + status.ToString());
-//
-//               if (status == WebErrorStatus.ConnectionAborted)
-//                {
-//                    _messageWriter?.DetachStream();
-//                    _messageWriter?.DetachBuffer();
-//                    _messageWriter?.Dispose();
-//                    _messageWriter = null;
-//
-//                    _messageWebSocket?.Dispose();
-//                    _messageWebSocket = null;
-//                }
-//            }
-//        }
 
         private void OnReceiveHandler(SocketData data)
         {

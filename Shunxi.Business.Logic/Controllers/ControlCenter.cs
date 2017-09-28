@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
+ using System.Runtime.InteropServices;
+ using System.Threading;
 using System.Threading.Tasks;
 using Shunxi.Business.Enums;
  using Shunxi.Business.Logic.Devices;
 using Shunxi.Business.Models;
 using Shunxi.Business.Models.cache;
-using Shunxi.Business.Protocols.Directives;
+ using Shunxi.Business.Models.devices;
+ using Shunxi.Business.Protocols.Directives;
 using Shunxi.Business.Protocols.Helper;
  using Shunxi.Common.Log;
  using Shunxi.Infrastructure.Common.Configuration;
@@ -370,18 +372,31 @@ namespace Shunxi.Business.Logic.Controllers
             return new DeviceIOResult(true);
         }
 
-        public async Task<DeviceIOResult> StartThermometerWhenPumpStop(double deltaCapacity)
+        public async Task<DeviceIOResult> StartThermometerWhenPumpStop(double deltaCapacity, PumpInOrOut inOrOut)
         {
+            var now = DateTime.Now;
             var ctrl = Controllers.FirstOrDefault(each => each.Device.DeviceType == TargetDeviceTypeEnum.Temperature) as TemperatureController;
             if (ctrl == null)
                 return new DeviceIOResult(false, "UNINITIALIZED");
 
-            var pumpOutCtrl = Controllers.FirstOrDefault(each => each.Device.DeviceId == Config.Pump3Id) as PumpController;
-            if (pumpOutCtrl == null)
-                return new DeviceIOResult(false, "UNINITIALIZED");
+            //如果当前泵为进液泵 则需要判断 出液泵的状态 如果出液泵正在或者将要运行 则不需要开始加热
+            if (inOrOut == PumpInOrOut.In)
+            {
+                var pumpOutCtrl = Controllers.FirstOrDefault(each => each.Device.DeviceId == Config.Pump3Id) as PumpController;
+                if (pumpOutCtrl == null)
+                    return new DeviceIOResult(false, "UNINITIALIZED");
 
-            if (pumpOutCtrl.CurrentStatus != DeviceStatusEnum.Idle && pumpOutCtrl.CurrentStatus != DeviceStatusEnum.AllFinished)
-                return new DeviceIOResult(false, "UNINITIALIZED");
+                //如果出液泵正在运行 则不需要开始加热
+                if (pumpOutCtrl.CurrentStatus != DeviceStatusEnum.Idle && pumpOutCtrl.CurrentStatus != DeviceStatusEnum.AllFinished)
+                    return new DeviceIOResult(false, "NONEED");
+
+                var stime = pumpOutCtrl.StartTime;
+                if (pumpOutCtrl.PumpCultivation.hasNearStartTime(now))
+                {
+                    LogFactory.Create().Info("pumpout would or had run in 5 seconds");
+                    return new DeviceIOResult(false, "UNINITIALIZED");
+                }
+            }
 
             var ret = await ctrl.StartBySetLevel(deltaCapacity);
             if (!ret.Status && ret.Code == "CANCEL") return ret;

@@ -421,7 +421,7 @@ namespace Shunxi.Business.Logic.Controllers
                     //                            Center.StartRockerAndThermometer().IgnorCompletion();
                 }
 
-                Center.StartThermometerWhenPumpStop(CurrentContext.SysCache.SystemRealTimeStatus.CurrVolume).IgnorCompletion();
+                Center.StartThermometerWhenPumpStop(CurrentContext.SysCache.SystemRealTimeStatus.CurrVolume, PumpCultivation.Device.InOrOut).IgnorCompletion();
             }
         }
 

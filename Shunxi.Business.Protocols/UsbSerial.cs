@@ -200,8 +200,7 @@ namespace Shunxi.Business.Protocols
             var comBuffer = new byte[bytes];
             comPort.Read(comBuffer, 0, bytes);
 
-            //排除噪声干扰
-            if (comBuffer.Length == 0 || (comBuffer.Length == 1 && comBuffer[0] == 0x00))
+            if (comBuffer.Length == 0)
             {
                 return;
             }
@@ -210,7 +209,9 @@ namespace Shunxi.Business.Protocols
 
             if (Status == SerialPortStatus.Opening || Status == SerialPortStatus.Initialled)
             {
-                completionSource?.TrySetResult(comBuffer);
+                //排除噪声干扰
+                if(!(comBuffer.Length == 1 && comBuffer[0] == 0x00))
+                    completionSource?.TrySetResult(comBuffer);
             }
             else
             {

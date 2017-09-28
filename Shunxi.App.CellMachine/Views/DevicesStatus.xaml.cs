@@ -104,7 +104,6 @@ namespace Shunxi.App.CellMachine.Views
                 txtStatus.Text = e.SysStatus.ToString().ToLower();
                 if (e.SysStatus == SysStatusEnum.Starting)
                 {
-                    LogFactory.Create().Info($"==================XXXXXXXXXXXXXXXXXXXX=================");
                     UpdatePumpIn();
                     UpdatePumpOut();
                 }
