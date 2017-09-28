@@ -3,10 +3,16 @@ using Shunxi.Business.Enums;
 
 namespace Shunxi.Business.Models.devices
 {
+    public enum PumpInOrOut
+    {
+        In,
+        Out
+    }
     public class Pump :BaseDevice
     {
 
         public override TargetDeviceTypeEnum DeviceType => TargetDeviceTypeEnum.Pump;
+        public PumpInOrOut InOrOut { get; set; }
         #region 属性
 
         private DirectionEnum _direction;
@@ -137,13 +143,13 @@ namespace Shunxi.Business.Models.devices
 
         public override bool Validate(ref string errMsg)
         {
-            if (InitialVolume <= 0 || InitialVolume >= 5000)
+            if (InitialVolume <= 0 || InitialVolume > 5000)
             {
                 errMsg = "加液量取值范围为0~5000";
                 return false;
             }
 
-            if (InitialFlowRate <= 0 || InitialFlowRate >= 100)
+            if (InitialFlowRate <= 0 || InitialFlowRate > 100)
             {
                 errMsg = "流速取值范围为0~100";
                 return false;
@@ -169,7 +175,7 @@ namespace Shunxi.Business.Models.devices
             var firstSpan = InitialVolume / InitialFlowRate; //min
             var span = Volume / FlowRate;
 
-            if (FlowRate <= 0 || FlowRate >= 100)
+            if (FlowRate <= 0 || FlowRate > 100)
             {
                 errMsg = "流速取值范围为0~100";
                 return false;

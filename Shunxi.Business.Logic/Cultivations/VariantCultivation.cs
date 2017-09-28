@@ -28,10 +28,10 @@ namespace Shunxi.Business.Logic.Cultivations
 
             if (runTimes == 0)
             {
-                return Device.Direction == DirectionEnum.Anticlockwise ? Device.InitialVolume : Device.InitialVolume * 0.8;
+                return Device.InOrOut == PumpInOrOut.Out ? Device.InitialVolume : Device.InitialVolume * 0.8;
             }
 
-            if (Device.Direction == DirectionEnum.Anticlockwise)
+            if (Device.InOrOut == PumpInOrOut.Out)
             {
                 var multiple = (int)Math.Ceiling((double)runTimes / (Device.Period * (int)Device.TimeType));
                 totalVolume = Device.InitialVolume * Math.Pow(2, multiple - 1) * 1.8;
@@ -76,7 +76,7 @@ namespace Shunxi.Business.Logic.Cultivations
 
             if (Device.Period == 0) return total;
 
-            if (Device.Direction == DirectionEnum.Anticlockwise)
+            if (Device.InOrOut == PumpInOrOut.Out)
                 return times == 0 ? total : total / (Device.Period * (int)Device.TimeType);
 
             return GetTotalVolumeForTotalTimeDuration(times);
@@ -98,7 +98,7 @@ namespace Shunxi.Business.Logic.Cultivations
         public double GetTotalVolumeByDoubleTimes(int doubleTimes)
         {
             var totalVolume = 0.0D;
-            if (Device.Direction == DirectionEnum.Anticlockwise)
+            if (Device.InOrOut == PumpInOrOut.Out)
             {
                 totalVolume = Device.InitialVolume * Math.Pow(2, doubleTimes - 1) * 1.8;
             }

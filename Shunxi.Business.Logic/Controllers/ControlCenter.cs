@@ -11,6 +11,7 @@ using Shunxi.Business.Models.cache;
 using Shunxi.Business.Protocols.Directives;
 using Shunxi.Business.Protocols.Helper;
  using Shunxi.Common.Log;
+ using Shunxi.Infrastructure.Common.Configuration;
 
 namespace Shunxi.Business.Logic.Controllers
 {
@@ -357,6 +358,37 @@ namespace Shunxi.Business.Logic.Controllers
             return new DeviceIOResult(true);
         }
 
+        public async Task<DeviceIOResult> StartRockerWhenPumpOutStop()
+        {
+            var ctrl = Controllers.FirstOrDefault(each => each.Device.DeviceType == TargetDeviceTypeEnum.Rocker) as RockerController;
+            if (ctrl == null)
+                return new DeviceIOResult(false, "UNINITIALIZED");
+
+            var ret = await ctrl.Start();
+            if (!ret.Status && ret.Code == "CANCEL") return ret;
+
+            return new DeviceIOResult(true);
+        }
+
+        public async Task<DeviceIOResult> StartThermometerWhenPumpStop(double deltaCapacity)
+        {
+            var ctrl = Controllers.FirstOrDefault(each => each.Device.DeviceType == TargetDeviceTypeEnum.Temperature) as TemperatureController;
+            if (ctrl == null)
+                return new DeviceIOResult(false, "UNINITIALIZED");
+
+            var pumpOutCtrl = Controllers.FirstOrDefault(each => each.Device.DeviceId == Config.Pump3Id) as PumpController;
+            if (pumpOutCtrl == null)
+                return new DeviceIOResult(false, "UNINITIALIZED");
+
+            if (pumpOutCtrl.CurrentStatus != DeviceStatusEnum.Idle && pumpOutCtrl.CurrentStatus != DeviceStatusEnum.AllFinished)
+                return new DeviceIOResult(false, "UNINITIALIZED");
+
+            var ret = await ctrl.StartBySetLevel(deltaCapacity);
+            if (!ret.Status && ret.Code == "CANCEL") return ret;
+
+            return new DeviceIOResult(true);
+        }
+
         public Task StartSinglePump(int pumpId, DirectionEnum direction, double flowRate, double volume)
         {
             return null;
@@ -426,6 +458,26 @@ namespace Shunxi.Business.Logic.Controllers
             {
                 CurrentContext.SysCache.SystemRealTimeStatus.CurrStatus = args.SysStatus;
             }
+
+            if (args.SysStatus == SysStatusEnum.Starting)
+            {
+                foreach (var ctrl in Controllers.Where(each => each.Device.DeviceType == TargetDeviceTypeEnum.Pump))
+                {
+                    var pumpCtrl = ctrl as PumpController;
+                    if(pumpCtrl == null) continue;
+
+                    var ftime = pumpCtrl.PumpCultivation.Schedules.FirstOrDefault();
+                    var ltime = pumpCtrl.PumpCultivation.Schedules.LastOrDefault();
+                    var stime = DateTime.MinValue;
+                    var etime = DateTime.MinValue;
+                    var ntime = pumpCtrl.PumpCultivation.Schedules.FirstOrDefault(each => each > DateTime.Now);
+
+                    CurrentContext.SysCache?.SystemRealTimeStatus.Update(pumpCtrl.Device.DeviceId, false, pumpCtrl.Volume, 0,
+                        pumpCtrl.AlreadyRunTimes, pumpCtrl.PumpCultivation.Schedules.Count, ftime, ltime, stime, etime, ntime);
+                }
+            }
+
+            
 
             SystemStatusChangeEvent?.Invoke(this, args);
         }

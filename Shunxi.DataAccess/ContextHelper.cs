@@ -56,6 +56,7 @@ namespace Shunxi.DataAccess
                             ProcessMode INTEGER,
                             Period INTEGER,
                             TimeType INTEGER,
+                            InOrOut INTEGER,
                             FirstSpan INTEGER,
                             FlowRate double,
                             Name varchar(50),

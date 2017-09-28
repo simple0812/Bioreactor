@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using Microsoft.Practices.Unity;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -36,11 +38,11 @@ namespace Shunxi.App.CellMachine
         bool createdNew;
         protected override void OnStartup(StartupEventArgs e)
         {
-
-           var  singleInstanceWatcher = new Semaphore( 0,  1,  Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
+            var  singleInstanceWatcher = new Semaphore( 0,  1,  Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
+//            var mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
             if (!createdNew)
             {
-                MessageBox.Show("程序运行，请关闭后重试");
+                MessageBox.Show("程序运行中，请关闭后重试");
                 Environment.Exit(-2);
             }
 

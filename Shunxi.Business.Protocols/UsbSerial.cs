@@ -210,7 +210,7 @@ namespace Shunxi.Business.Protocols
 
             if (Status == SerialPortStatus.Opening || Status == SerialPortStatus.Initialled)
             {
-                completionSource.TrySetResult(comBuffer);
+                completionSource?.TrySetResult(comBuffer);
             }
             else
             {

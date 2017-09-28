@@ -33,10 +33,22 @@ namespace Shunxi.Business.Logic.Controllers
 
             StartEvent = new TaskCompletionSource<DeviceIOResult>();
             return await StartEvent.Task;
-            //            var p = await StartEvent.WaitAsync(CancellationTokenSource.Token);
-            //            StartEvent.Reset();
-            //
-            //            return p;
+        }
+
+        public async Task<DeviceIOResult> StartBySetLevel(double deltaCapacity)
+        {
+            if (!TemperatureGauge.IsEnabled) return new DeviceIOResult(false, "DISABLED");
+            var lv = CapacityLevelHelper.GetCapacityLevel((int)TemperatureGauge.Level * 100 + 300 + deltaCapacity);
+            LogFactory.Create().Info($"StartBySetLevel{deltaCapacity},{lv},{TemperatureGauge.Level}");
+
+            StartTime = DateTime.Now;
+            LogFactory.Create().Info($"start {Device.DeviceType}{Device.DeviceId} when SysStatus {CurrentStatus}");
+            ((TemperatureDevice)Device).SetParams(TemperatureGauge.Temperature, lv);
+            SetStatus(DeviceStatusEnum.PreStart);
+            Device.TryStart();
+
+            StartEvent = new TaskCompletionSource<DeviceIOResult>();
+            return await StartEvent.Task;
         }
 
         public override Task<DeviceIOResult> Close()
@@ -89,10 +101,17 @@ namespace Shunxi.Business.Logic.Controllers
 
         public override void ProcessTryPauseResult(DirectiveData data, CommunicationEventArgs comEventArgs)
         {
-            SetStatus(DeviceStatusEnum.Pausing);
-            comEventArgs.DeviceStatus = DeviceStatusEnum.Pausing;
+            //            SetStatus(DeviceStatusEnum.Pausing);
+            //            comEventArgs.DeviceStatus = DeviceStatusEnum.Pausing;
+            //            OnCommunicationChange(comEventArgs);
+            //            StartPauseLoop();
+            comEventArgs.DeviceStatus = DeviceStatusEnum.Running;
+            comEventArgs.Description = IdleDesc.Paused.ToString();
+            SetStatus(DeviceStatusEnum.Running);
+
+            StopEvent.TrySetResult(new DeviceIOResult(true));
+
             OnCommunicationChange(comEventArgs);
-            StartPauseLoop();
         }
 
         public override void ProcessPausingResult(DirectiveData data, CommunicationEventArgs comEventArgs)

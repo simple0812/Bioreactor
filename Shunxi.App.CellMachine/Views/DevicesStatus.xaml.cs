@@ -94,12 +94,21 @@ namespace Shunxi.App.CellMachine.Views
         {
             LogFactory.Create().Info($"==================sys->{e.SysStatus}==================");
 
+           
+
             Dispatcher.Invoke( () =>
             {
+                
                 SwitchCommandStatus(e.SysStatus);
 
                 txtStatus.Text = e.SysStatus.ToString().ToLower();
-                if (e.SysStatus == SysStatusEnum.Completed)
+                if (e.SysStatus == SysStatusEnum.Starting)
+                {
+                    LogFactory.Create().Info($"==================XXXXXXXXXXXXXXXXXXXX=================");
+                    UpdatePumpIn();
+                    UpdatePumpOut();
+                }
+                else if (e.SysStatus == SysStatusEnum.Completed)
                 {
                     //new ModalDialog().Show("细胞培养流程已完成");
                     LogFactory.Create().Info("细胞培养流程已完成");

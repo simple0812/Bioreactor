@@ -1,13 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.SQLite;
-using System.Diagnostics;
 using System.Linq;
 using Shunxi.Business.Models.devices;
 using Shunxi.Business.Tables;
-using Shunxi.Common.Log;
 
 namespace Shunxi.DataAccess
 {

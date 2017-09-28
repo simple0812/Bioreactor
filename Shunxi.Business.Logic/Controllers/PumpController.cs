@@ -152,7 +152,7 @@ namespace Shunxi.Business.Logic.Controllers
         private async Task<DeviceIOResult> ExecStart(double flowrate, double volume)
         {
             //出液泵开启前摇床要停止，出液泵停止后泵摇床开始
-            if (PumpCultivation.Device.Direction == DirectionEnum.Clockwise && CurrentContext.SysCache.System.Rocker.IsEnabled)
+            if (PumpCultivation.Device.InOrOut == PumpInOrOut.Out && CurrentContext.SysCache.System.Rocker.IsEnabled)
             {
                 await Center.StopRockerAndThermometer();
             }
@@ -282,16 +282,10 @@ namespace Shunxi.Business.Logic.Controllers
         public override void OnCommunicationChange(CommunicationEventArgs e)
         {
             base.OnCommunicationChange(e);
-            HandleSystemStatusChange(e);
+            //HandleSystemStatusChange(e);
 
-            HandleDeviceStatusChange(new IoStatusChangeEventArgs()
-            {
-                DeviceId = e.DeviceId,
-                DeviceType = e.DeviceType,
-                IoStatus = e.DeviceStatus,
-                Delta = CalcVolume(e.Description),
-                Feedback = e.Data
-            });
+            HandleDeviceStatusChange(e);
+
 
             if (e.DeviceStatus != DeviceStatusEnum.Startting && e.DeviceStatus != DeviceStatusEnum.Pausing)
             {
@@ -301,11 +295,12 @@ namespace Shunxi.Business.Logic.Controllers
             }
         }
 
-        protected void HandleDeviceStatusChange(IoStatusChangeEventArgs e)
+        protected void HandleDeviceStatusChange(CommunicationEventArgs e)
         {
             var deviceId = e.DeviceId;
-            var type = e.IoStatus;
-            var feedback = e.Feedback;
+            var type = e.DeviceStatus;
+            var feedback = e.Data;
+            var delta = CalcVolume(e.Description);
             var ftime = PumpCultivation.Schedules.FirstOrDefault();
             var ltime = PumpCultivation.Schedules.LastOrDefault();
             var stime = StartTime;
@@ -327,15 +322,16 @@ namespace Shunxi.Business.Logic.Controllers
                     break;
                 //case DeviceStatusEnum.Pausing:
                 case DeviceStatusEnum.Idle:
-                    CurrentContext.SysCache.SystemRealTimeStatus.Update(deviceId, false, Volume, 0, AlreadyRunTimes);
                     if (CurrentContext.SysCache.SystemRealTimeStatus.In.DeviceId == deviceId)
                     {
-                        CurrentContext.SysCache.SystemRealTimeStatus.CurrVolume += Convert.ToInt32(e.Delta);
+                        CurrentContext.SysCache.SystemRealTimeStatus.CurrVolume += Convert.ToInt32(delta);
                     }
                     else
                     {
-                        CurrentContext.SysCache.SystemRealTimeStatus.CurrVolume -= Convert.ToInt32(e.Delta);
+                        CurrentContext.SysCache.SystemRealTimeStatus.CurrVolume -= Convert.ToInt32(delta);
                     }
+                    HandleSystemStatusChange(e);
+                    CurrentContext.SysCache.SystemRealTimeStatus.Update(deviceId, false, Volume, 0, AlreadyRunTimes);
                     break;
                 default:
                     break;
@@ -343,7 +339,14 @@ namespace Shunxi.Business.Logic.Controllers
 
             //涉及到动画, starting Running都会启动动画 只需要触发一次
             if (type == DeviceStatusEnum.Running || type == DeviceStatusEnum.Idle)
-                Center.OnDeviceStatusChange(e);
+                Center.OnDeviceStatusChange(new IoStatusChangeEventArgs()
+                {
+                    DeviceId = e.DeviceId,
+                    DeviceType = e.DeviceType,
+                    IoStatus = e.DeviceStatus,
+                    Delta = delta,
+                    Feedback = e.Data
+                });
         }
 
         private void SaveRecord(bool isManual)
@@ -364,66 +367,61 @@ namespace Shunxi.Business.Logic.Controllers
         {
             var p = new RunStatusChangeEventArgs();
             //系统运行状态只与泵关联
-            if (e.DeviceType != TargetDeviceTypeEnum.Pump) return;
+            if (e.DeviceType != TargetDeviceTypeEnum.Pump || e.DeviceStatus != DeviceStatusEnum.Idle) return;
 
-            switch (e.DeviceStatus)
+            if (e.Description == IdleDesc.Paused.ToString())//设备暂停运行
             {
-                case DeviceStatusEnum.Idle:
-                    if (e.Description == IdleDesc.Paused.ToString())//设备暂停运行
+                SaveRecord(true);
+
+                if (CurrentContext.Status == SysStatusEnum.Pausing)
+                {
+                    p.SysStatus = SysStatusEnum.Paused;
+                    Center.OnSystemStatusChange(p);
+                }
+                else if (CurrentContext.Status == SysStatusEnum.Discarding)
+                {
+                    p.SysStatus = SysStatusEnum.Discarded;
+                    Center.OnSystemStatusChange(p);
+                }
+
+            }
+            else if (e.Description == IdleDesc.Completed.ToString())//设备完成本次操作
+            {
+                SaveRecord(false);
+
+                AlreadyRunTimes++;
+                var next = PumpCultivation.GetNextRunParams(AlreadyRunTimes == 0);
+                //该泵整个培养流程完成
+                if (next == null || PumpCultivation.Device.ProcessMode == ProcessModeEnum.SingleMode)
+                {
+                    LogFactory.Create().Info($"{e.DeviceId} cultivation finished");
+                    SetStatus(DeviceStatusEnum.AllFinished);
+
+
+                    //如果所有泵都已经完成 则通知前端培养流程完成
+                    if (Center.IsAllFinished())
                     {
-                        SaveRecord(true);
+                        LogFactory.Create().Info("all cultivation finished");
 
-                        if (CurrentContext.Status == SysStatusEnum.Pausing)
-                        {
-                            p.SysStatus = SysStatusEnum.Paused;
-                            Center.OnSystemStatusChange(p);
-                        }
-                        else if (CurrentContext.Status == SysStatusEnum.Discarding)
-                        {
-                            p.SysStatus = SysStatusEnum.Discarded;
-                            Center.OnSystemStatusChange(p);
-                        }
-
+                        p.SysStatus = SysStatusEnum.Completed;
+                        Center.OnSystemStatusChange(p);
                     }
-                    else if (e.Description == IdleDesc.Completed.ToString())//设备完成本次操作
-                    {
-                        SaveRecord(false);
+                }
+                //该泵完成本次进液或出液流程
+                else
+                {
+                    LogFactory.Create().Info($"<->pump{e.DeviceId} {AlreadyRunTimes}times completed");
+                    StartNextLoop(next).IgnorCompletion();
+                    StartIdleLoop();
+                }
+                //培养流程结束后 然后要保证摇床和温度打开
+                if (PumpCultivation.Device.InOrOut == PumpInOrOut.Out)
+                {
+                    Center.StartRockerWhenPumpOutStop().IgnorCompletion();
+                    //                            Center.StartRockerAndThermometer().IgnorCompletion();
+                }
 
-                        AlreadyRunTimes++;
-                        var next = PumpCultivation.GetNextRunParams(AlreadyRunTimes == 0);
-                        //该泵整个培养流程完成
-                        if (next == null || PumpCultivation.Device.ProcessMode == ProcessModeEnum.SingleMode)
-                        {
-                            LogFactory.Create().Info($"{e.DeviceId} cultivation finished");
-                            SetStatus(DeviceStatusEnum.AllFinished);
-
-
-                            //如果所有泵都已经完成 则通知前端培养流程完成
-                            if (Center.IsAllFinished())
-                            {
-                                LogFactory.Create().Info("all cultivation finished");
-
-                                p.SysStatus = SysStatusEnum.Completed;
-                                Center.OnSystemStatusChange(p);
-                            }
-                        }
-                        //该泵完成本次进液或出液流程
-                        else
-                        {
-                            LogFactory.Create().Info($"<->pump{e.DeviceId} {AlreadyRunTimes}times completed");
-                            StartNextLoop(next).IgnorCompletion();
-                            StartIdleLoop();
-                        }
-
-                        if (PumpCultivation.Device.Direction == DirectionEnum.Clockwise)
-                        {
-                            Center.StartRockerAndThermometer().IgnorCompletion();
-                        }
-                    }
-
-                    break;
-                default:
-                    break;
+                Center.StartThermometerWhenPumpStop(CurrentContext.SysCache.SystemRealTimeStatus.CurrVolume).IgnorCompletion();
             }
         }
 
