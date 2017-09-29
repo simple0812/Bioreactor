@@ -38,12 +38,14 @@
                 <TextBlock>温度：</TextBlock>
                 <TextBox x:Name="txtTemperature" Width="140" Text="37"></TextBox>
                 <ComboBox x:Name="cbLv">
-                    <ComboBoxItem>200</ComboBoxItem>
+                    <ComboBoxItem>400</ComboBoxItem>
                     <ComboBoxItem IsSelected="True">500</ComboBoxItem>
+                    <ComboBoxItem>600</ComboBoxItem>
+                    <ComboBoxItem>700</ComboBoxItem>
+                    <ComboBoxItem>800</ComboBoxItem>
+                    <ComboBoxItem>900</ComboBoxItem>
                     <ComboBoxItem>1000</ComboBoxItem>
-                    <ComboBoxItem>1500</ComboBoxItem>
-                    <ComboBoxItem>2000</ComboBoxItem>
-                </ComboBox>
+                 </ComboBox>
 
             </StackPanel>
         </StackPanel>

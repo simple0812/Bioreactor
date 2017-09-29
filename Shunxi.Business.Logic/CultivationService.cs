@@ -89,15 +89,15 @@ namespace Shunxi.Business.Logic
 
             var obj = JObject.Parse(content);
 
-            var desc = obj["Description"].ToString();
-            var name = obj["Name"].ToString();
-            var cell = obj["Cell"].ToString();
-            var userName = obj["UserName"].ToString();
+            var desc = obj["Description"]?.ToString();
+            var name = obj["Name"]?.ToString();
+            var cell = obj["Cell"]?.ToString();
+            var userName = obj["UserName"]?.ToString();
             var rocker = obj["Rocker"]?.ToString();
             var gas = obj["Gas"]?.ToString();
-            var xin = obj["In"].ToString();
-            var xout = obj["Out"].ToString();
-            var isTemperatureEnabled = obj["IsTemperatureEnabled"].ToString();
+            var xin = obj["In"]?.ToString();
+            var xout = obj["Out"]?.ToString();
+            var xtemperature = obj["TemperatureGauge"]?.ToString();
 
             return new SystemIntegration()
             {
@@ -107,11 +107,11 @@ namespace Shunxi.Business.Logic
                     UserName = userName,
                     Cell = cell,
                 },
-                TemperatureGauge = new TemperatureGauge() { IsEnabled = Convert.ToBoolean(isTemperatureEnabled) },
+                TemperatureGauge = JsonConvert.DeserializeObject<TemperatureGauge>(xtemperature),
                 Rocker = JsonConvert.DeserializeObject<Rocker>(rocker),
                 Gas = JsonConvert.DeserializeObject<Gas>(gas),
-                PumpIn = ConvertToPump(xin),
-                PumpOut = ConvertToPump(xout)
+                PumpIn = JsonConvert.DeserializeObject<Pump>(xin),
+                PumpOut = JsonConvert.DeserializeObject<Pump>(xout)
             };
         }
 

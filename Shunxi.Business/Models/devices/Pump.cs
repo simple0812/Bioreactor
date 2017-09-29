@@ -5,7 +5,7 @@ namespace Shunxi.Business.Models.devices
 {
     public enum PumpInOrOut
     {
-        In,
+        In = 0,
         Out
     }
     public class Pump :BaseDevice

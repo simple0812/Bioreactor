@@ -121,7 +121,7 @@ namespace SimpleApp
             temperature = double.TryParse(txtTemperature.Text, out temperature) ? temperature : 37;
             con = double.TryParse(txtCon.Text, out con) ? con : 5.0;
             flowrate = int.TryParse(txtFlowrate.Text, out flowrate) ? flowrate : 400;
-            lv = cbLv.SelectedIndex;
+            lv = cbLv.SelectedIndex + 1;
 
             pump1Flowrate = int.TryParse(txtPump1Flowrate.Text, out pump1Flowrate) ? pump1Flowrate : 5;
             pump1Volume = int.TryParse(txtPump1Volume.Text, out pump1Volume) ? pump1Volume : 5;

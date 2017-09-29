@@ -30,13 +30,21 @@ namespace Shunxi.Business.Logic
 
         private WsClient()
         {
-//            websocket = new WebSocket($"ws://{Config.SERVER_ADDR}:{Config.REMOTE_CONTROL_SERVER_PORT}/");
-//            websocket.Opened += websocket_Opened;
-//            websocket.Error += Websocket_Error;
-//            websocket.Closed += Websocket_Closed;
-//            websocket.MessageReceived += Websocket_MessageReceived;
-//            websocket.Open();
-//            Init();
+            websocket = new WebSocket($"ws://{Config.SERVER_ADDR}:{Config.REMOTE_CONTROL_SERVER_PORT}/");
+            websocket.Opened += websocket_Opened;
+            websocket.Error += Websocket_Error;
+            websocket.Closed += Websocket_Closed;
+            websocket.MessageReceived += Websocket_MessageReceived;
+            websocket.Open();
+
+            _deviceInfo = new DeviceInfo()
+            {
+                clientId = Common.Utility.Common.GetMacAddress(),
+                description = Common.Utility.Common.GetLocalIpex(),
+                payload = CurrentContext.SysCache?.SystemRealTimeStatus
+            };
+            Send(_deviceInfo, "first_conn");
+            Init();
         }
 
         private void Init()
@@ -104,9 +112,9 @@ namespace Shunxi.Business.Logic
 
         public void Send(object msg, string action = "")
         {
-//            var message = new SocketData(msg, action).PackRaw();
-//            if (MsgQueue.Count < 100)
-//                MsgQueue.Enqueue(message);
+            var message = new SocketData(msg, action).PackRaw();
+            if (MsgQueue.Count < 100)
+                MsgQueue.Enqueue(message);
         }
 
         private void OnReceiveHandler(SocketData data)
@@ -129,8 +137,8 @@ namespace Shunxi.Business.Logic
                         LogFactory.Create().Info("requireInit");
                         _deviceInfo = new DeviceInfo()
                         {
-                            clientId = Common.Utility.Common.GetUniqueId(),
-                            description = Common.Utility.Common.GetLocalIp(),
+                            clientId = Common.Utility.Common.GetMacAddress(),
+                            description = Common.Utility.Common.GetLocalIpex(),
                             payload = CurrentContext.SysCache?.SystemRealTimeStatus
                         };
                         Send(_deviceInfo, "first_conn");

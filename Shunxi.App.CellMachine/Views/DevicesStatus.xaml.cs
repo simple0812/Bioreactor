@@ -94,8 +94,6 @@ namespace Shunxi.App.CellMachine.Views
         {
             LogFactory.Create().Info($"==================sys->{e.SysStatus}==================");
 
-           
-
             Dispatcher.Invoke( () =>
             {
                 

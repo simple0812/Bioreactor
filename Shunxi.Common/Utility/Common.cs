@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Management;
 using System.Net;
 
 namespace Shunxi.Common.Utility
@@ -47,6 +48,38 @@ namespace Shunxi.Common.Utility
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return Convert.ToInt32((date.ToUniversalTime() - epoch).TotalSeconds);
+        }
+
+
+        public static string GetMacAddress()
+        {
+            try
+            {
+                using (ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration"))
+                {
+                    using (ManagementObjectCollection moc = mc.GetInstances())
+                    {
+                        string macAddress = "";
+                        foreach (var o in moc)
+                        {
+                            var mo = (ManagementObject) o;
+                            if ((bool)mo["IPEnabled"] == true)
+                            {
+                                macAddress = mo["MacAddress"].ToString();
+                                break;
+                            }
+                        }
+                        return macAddress;
+                    }
+                }
+            }
+            catch
+            {
+                return "unknown";
+            }
+            finally
+            {
+            }
         }
     }
 }
