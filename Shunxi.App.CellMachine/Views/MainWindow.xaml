@@ -55,7 +55,7 @@
                 </ListBox.ItemsPanel>
             </ListBox>
             <StackPanel Name="spx"  Grid.Column="1" VerticalAlignment="Top" Width="30" Height="30" HorizontalAlignment="Right" FlowDirection="RightToLeft"   >
-                <TextBlock Name="tbExpand" FontSize="20"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf065;"  Visibility="Collapsed" MouseLeftButtonDown="TbExpand_OnMouseLeftButtonDown"/>
+                <TextBlock Name="tbExpand" FontSize="20"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf065;"  MouseLeftButtonDown="TbExpand_OnMouseLeftButtonDown"/>
                 <TextBlock Name="tbCompress" FontSize="20"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf066;"  MouseLeftButtonDown="TbCompress_OnMouseLeftButtonDown"/>
             </StackPanel>
         </Grid>

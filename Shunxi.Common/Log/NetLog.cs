@@ -92,7 +92,7 @@ namespace Shunxi.Common.Log
         }
         private void websocket_Opened(object sender, EventArgs e)
         {
-            Info("open success");
+            Info("log ws open success");
         }
 
         private void Websocket_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -101,12 +101,12 @@ namespace Shunxi.Common.Log
 
         private void Websocket_Closed(object sender, EventArgs e)
         {
-            Info("ws close");
+            Info("log ws close");
         }
 
         private void Websocket_Error(object sender, ErrorEventArgs ex)
         {
-            Info("ws error " + ex.Exception.Message);
+            Info("log ws error " + ex.Exception.Message);
         }
 
         private void Send(string msg, LogLevel level)

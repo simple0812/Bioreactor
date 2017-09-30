@@ -1,29 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Shunxi.App.CellMachine.Converters
 {
-   
-    public class DateTimeToStringConverter : IValueConverter
+    public class BoolToIntConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo language)
         {
             try
             {
-                var time = System.Convert.ToDateTime(value);
-                if (time == DateTime.MinValue || time == default(DateTime)) return "";
-                return time.ToString("yy-MM-dd HH:mm:ss");
+                var t = System.Convert.ToBoolean(value);
+                return t ? 1 : 0;
             }
             catch (Exception)
             {
-                return "";
+                return 0;
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo language)
         {
-            throw new NotSupportedException();
+            return false;
         }
     }
 }

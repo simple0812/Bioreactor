@@ -30,8 +30,7 @@ namespace Shunxi.Business.Models.cache
                 DeviceId = system.PumpIn.DeviceId,
                 IsEnabled = system.PumpIn.IsEnabled,
                 Icon = system.PumpIn.Icon,
-                Name = system.PumpIn.Name,
-                Device = system.PumpIn
+                Name = system.PumpIn.Name
             };
 
             Out = new PumpRealTimeStatus()
@@ -39,8 +38,7 @@ namespace Shunxi.Business.Models.cache
                 DeviceId = system.PumpOut.DeviceId,
                 IsEnabled = system.PumpOut.IsEnabled,
                 Icon = system.PumpOut.Icon,
-                Name = system.PumpOut.Name,
-                Device = system.PumpOut
+                Name = system.PumpOut.Name
             };
             
             Rocker = new Rocker()

@@ -10,50 +10,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="1024">
     <UserControl.Resources>
-        <Storyboard x:Key="sbIn" x:Name="sbIn" FillBehavior="Stop" RepeatBehavior="Forever">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="fiIn" Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" Duration="0:0:8">
-                <DiscreteDoubleKeyFrame KeyTime="0:0:0.6" Value="270" ></DiscreteDoubleKeyFrame>
-                <DiscreteDoubleKeyFrame KeyTime="0:0:2" Value="0" />
-                <DiscreteDoubleKeyFrame KeyTime="0:0:6" Value="90" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="cvsIn" Storyboard.TargetProperty="(Canvas.RenderTransform).(TranslateTransform.X)" Duration="0:0:8">
-                <LinearDoubleKeyFrame KeyTime="0:0:0.6" Value="34" ></LinearDoubleKeyFrame>
-                <LinearDoubleKeyFrame KeyTime="0:0:2" Value="34" />
-                <LinearDoubleKeyFrame KeyTime="0:0:6" Value="259" />
-                <LinearDoubleKeyFrame KeyTime="0:0:8" Value="259" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="cvsIn" Storyboard.TargetProperty="(Canvas.RenderTransform).(TranslateTransform.Y)" Duration="0:0:8">
-                <LinearDoubleKeyFrame KeyTime="0:0:0.6" Value="0" />
-                <LinearDoubleKeyFrame KeyTime="0:0:2" Value="-85" />
-                <LinearDoubleKeyFrame KeyTime="0:0:6" Value="-85" />
-                <LinearDoubleKeyFrame KeyTime="0:0:8" Value="-10" />
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="sbOut" x:Name="sbOut" FillBehavior="Stop" RepeatBehavior="Forever">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="fiOut" Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" Duration="0:0:8">
-                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="90" />
-                <DiscreteDoubleKeyFrame KeyTime="0:0:1" Value="0" />
-                <DiscreteDoubleKeyFrame KeyTime="0:0:5" Value="270" />
-                <DiscreteDoubleKeyFrame KeyTime="0:0:7" Value="0" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="cvsOut" Storyboard.TargetProperty="(Canvas.RenderTransform).(TranslateTransform.X)" Duration="0:0:8">
-                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="249" ></LinearDoubleKeyFrame>
-                <LinearDoubleKeyFrame KeyTime="0:0:1" Value="249" ></LinearDoubleKeyFrame>
-                <LinearDoubleKeyFrame KeyTime="0:0:5" Value="49" />
-                <LinearDoubleKeyFrame KeyTime="0:0:7" Value="49" />
-                <LinearDoubleKeyFrame KeyTime="0:0:8" Value="0" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="cvsOut" Storyboard.TargetProperty="(Canvas.RenderTransform).(TranslateTransform.Y)" Duration="0:0:8">
-                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="-100" />
-                <LinearDoubleKeyFrame KeyTime="0:0:1" Value="-165" />
-                <LinearDoubleKeyFrame KeyTime="0:0:5" Value="-165" />
-                <LinearDoubleKeyFrame KeyTime="0:0:7" Value="0" />
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="sb" x:Name="sb" FillBehavior="Stop" RepeatBehavior="Forever">
-            <DoubleAnimation Storyboard.TargetName="rocker" AutoReverse="True" Storyboard.TargetProperty="(Border.RenderTransform).(RotateTransform.Angle)"  Duration="0:0:1" From="-12" To="12"></DoubleAnimation>
-        </Storyboard>
-        
     </UserControl.Resources>
 
     <Grid x:Name="rootGd" Margin="0">
@@ -100,7 +56,7 @@
                    Margin="0 0 0 0"></TextBlock>
         <Canvas Grid.Column="2" Margin="0 70 0 0">
             <Canvas x:Name="rockerAnimate" Canvas.Top="230" Canvas.Left="400" >
-                <Border x:Name="rocker" Width="140"  Height="50" BorderBrush="Black" BorderThickness="2 0 2 2">
+                <Border x:Name="rocker" Width="140"  Height="50" BorderBrush="Black"  BorderThickness="2 0 2 2" Style="{StaticResource rockerBorderStyle}">
                     <Border.RenderTransform>
                         <RotateTransform Angle="0" CenterX="70" CenterY="50"></RotateTransform>
                     </Border.RenderTransform>
@@ -115,12 +71,12 @@
                 <TextBlock Text="角度" Canvas.Left="72" Canvas.Top="85"></TextBlock>
                 <Border Width="50" Canvas.Left="15"  Canvas.Top="110" BorderThickness="0 0 1 1" BorderBrush="#334559"  >
                     <Border Width="50"  BorderThickness="1 1 0 0" BorderBrush="Aquamarine"  >
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="0" Width="50" x:Name="txtRate"></TextBlock>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding XRocker.Speed}" Width="50" x:Name="txtRate"></TextBlock>
                     </Border>
                 </Border>
                 <Border Width="50" Canvas.Left="72"  Canvas.Top="110" BorderThickness="0 0 1 1" BorderBrush="#334559"  >
                     <Border Width="50"  BorderThickness="1 1 0 0" BorderBrush="Aquamarine"  >
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="0"  Width="50" x:Name="txtAngle" ></TextBlock>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"  Text="{Binding XRocker.Angle}" Width="50" x:Name="txtAngle" ></TextBlock>
                     </Border>
                 </Border>
             </Canvas>
@@ -138,7 +94,7 @@
                     <Border Width="120" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0" Background="White">
                             <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Run x:Name="txtEnvTemperature" Text="0"></Run><Run>℃</Run>
+                                <Run x:Name="txtEnvTemperature" Text="{Binding XTemperatureGauge.EnvTemperature}"></Run><Run>℃</Run>
                             </TextBlock>
                         </Border>
                     </Border>
@@ -148,7 +104,7 @@
                     <Border Width="120" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0" Background="White">
                             <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Run x:Name="txtTemperature" Text="0"></Run><Run>℃</Run>
+                                <Run x:Name="txtTemperature" Text="{Binding XTemperatureGauge.Temperature}"></Run><Run>℃</Run>
                             </TextBlock>
                         </Border>
                     </Border>
@@ -158,7 +114,7 @@
                     <Border Width="120" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Run x:Name="txtHeaterTemperature" Text="0"></Run><Run>℃</Run>
+                                <Run x:Name="txtHeaterTemperature" Text="{Binding XTemperatureGauge.HeaterTemperature}"></Run><Run>℃</Run>
                             </TextBlock>
                         </Border>
                     </Border>
@@ -187,7 +143,7 @@
                             <Border Width="120"  Height="40" BorderBrush="DarkCyan" BorderThickness="0 0 1 1" Margin="15 0">
                                 <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0" Background="White">
                                     <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Run x:Name="txtOut" ></Run>
+                                        <Run x:Name="txtOut" Text="{Binding XPumpOut.RealTimeFlowRate}"></Run>
                                         <Run FontSize="12">ml/min</Run>
                                     </TextBlock>
                                 </Border>
@@ -195,7 +151,7 @@
                             <Border Width="120" Height="40" BorderBrush="DarkCyan" BorderThickness="0 0 1 1" Margin="15 0">
                                 <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0" Background="White">
                                     <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Run x:Name="txtOutVolume">0.0</Run>
+                                        <Run x:Name="txtOutVolume" Text="{Binding XPumpOut.CurrVolume}"></Run>
                                         <Run FontSize="12">ml</Run>
                                     </TextBlock>
                                 </Border>
@@ -204,10 +160,8 @@
                         <Canvas x:Name="cvsOut" 
                                 Width="30"
                                 Height="30">
-                            <Canvas.RenderTransform>
-                                <TranslateTransform X="0" Y="0"></TranslateTransform>
-                            </Canvas.RenderTransform>
-                            <TextBlock FontFamily="{StaticResource FontAwesomeFontFamily}" 
+                            <TextBlock FontFamily="{StaticResource FontAwesomeFontFamily}"
+                                      Style="{StaticResource sbPumpOutStyle}"
                                       Foreground="DarkGreen"
                                       FontSize="30"
                                       x:Name="fiOut"
@@ -234,7 +188,7 @@
                             <Border Width="120"  Height="40" BorderBrush="DarkCyan" BorderThickness="0 0 1 1" Margin="15 0">
                                 <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0" Background="White">
                                     <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Run x:Name="txtIn" Text="0"></Run>
+                                        <Run x:Name="txtIn" Text="{Binding XPumpIn.RealTimeFlowRate}"></Run>
                                         <Run FontSize="12">ml/min</Run>
                                     </TextBlock>
                                 </Border>
@@ -242,7 +196,7 @@
                             <Border Width="120" Height="40" BorderBrush="DarkCyan" BorderThickness="0 0 1 1" Margin="15 0">
                                 <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0" Background="White">
                                     <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Run x:Name="txtInVolume">0.0</Run>
+                                        <Run x:Name="txtInVolume" Text="{Binding XPumpIn.CurrVolume}"></Run>
                                         <Run FontSize="12">ml</Run>
                                     </TextBlock>
                                 </Border>
@@ -250,14 +204,12 @@
                         </StackPanel>
                         <Canvas x:Name="cvsIn" 
                                 Width="30"
+                                RenderTransformOrigin="0,0"
                                 Height="30">
-                            <Canvas.RenderTransform>
-                                <TranslateTransform X="0" Y="0"></TranslateTransform>
-                            </Canvas.RenderTransform>
                             <TextBlock FontFamily="{StaticResource FontAwesomeFontFamily}" 
+                                       Style="{StaticResource sbPumpInStyle}"
                                       Foreground="Orange"
                                       FontSize="30"
-                                      x:Name="fiIn"
                                       Text="&#xf0a9;">
                                 <TextBlock.RenderTransform>
                                     <RotateTransform Angle="0" CenterX="15" CenterY="15"></RotateTransform>
@@ -282,14 +234,14 @@
                         <Border Width="120" x:Name="btnAir" Height="40" BorderBrush="DarkCyan" BorderThickness="0 0 1 1" Margin="15 0">
                             <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0" Background="White">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Run x:Name="txtFlowrate" Text="0"></Run>
+                                    <Run x:Name="txtFlowrate" Text="{Binding XGas.FlowRate}"></Run>
                                 </TextBlock>
                             </Border>
                         </Border>
                         <Border Width="120" Height="40" BorderBrush="DarkCyan" BorderThickness="0 0 1 1" Margin="15 0">
                             <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0" Background="White">
                                 <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Run x:Name="txtCon">0.00</Run>
+                                    <Run x:Name="txtCon" Text="{Binding XGas.Concentration}"></Run>
                                     <Run>%</Run>
                                 </TextBlock>
                             </Border>
@@ -354,9 +306,9 @@
                     <Border Width="150" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
                             <TextBlock  x:Name="txtStatus" 
+                                    Text="{Binding CurrStatus}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center" >
-                                
                             </TextBlock>
                         </Border>
                     </Border>
@@ -367,7 +319,7 @@
                     <TextBlock Text="已进液次数" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtInRunTimes" VerticalAlignment="Center"  HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtInRunTimes" VerticalAlignment="Center" Text="{Binding XPumpIn.RunTimes}"  HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -375,7 +327,7 @@
                     <TextBlock Text="进液开始时间" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock  x:Name="txtInStartTime" VerticalAlignment="Center" Text="" FontSize="10"  HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock  x:Name="txtInStartTime" VerticalAlignment="Center" Text="{Binding XPumpIn.TheStartTime, Converter={StaticResource DateTimeToStringConverter}}" FontSize="10"  HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -383,7 +335,7 @@
                     <TextBlock Text="进液结束时间" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtInEndTime" VerticalAlignment="Center"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtInEndTime" VerticalAlignment="Center" Text="{Binding XPumpIn.TheEndTime, Converter={StaticResource DateTimeToStringConverter}}"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -391,7 +343,7 @@
                     <TextBlock Text="下次进液时间" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtInNextTime"  VerticalAlignment="Center" FontSize="10"  HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtInNextTime" Text="{Binding XPumpIn.NextTime, Converter={StaticResource DateTimeToStringConverter}}"   VerticalAlignment="Center" FontSize="10"  HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -399,7 +351,7 @@
                     <TextBlock Text="第一次进液" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtInFirstTime" VerticalAlignment="Center"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtInFirstTime" Text="{Binding XPumpIn.FirstTime, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -407,7 +359,7 @@
                     <TextBlock Text="最后一次进液" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtInLastTime"  VerticalAlignment="Center" FontSize="10"  HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtInLastTime" Text="{Binding XPumpIn.LastTime, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center" FontSize="10"  HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -415,7 +367,7 @@
                     <TextBlock Text="共需进液次数" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtInAllTimes"  VerticalAlignment="Center"  HorizontalAlignment="Center"  ></TextBlock>
+                            <TextBlock x:Name="txtInAllTimes" Text="{Binding XPumpIn.AllRunTimes}" VerticalAlignment="Center"  HorizontalAlignment="Center"  ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -425,7 +377,7 @@
                     <TextBlock Text="已出液次数" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtOutRunTimes" VerticalAlignment="Center"  HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtOutRunTimes" VerticalAlignment="Center" Text="{Binding XPumpOut.RunTimes}" HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -433,7 +385,7 @@
                     <TextBlock Text="出液开始时间" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtOutStartTime" VerticalAlignment="Center"  FontSize="10" HorizontalAlignment="Center"  ></TextBlock>
+                            <TextBlock x:Name="txtOutStartTime" VerticalAlignment="Center" Text="{Binding XPumpOut.TheStartTime, Converter={StaticResource DateTimeToStringConverter}}" FontSize="10" HorizontalAlignment="Center"  ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -441,7 +393,7 @@
                     <TextBlock Text="出液结束时间" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtOutEndTime"  VerticalAlignment="Center"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtOutEndTime"  VerticalAlignment="Center" Text="{Binding XPumpOut.TheEndTime, Converter={StaticResource DateTimeToStringConverter}}"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -449,7 +401,7 @@
                     <TextBlock Text="下次出液时间" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtOutNextTime"  VerticalAlignment="Center"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtOutNextTime"  VerticalAlignment="Center" Text="{Binding XPumpOut.NextTime, Converter={StaticResource DateTimeToStringConverter}}" FontSize="10" HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -457,7 +409,7 @@
                     <TextBlock Text="第一次出液" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtOutFirstTime" VerticalAlignment="Center"  FontSize="10" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock x:Name="txtOutFirstTime" VerticalAlignment="Center" Text="{Binding XPumpOut.FirstTime, Converter={StaticResource DateTimeToStringConverter}}" FontSize="10" HorizontalAlignment="Center"></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -465,7 +417,7 @@
                     <TextBlock Text="最后一次出液" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtOutLastTime" VerticalAlignment="Center"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtOutLastTime" VerticalAlignment="Center"  Text="{Binding XPumpOut.LastTime, Converter={StaticResource DateTimeToStringConverter}}"  FontSize="10" HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -473,7 +425,7 @@
                     <TextBlock Text="共需出液次数" FontSize="12" HorizontalAlignment="Center"></TextBlock>
                     <Border Width="90" Height="30" BorderBrush="DarkCyan" BorderThickness="0 0 1 1">
                         <Border BorderBrush="Aquamarine" BorderThickness="1 1 0 0">
-                            <TextBlock x:Name="txtOutAllTimes" VerticalAlignment="Center"  HorizontalAlignment="Center" ></TextBlock>
+                            <TextBlock x:Name="txtOutAllTimes" VerticalAlignment="Center"  Text="{Binding XPumpOut.AllRunTimes}" HorizontalAlignment="Center" ></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -488,7 +440,7 @@
                    Height="40" 
                    FlowDirection ="RightToLeft"
                    VerticalAlignment="Bottom">
-            <Button Content="&#xf04d;" Width="40" x:Name="btnRestart" Margin="50 0 0 0" Click="BtnRestart_OnClick">
+            <Button Content="&#xf04d;" Width="40" x:Name="btnRestart" Margin="50 0 0 0" Command="{Binding RestartCommand, Mode=OneWay}">
                 <Button.Template>
                     <ControlTemplate>
                         <Grid>
@@ -509,7 +461,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Content="&#xf04c;" Width="40"  x:Name="btnPauseAll"  Margin="30 0 0 0" Command="{Binding PauseCommand, Mode=OneWay}">
+            <Button Content="&#xf04c;" Width="40"  x:Name="btnPauseAll" Visibility="{Binding BtnPauseVisibility, Converter={StaticResource BoolToVisibilityConverter}}"  Margin="30 0 0 0" Command="{Binding PauseCommand, Mode=OneWay}">
                 <Button.Template>
                     <ControlTemplate>
                         <Grid>
@@ -530,7 +482,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Content="&#xf04b;" Width="40" x:Name="btnStart" Margin="30 0 0 0" Command="{Binding StartCommand, Mode=OneWay}">
+            <Button Content="&#xf04b;" Width="40" x:Name="btnStart" Margin="30 0 0 0" Visibility="{Binding BtnStartVisibility, Converter={StaticResource BoolToVisibilityConverter}}"  Command="{Binding StartCommand, Mode=OneWay}">
                 <Button.Template>
                     <ControlTemplate>
                         <Grid>
@@ -551,7 +503,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Content="&#xf25a;" Width="40" x:Name="btnManual" Margin="300 0 0 0" Click="BtnManual_OnClick">
+            <Button Content="&#xf25a;" Width="40" x:Name="btnManual"  Visibility="{Binding BtnManualVisibility, Converter={StaticResource BoolToVisibilityConverter}}"  Margin="300 0 0 0" Click="BtnManual_OnClick">
                 <Button.Template>
                     <ControlTemplate>
                         <Grid>

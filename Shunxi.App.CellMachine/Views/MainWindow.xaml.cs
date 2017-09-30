@@ -36,6 +36,8 @@ namespace Shunxi.App.CellMachine.Views
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            tbExpand.Visibility = this.IsFullscreen() ? Visibility.Collapsed : Visibility.Visible;
+            tbCompress.Visibility = this.IsFullscreen() ? Visibility.Visible : Visibility.Collapsed;
             WsClient.Instance.ControlHandler += Instance_ControlHandler;
             //WsClient.Instance.SaveScheduleHandler += Instance_SaveScheduleHandler;
         }

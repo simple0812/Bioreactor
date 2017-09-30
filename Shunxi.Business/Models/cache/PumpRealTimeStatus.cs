@@ -5,7 +5,6 @@ namespace Shunxi.Business.Models.cache
 {
     public class PumpRealTimeStatus :BaseDevice
     {
-        public Pump Device { get; set; }
         private double _RealTimeFlowRate;
         public double RealTimeFlowRate
         {
@@ -109,7 +108,5 @@ namespace Shunxi.Business.Models.cache
                 OnPropertyChanged();
             }
         }
-
-        
     }
 }

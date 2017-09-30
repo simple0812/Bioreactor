@@ -61,7 +61,7 @@ namespace Shunxi.Business.Logic
                         }
                         catch (Exception e)
                         {
-                            LogFactory.Create().Info("send log err " + e.Message);
+                            LogFactory.Create().Info("send remote controll ws err " + e.Message);
                         }
                     }
                     else if (websocket.State != WebSocketState.Connecting && websocket.State != WebSocketState.Open)
@@ -72,7 +72,7 @@ namespace Shunxi.Business.Logic
                         }
                         catch (Exception e)
                         {
-                            LogFactory.Create().Info("open log err " + e.Message);
+                            LogFactory.Create().Info("open remote controll ws err " + e.Message);
                         }
                     }
 
@@ -83,7 +83,7 @@ namespace Shunxi.Business.Logic
 
         private void websocket_Opened(object sender, EventArgs e)
         {
-            LogFactory.Create().Info("open success");
+            LogFactory.Create().Info("remote controll socket open success");
         }
 
         private void Websocket_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -102,12 +102,12 @@ namespace Shunxi.Business.Logic
 
         private void Websocket_Closed(object sender, EventArgs e)
         {
-            LogFactory.Create().Info("ws close");
+            LogFactory.Create().Info("remote controll ws close");
         }
 
         private void Websocket_Error(object sender, ErrorEventArgs ex)
         {
-            LogFactory.Create().Info("ws error " + ex.Exception.Message);
+            LogFactory.Create().Info("remote controll ws error " + ex.Exception.Message);
         }
 
         public void Send(object msg, string action = "")

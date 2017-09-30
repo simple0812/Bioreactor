@@ -23,6 +23,7 @@
     <converters:StringFormatConverter x:Key="StringFormatConverter"/>
     <converters:ProcessModeToVisibilityConverter x:Key="processModeToVisibilityConverter"/>
     <converters:IntToDoubleConverter x:Key="intToDoubleConverter"/>
+    <converters:BoolToIntConverter x:Key="BoolToIntConverter"/>
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BoolToVisibilityConverter>
     <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"></converters:InverseBoolToVisibilityConverter>
 
@@ -146,6 +147,92 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style TargetType="Border" x:Key="rockerBorderStyle">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=XRocker.IsRunning, Converter={StaticResource BoolToIntConverter}}" Value="1">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Name="sbRocker">
+                        <Storyboard  FillBehavior="Stop" RepeatBehavior="Forever">
+                            <DoubleAnimation AutoReverse="True" Storyboard.TargetProperty="(Border.RenderTransform).(RotateTransform.Angle)"  Duration="0:0:1" From="-12" To="12"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <StopStoryboard BeginStoryboardName="sbRocker"></StopStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="sbPumpInStyle">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=XPumpIn.IsRunning, Converter={StaticResource BoolToIntConverter}}" Value="1">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Name="sbPumpIn">
+                        <Storyboard  FillBehavior="Stop" RepeatBehavior="Forever">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" Duration="0:0:8">
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0" />
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:0.6" Value="270" />
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:2" Value="0" />
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:6" Value="90" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Left)" Duration="0:0:8">
+                                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:0.6" Value="34" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:2" Value="34" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:6" Value="259" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:8" Value="259" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Top)" Duration="0:0:8">
+                                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:0.6" Value="0" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:2" Value="-85" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:6" Value="-85" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:8" Value="-10" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <StopStoryboard BeginStoryboardName="sbPumpIn"></StopStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="sbPumpOutStyle">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=XPumpOut.IsRunning, Converter={StaticResource BoolToIntConverter}}" Value="1">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Name="sbPumpOut">
+                        <Storyboard x:Name="sbOut" FillBehavior="Stop" RepeatBehavior="Forever">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" Duration="0:0:8">
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="90" />
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:1" Value="0" />
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:5" Value="270" />
+                                <DiscreteDoubleKeyFrame KeyTime="0:0:7" Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Left)" Duration="0:0:8">
+                                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="249" ></LinearDoubleKeyFrame>
+                                <LinearDoubleKeyFrame KeyTime="0:0:1" Value="249" ></LinearDoubleKeyFrame>
+                                <LinearDoubleKeyFrame KeyTime="0:0:5" Value="49" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:7" Value="49" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:8" Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Top)" Duration="0:0:8">
+                                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="-100" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:1" Value="-165" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:5" Value="-165" />
+                                <LinearDoubleKeyFrame KeyTime="0:0:7" Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <StopStoryboard BeginStoryboardName="sbPumpOut"></StopStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>
