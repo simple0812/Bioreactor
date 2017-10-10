@@ -99,6 +99,22 @@ namespace Shunxi.Business.Logic
             var xout = obj["Out"]?.ToString();
             var xtemperature = obj["TemperatureGauge"]?.ToString();
 
+            var xTemperatureGauge = JsonConvert.DeserializeObject<TemperatureGauge>(xtemperature);
+            xTemperatureGauge.DeviceId = Config.TemperatureId;
+            xTemperatureGauge.Name = "Temperature";
+
+            var xRocker = JsonConvert.DeserializeObject<Rocker>(rocker);
+            xRocker.DeviceId = Config.RockerId;
+            xRocker.Name = "Rocker";
+
+            var xGas = JsonConvert.DeserializeObject<Gas>(gas);
+            xGas.DeviceId = Config.GasId;
+            xGas.Name = "Gas";
+
+            var xPumpIn = JsonConvert.DeserializeObject<Pump>(xin);
+            var xPumpOut = JsonConvert.DeserializeObject<Pump>(xout);
+
+
             return new SystemIntegration()
             {
                 CellCultivation = new CellCultivation() {
@@ -107,11 +123,15 @@ namespace Shunxi.Business.Logic
                     UserName = userName,
                     Cell = cell,
                 },
-                TemperatureGauge = JsonConvert.DeserializeObject<TemperatureGauge>(xtemperature),
-                Rocker = JsonConvert.DeserializeObject<Rocker>(rocker),
-                Gas = JsonConvert.DeserializeObject<Gas>(gas),
-                PumpIn = JsonConvert.DeserializeObject<Pump>(xin),
-                PumpOut = JsonConvert.DeserializeObject<Pump>(xout)
+                TemperatureGauge = xTemperatureGauge,
+                Rocker = xRocker,
+                Gas = xGas,
+                PumpIn = xPumpIn,
+                PumpOut = xPumpOut,
+
+                //TODO 下位机未实现
+                Do = new DoDevice(){DeviceId = Config.DoId, Name = "Do"},
+                Ph = new PhDevice() { DeviceId = Config.PhId, Name = "Ph"}
             };
         }
 

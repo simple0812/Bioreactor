@@ -15,7 +15,6 @@ namespace Shunxi.App.CellMachine.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private readonly IRegionManager _regionManager;
-        private string CurrPage = "";
 
         private string _title = "一次性细胞培养生物反应器";
         public string Title
@@ -55,10 +54,14 @@ namespace Shunxi.App.CellMachine.ViewModels
         {
             if (navigatePath == null) return;
 
-            _regionManager.RequestNavigate("ContentRegion", navigatePath, result =>
-            {
-                CurrPage = result.Context.Uri.OriginalString;
-            });
+            _regionManager.RequestNavigate("ContentRegion", navigatePath);
+        }
+
+        public void Navigate(string navigatePath, NavigationParameters para)
+        {
+            if (navigatePath == null) return;
+
+            _regionManager.RequestNavigate("ContentRegion", navigatePath, para);
         }
 
 

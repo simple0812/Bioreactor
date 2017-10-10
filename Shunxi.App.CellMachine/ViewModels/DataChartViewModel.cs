@@ -39,30 +39,33 @@ namespace Shunxi.App.CellMachine.ViewModels
             var lastId = CultivationService.GetLastCultivationId();
             using (var ctx = new IotContext())
             {
-                var p = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.Temperature);
-                var x = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.EnvTemperature);
-                var t = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.HeaterTemperature);
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+//                var p = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.Temperature);
+//                var x = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.EnvTemperature);
+//                var t = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.HeaterTemperature);
                 var gas = ctx.GasRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.Concentration);
-                Series.Add(new StackedAreaSeries
-                {
-                    Title = "中心温度",
-                    Values = new ChartValues<double>(p)
-                });
-                Series.Add(new StackedAreaSeries
-                {
-                    Title = "环境温度",
-                    Values = new ChartValues<double>(x)
-                });
-                Series.Add(new StackedAreaSeries
-                {
-                    Title = "加热源温度",
-                    Values = new ChartValues<double>(t)
-                });
-                Series.Add(new StackedAreaSeries
-                {
-                    Title = "气体浓度",
-                    Values = new ChartValues<double>(gas)
-                });
+                sw.Stop();
+//                Series.Add(new StackedAreaSeries
+//                {
+//                    Title = "中心温度",
+//                    Values = new ChartValues<double>(p)
+//                });
+//                Series.Add(new StackedAreaSeries
+//                {
+//                    Title = "环境温度",
+//                    Values = new ChartValues<double>(x)
+//                });
+//                Series.Add(new StackedAreaSeries
+//                {
+//                    Title = "加热源温度",
+//                    Values = new ChartValues<double>(t)
+//                });
+//                Series.Add(new StackedAreaSeries
+//                {
+//                    Title = "气体浓度",
+//                    Values = new ChartValues<double>(gas)
+//                });
             }
         }
 

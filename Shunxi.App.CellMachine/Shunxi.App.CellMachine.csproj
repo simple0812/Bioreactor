@@ -131,6 +131,7 @@
     <Compile Include="Common\Behaviors\EnumItemsSourceBehavior.cs" />
     <Compile Include="Common\Behaviors\TextBoxInputRegExBehaviour.cs" />
     <Compile Include="Common\Behaviors\WaitIndicatorService.cs" />
+    <Compile Include="Common\CommandMessageEvent.cs" />
     <Compile Include="Common\Maybe.cs" />
     <Compile Include="Controls\EditCellCultivation.xaml.cs">
       <DependentUpon>EditCellCultivation.xaml</DependentUpon>

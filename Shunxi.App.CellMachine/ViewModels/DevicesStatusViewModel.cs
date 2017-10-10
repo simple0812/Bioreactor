@@ -11,8 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
+using Shunxi.App.CellMachine.Common;
 using Shunxi.App.CellMachine.Controls;
 using Shunxi.App.CellMachine.ViewModels.Common;
 using Shunxi.App.CellMachine.ViewModels.Devices;
@@ -195,7 +197,7 @@ namespace Shunxi.App.CellMachine.ViewModels
         }
 
 
-        private async void Restart()
+        private  void Restart()
         {
             if (MessageBox.Show("要中断正在运行的任务吗？点击Yes后该任务将不可恢复",
                     "警告", MessageBoxButton.YesNo) == MessageBoxResult.No)
@@ -203,6 +205,11 @@ namespace Shunxi.App.CellMachine.ViewModels
                 return;
             }
 
+            HandleRestart();
+        }
+
+        private async void HandleRestart()
+        {
             App.BC.IsBusy = true;
 
             RemoveHandler();
@@ -223,59 +230,13 @@ namespace Shunxi.App.CellMachine.ViewModels
             }
         }
 
-        public void Init()
-        {
-            RemoveHandler();
-            AddHandler();
-
-            if (CurrentContext.Status != SysStatusEnum.Running && CurrentContext.Status != SysStatusEnum.Paused)
-            {
-                CurrentContext.Status = SysStatusEnum.Ready;
-                var p = CultivationService.GetDefaultCultivation();
-                CurrentContext.SysCache = new SystemCache(p);
-                Devices = new ObservableCollection<BaseDevice>(p.GetDevices());
-
-                CurrentContext.SysCache.SystemRealTimeStatus.CurrStatus = CurrentContext.Status = SysStatusEnum.Ready;
-            }
-            else
-            {
-                Devices = new ObservableCollection<BaseDevice>(CurrentContext.SysCache.System.GetDevices());
-            }
-
-            SelectedDevice = Devices[0];
-            CellCultivation = CurrentContext.SysCache.System.CellCultivation;
-
-            if (CurrentContext.SysCache?.SystemRealTimeStatus != null)
-            {
-                XRocker = CurrentContext.SysCache.SystemRealTimeStatus.Rocker;
-                XGas = CurrentContext.SysCache.SystemRealTimeStatus.Gas;
-                XTemperatureGauge = CurrentContext.SysCache.SystemRealTimeStatus.Temperature;
-                XPumpIn = CurrentContext.SysCache.SystemRealTimeStatus.In;
-                XPumpOut = CurrentContext.SysCache.SystemRealTimeStatus.Out;
-            }
-
-            CurrStatus = CurrentContext.Status.ToString();
-            SwitchCommandStatus(CurrentContext.Status);
-        }
-
-        private void AddHandler()
-        {
-            ControlCenter.Instance.ErrorEvent += Instance_ErrorEvent;
-            ControlCenter.Instance.DeviceStatusChangeEvent += InstanceDeviceStatusChangeEvent; ;
-            ControlCenter.Instance.SystemStatusChangeEvent += InstanceSystemStatusChangeEvent; ;
-        }
-
-        private void RemoveHandler()
-        {
-            ControlCenter.Instance.ErrorEvent -= Instance_ErrorEvent;
-            ControlCenter.Instance.DeviceStatusChangeEvent -= InstanceDeviceStatusChangeEvent; ;
-            ControlCenter.Instance.SystemStatusChangeEvent -= InstanceSystemStatusChangeEvent; ;
-        }
-
         #endregion
-
-        public DevicesStatusViewModel()
+        IEventAggregator _ea;
+        public DevicesStatusViewModel(IEventAggregator ea)
         {
+            _ea = ea;
+            _ea.GetEvent<CommandMessageEvent>().Subscribe(MessageReceived);
+
             EditCommand = new DelegateCommand<BaseDevice>(Edit);
 
             StartCommand = new DelegateCommand(Start);
@@ -284,9 +245,33 @@ namespace Shunxi.App.CellMachine.ViewModels
             EditCellCommand = new DelegateCommand(EditCell);
         }
 
+        private void MessageReceived(string cmd)
+        {
+            switch (cmd)
+            {
+                case "pause":
+                    Pause();
+                    break;
+                case "start":
+                    Start();
+                    break;
+                case "restart":
+                    HandleRestart();
+                    break;
+//                case "qr":
+//                    LogFactory.Create().Info(para.ToString());
+//                    var data = para.ToString().Split(",".ToCharArray());
+//                    break;
+
+                default:
+                    break;
+            }
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            Init();
+            var si = navigationContext.Parameters["data"] as SystemIntegration;
+            Init(si);
         }
 
         private void Instance_ErrorEvent(object sender, CustomException e)
@@ -321,6 +306,11 @@ namespace Shunxi.App.CellMachine.ViewModels
                 LogFactory.Create().Info("细胞培养流程已完成");
                 //await ReStart();
             }
+        }
+
+        private void Instance_ControlHandler(string cmd, object para)
+        {
+           
         }
 
         public void InstanceDeviceStatusChangeEvent(object sender, IoStatusChangeEventArgs e)
@@ -449,6 +439,55 @@ namespace Shunxi.App.CellMachine.ViewModels
                 default:
                     break;
             }
+        }
+
+        private void Init(SystemIntegration si = null)
+        {
+            RemoveHandler();
+            AddHandler();
+
+            if (CurrentContext.Status != SysStatusEnum.Running && CurrentContext.Status != SysStatusEnum.Paused)
+            {
+                CurrentContext.Status = SysStatusEnum.Ready;
+                var p = si ?? CultivationService.GetDefaultCultivation();
+                CurrentContext.SysCache = new SystemCache(p);
+                Devices = new ObservableCollection<BaseDevice>(p.GetDevices());
+
+                CurrentContext.SysCache.SystemRealTimeStatus.CurrStatus = CurrentContext.Status = SysStatusEnum.Ready;
+            }
+            else
+            {
+                Devices = new ObservableCollection<BaseDevice>(CurrentContext.SysCache.System.GetDevices());
+            }
+
+            SelectedDevice = Devices[0];
+            CellCultivation = CurrentContext.SysCache.System.CellCultivation;
+
+            if (CurrentContext.SysCache?.SystemRealTimeStatus != null)
+            {
+                XRocker = CurrentContext.SysCache.SystemRealTimeStatus.Rocker;
+                XGas = CurrentContext.SysCache.SystemRealTimeStatus.Gas;
+                XTemperatureGauge = CurrentContext.SysCache.SystemRealTimeStatus.Temperature;
+                XPumpIn = CurrentContext.SysCache.SystemRealTimeStatus.In;
+                XPumpOut = CurrentContext.SysCache.SystemRealTimeStatus.Out;
+            }
+
+            CurrStatus = CurrentContext.Status.ToString();
+            SwitchCommandStatus(CurrentContext.Status);
+        }
+
+        private void AddHandler()
+        {
+            ControlCenter.Instance.ErrorEvent += Instance_ErrorEvent;
+            ControlCenter.Instance.DeviceStatusChangeEvent += InstanceDeviceStatusChangeEvent; ;
+            ControlCenter.Instance.SystemStatusChangeEvent += InstanceSystemStatusChangeEvent; ;
+        }
+
+        private void RemoveHandler()
+        {
+            ControlCenter.Instance.ErrorEvent -= Instance_ErrorEvent;
+            ControlCenter.Instance.DeviceStatusChangeEvent -= InstanceDeviceStatusChangeEvent; ;
+            ControlCenter.Instance.SystemStatusChangeEvent -= InstanceSystemStatusChangeEvent; ;
         }
     }
 }

@@ -87,7 +87,7 @@ namespace Shunxi.Business.Models.devices
             }
         }
 
-        public string _icon;
+        public string _icon = "/Assets/Filters/Products/Automation.png";
         public string Icon
         {
             get => _icon;
@@ -98,9 +98,6 @@ namespace Shunxi.Business.Models.devices
             }
         }
         #endregion
-
-
-   
 
         public void ClonePropertiesTo(BaseDevice to)
         {

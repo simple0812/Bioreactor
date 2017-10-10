@@ -170,7 +170,7 @@ namespace SimpleApp
                     new TryStartDirective(0x80, speed, 8, 0, TargetDeviceTypeEnum.Rocker));
             if (isTemp)
                 DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(0x90, temperature * 10,
-                    temperature * 10, lv + 1, TargetDeviceTypeEnum.Temperature));
+                    temperature * 10, lv, TargetDeviceTypeEnum.Temperature));
             if (isGas)
                 DirectiveWorker.Instance.PrepareDirective(new TryStartDirective(0x91, flowrate, con * 10,
                     (int)DirectionEnum.Anticlockwise, TargetDeviceTypeEnum.Gas));

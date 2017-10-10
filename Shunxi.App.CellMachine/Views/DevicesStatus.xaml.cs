@@ -33,27 +33,11 @@ namespace Shunxi.App.CellMachine.Views
     public partial class DevicesStatus : UserControl
     {
         private DispatcherTimer xTimer;
-        private Storyboard sb, sbIn, sbOut;
         public DevicesStatus()
         {
             InitializeComponent();
-            DataContext = new DevicesStatusViewModel();
             this.Loaded += DevicesStatus_Loaded; ;
             this.Unloaded += DevicesStatus_Unloaded; ;
-//            sb = Resources["sb"] as Storyboard;
-//            sbIn = Resources["sbIn"] as Storyboard;
-//            sbOut = Resources["sbOut"] as Storyboard;
-//
-//            #region make storyboard is controllable
-//            //fixed Cannot perform action because the specified Storyboard was not applied to this object for interactive control.
-//            sb?.Begin(this, true);
-//            sb?.Stop(this);
-//            sbIn?.Begin(this, true);
-//            sbIn?.Stop(this);
-//            sbOut?.Begin(this, true);
-//            sbOut?.Stop(this);
-//            #endregion
-            
         }
 
         private void DevicesStatus_Unloaded(object sender, RoutedEventArgs e)
@@ -70,9 +54,6 @@ namespace Shunxi.App.CellMachine.Views
             xTimer.Interval = TimeSpan.FromSeconds(1);
             xTimer.Tick += XTimer_Tick;
             xTimer.Start();
-
-            LogFactory.Create().Info("HomePage STATUS->" + CurrentContext.Status);
-            
         }
 
         private void XTimer_Tick(object sender, object e)
@@ -80,20 +61,6 @@ namespace Shunxi.App.CellMachine.Views
             txtTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
-        private ClockState GetAnimateStatus(Storyboard xsb)
-        {
-            try
-            {
-                return xsb.GetCurrentState(this);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            return ClockState.Stopped;
-        }
-       
         private void ImgLeft_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             rootGd.ColumnDefinitions[0].Width = new GridLength(0D);
