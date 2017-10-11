@@ -1,7 +1,7 @@
 ﻿<Application x:Class="Shunxi.App.CellMachine.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Shunxi.App.CellMachine">
+             xmlns:local="clr-namespace:Shunxi.App.CellMachine" Startup="OnAppStartup_UpdateThemeName">
     <Application.Resources>
         <ResourceDictionary>
             <FontFamily x:Key="FontAwesomeFontFamily">/Themes/FontAwesome.otf#FontAwesome</FontFamily>

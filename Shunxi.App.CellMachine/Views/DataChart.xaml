@@ -10,6 +10,7 @@
              xmlns:mvvm="http://prismlibrary.com/"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:converters="clr-namespace:Shunxi.App.CellMachine.Converters"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -19,17 +20,21 @@
             <converters:OpacityConverter x:Key="OpacityConverter"></converters:OpacityConverter>
             <converters:ReverseConverter x:Key="ReverseConverter"></converters:ReverseConverter>
         </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <ListBox Name="ListBox" ItemsSource="{Binding Series}" PreviewMouseDown="ListBox_OnPreviewMouseDown" 
-                 Panel.ZIndex="1" BorderThickness="0" Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ListBox  ItemsSource="{Binding Devices}"
+                  SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <mvvm:InvokeCommandAction Command="{Binding SelectedChangeCommand}" TriggerParameterPath="AddedItems" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding (wpf:LineSeries.Title)}" 
-                               Foreground="{Binding (wpf:LineSeries.Fill)}"
-                               Opacity="{Binding (wpf:LineSeries.Visibility), Converter={StaticResource OpacityConverter}}"
+                    <TextBlock Text="{Binding Name}" 
                                FontSize="14"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -48,22 +53,39 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
+                    <StackPanel Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
-        <Canvas Grid.Row="1" Name="Canvas" Margin="-4, 0, 0, 20">
-            <wpf:CartesianChart Height="{Binding ElementName=Canvas, Path=ActualHeight}" Width="{Binding ElementName=Canvas, Path=ActualWidth}"
-                                Series="{Binding Series}" Hoverable="False" Opacity="0.9" DataTooltip="{x:Null}">
-                <wpf:CartesianChart.AxisX>
-                    <wpf:Axis IsEnabled="False" ShowLabels="False"></wpf:Axis>
-                </wpf:CartesianChart.AxisX>
-                <wpf:CartesianChart.AxisY>
-                    <wpf:Axis IsMerged="True" FontSize="14"></wpf:Axis>
-                </wpf:CartesianChart.AxisY>
-            </wpf:CartesianChart>
-        </Canvas>
-        
+
+        <dxc:ChartControl Name="chart" Grid.Column="1"
+                          BorderThickness="0"
+                          IsManipulationEnabled="True">
+            <dxc:ChartControl.Diagram>
+                <dxc:XYDiagram2D EnableAxisXNavigation="True">
+                    <dxc:XYDiagram2D.AxisX>
+                        <dxc:AxisX2D x:Name="AxisX">
+                            <dxc:AxisX2D.NumericScaleOptions>
+                                <dxc:AutomaticNumericScaleOptions/>
+                            </dxc:AxisX2D.NumericScaleOptions>
+                        </dxc:AxisX2D>
+                    </dxc:XYDiagram2D.AxisX>
+                    <dxc:XYDiagram2D.Series>
+                        <dxc:LineSeries2D DataSource="{Binding Path=Series, Mode=OneWay}" ArgumentDataMember="Argument" ValueDataMember="Value"
+                                          ArgumentScaleType="Numerical" 
+                                          DisplayName="{Binding Path=SelectedDevice.Name}"
+                                          CrosshairLabelPattern="{}{A} : {V:n2}">
+                        </dxc:LineSeries2D>
+                    </dxc:XYDiagram2D.Series>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl.Diagram>
+            <dxc:ChartControl.Legend>
+                <dxc:Legend HorizontalPosition="Right" VerticalPosition="Top"/>
+            </dxc:ChartControl.Legend>
+            
+        </dxc:ChartControl>
+        <ProgressBar  Grid.Column="1" Height="10" IsIndeterminate="True" BorderThickness="0" Background="Aqua" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"></ProgressBar>
+
     </Grid>
 </UserControl>
 

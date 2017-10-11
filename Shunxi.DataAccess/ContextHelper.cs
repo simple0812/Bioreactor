@@ -38,6 +38,7 @@ namespace Shunxi.DataAccess
                             BatchNumber varchar(100),
                             Type varchar(50) 
                         );
+                        CREATE INDEX IF NOT EXISTS AppExceptions_CellCultivationId on AppExceptions(CellCultivationId);
         
                         CREATE TABLE IF NOT EXISTS CellCultivations (
                             Id INTEGER  primary key autoincrement, 
@@ -48,6 +49,7 @@ namespace Shunxi.DataAccess
                             CreatedAt TimeStamp NOT NULL DEFAULT (datetime('now','localtime')) ,
                             BatchNumber varchar(100)
                         );
+                        CREATE INDEX IF NOT EXISTS CellCultivations_CreatedAt on CellCultivations(CreatedAt);
         
                         CREATE TABLE IF NOT EXISTS Pumps (
                             Id INTEGER  primary key autoincrement, 
@@ -72,6 +74,7 @@ namespace Shunxi.DataAccess
                             IsChecked INTEGER,
                             Icon varchar(100)
                         );
+                        CREATE INDEX IF NOT EXISTS Pumps_CultivationId on Pumps(CultivationId);
         
                         CREATE TABLE IF NOT EXISTS Rockers (
                             Id INTEGER  primary key autoincrement, 
@@ -85,6 +88,7 @@ namespace Shunxi.DataAccess
                             IsChecked INTEGER,
                             Icon varchar(100)
                         );
+                        CREATE INDEX IF NOT EXISTS Rockers_CultivationId on Rockers(CultivationId);
         
                         CREATE TABLE IF NOT EXISTS Gases (
                             Id INTEGER  primary key autoincrement, 
@@ -98,6 +102,7 @@ namespace Shunxi.DataAccess
                             IsChecked INTEGER,
                             Icon varchar(100)
                         );
+                        CREATE INDEX IF NOT EXISTS Gases_CultivationId on Gases(CultivationId);
         
                         CREATE TABLE IF NOT EXISTS TemperatureGauges (
                             Id INTEGER  primary key autoincrement, 
@@ -113,8 +118,8 @@ namespace Shunxi.DataAccess
                             IsChecked INTEGER,
                             Icon varchar(100)
                         );
+                        CREATE INDEX IF NOT EXISTS TemperatureGauges_CultivationId on TemperatureGauges(CultivationId);
         
-                        CREATE INDEX IF NOT EXISTS CellCultivations_CreatedAt on CellCultivations(CreatedAt);
         
                         CREATE TABLE IF NOT EXISTS TemperatureRecords (
                             Id INTEGER  primary key autoincrement, 
@@ -125,6 +130,7 @@ namespace Shunxi.DataAccess
                             EnvTemperature double,
                             Temperature double
                         );
+                        CREATE INDEX IF NOT EXISTS TemperatureRecords_CellCultivationId on TemperatureRecords(CellCultivationId);
         
                         CREATE TABLE IF NOT EXISTS GasRecords (
                             Id INTEGER  primary key autoincrement, 
@@ -134,6 +140,7 @@ namespace Shunxi.DataAccess
                             Concentration double,
                             FlowRate double
                         );
+                        CREATE INDEX IF NOT EXISTS GasRecords_CellCultivationId on GasRecords(CellCultivationId);
         
                         CREATE TABLE IF NOT EXISTS PumpRecords (
                             Id INTEGER  primary key autoincrement, 
@@ -145,6 +152,7 @@ namespace Shunxi.DataAccess
                             Volume double,
                             FlowRate double
                         );
+                        CREATE INDEX IF NOT EXISTS PumpRecords_CellCultivationId on PumpRecords(CellCultivationId);
                         ";
 
             steps.Add(sqlSchemaInfo);

@@ -44,7 +44,7 @@ namespace Shunxi.Business.Logic
                 payload = CurrentContext.SysCache?.SystemRealTimeStatus
             };
             Send(_deviceInfo, "first_conn");
-            Init();
+            //Init();
         }
 
         private void Init()

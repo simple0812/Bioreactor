@@ -30,16 +30,5 @@ namespace Shunxi.App.CellMachine.Views
         {
             InitializeComponent();
         }
-
-        private void ListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var item = ItemsControl.ContainerFromElement(ListBox, (DependencyObject)e.OriginalSource) as ListBoxItem;
-            if (item == null) return;
-
-            var series = (StackedAreaSeries)item.Content;
-            series.Visibility = series.Visibility == Visibility.Visible
-                ? Visibility.Hidden
-                : Visibility.Visible;
-        }
     }
 }
