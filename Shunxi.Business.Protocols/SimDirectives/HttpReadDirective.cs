@@ -21,9 +21,9 @@ namespace Shunxi.Business.Protocols.SimDirectives
                 return new SimDirectiveResult(false, "指令返回结果未能解析");
             }
             
-            if (arr[0] != DirectiveText)
+            if (arr[0] != DirectiveText && arr[1] != DirectiveText)
             {
-                return new SimDirectiveResult(false, "指令不匹配");
+                return new SimDirectiveResult(false, arr[0] + "指令不匹配" + DirectiveText);
             }
 
             if (Array.IndexOf(arr, "OK") != -1)

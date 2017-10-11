@@ -31,7 +31,7 @@ namespace Shunxi.Business.Protocols.SimDirectives
 
             if (arr[0] != DirectiveText)
             {
-                return new SimDirectiveResult(false, "指令不匹配");
+                return new SimDirectiveResult(false, arr[0] + "指令不匹配" + DirectiveText);
             }
 
             var cnet = new CnetScan().Resovlex(ret);

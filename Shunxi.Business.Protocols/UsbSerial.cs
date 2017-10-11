@@ -27,6 +27,9 @@ namespace Shunxi.Business.Protocols
         private TaskCompletionSource<byte[]> completionSource;
         public event Action<byte[]> ReceiveHandler;
 
+        public const int WRITE_TIMEOUT = 50;
+        public const int READ_TIMEOUT = 50;
+
         public UsbSerial()
         {
             Status = SerialPortStatus.Initialled;
@@ -77,8 +80,8 @@ namespace Shunxi.Business.Protocols
                     if (p == null) return;
                     SerialPort = new SerialPort(p);
 
-                    SerialPort.WriteTimeout = 50;
-                    SerialPort.ReadTimeout = 50;
+                    SerialPort.WriteTimeout = WRITE_TIMEOUT;
+                    SerialPort.ReadTimeout = READ_TIMEOUT;
                     SerialPort.BaudRate = 9600;
                     SerialPort.Parity = Parity.None;
                     SerialPort.StopBits = StopBits.One;
@@ -132,8 +135,8 @@ namespace Shunxi.Business.Protocols
                         SerialPort = new SerialPort(portName);
                         if (SerialPort == null) continue;
 
-                        SerialPort.WriteTimeout = 50;
-                        SerialPort.ReadTimeout = 50;
+                        SerialPort.WriteTimeout = WRITE_TIMEOUT;
+                        SerialPort.ReadTimeout = READ_TIMEOUT;
                         SerialPort.BaudRate = 9600;
                         SerialPort.Parity = Parity.None;
                         SerialPort.StopBits = StopBits.One;
@@ -205,12 +208,13 @@ namespace Shunxi.Business.Protocols
                 return;
             }
 
-            LogFactory.Create().Info($"receive ->{Shunxi.Common.Utility.Common.BytesToString(comBuffer)}<- receive end");
+            LogFactory.Create().Info($"receive ->{Shunxi.Common.Utility.Common.BytesToString(comBuffer)}<- receive end, {comBuffer.Length}");
 
             if (Status == SerialPortStatus.Opening || Status == SerialPortStatus.Initialled)
             {
                 //排除噪声干扰
-                if(!(comBuffer.Length == 1 && comBuffer[0] == 0x00))
+//                if(!(comBuffer.Length == 1 && comBuffer[0] == 0x00))
+                if(comBuffer.Length >= 8)
                     completionSource?.TrySetResult(comBuffer);
             }
             else

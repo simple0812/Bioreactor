@@ -58,17 +58,7 @@ namespace Shunxi.App.CellMachine
 
             Config.DetectorId = 0x01;
 
-//            SimWorker.Instance.Enqueue(new LocationCompositeDirective(x =>
-//            {
-//                var cnetScans = x.Code as CnetScan;
-//                if (cnetScans == null) return;
-//                var url =
-//                    $"http://{Config.SERVER_ADDR}:{Config.SERVER_PORT}/api/sim/location?mcc={cnetScans.MCC}&mnc={cnetScans.MNC}&lac={cnetScans.Lac}&ci={cnetScans.Cellid}&deviceid={Shunxi.Common.Utility.Common.GetLocalIpex()}";
-//                SimWorker.Instance.Enqueue(new HttpCompositeDirective(url, p =>
-//                {
-//                    Debug.WriteLine("aaa------->" + p.Code);
-//                }));
-//            }));
+            SimWorker.Instance.GetLocation();
             Task.Run(() =>
             {
                 using (var ctx = new IotContext())

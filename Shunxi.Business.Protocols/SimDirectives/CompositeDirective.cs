@@ -17,17 +17,16 @@ namespace Shunxi.Business.Protocols.SimDirectives
             {
                 SuccessHandler?.Invoke(result);
             }
-
             else if (_retryTimes < 5)
             {
-                LogFactory.Create().Info("sim resend times:" + _retryTimes);
+                LogFactory.Create().Warnning("sim resend times:" + _retryTimes + "," + result.Message);
                 this._retryTimes++;
                 await Task.Delay(500);
                 SimWorker.Instance.Enqueue(this);
             }
             else
             {
-                LogFactory.Create().Info("sim resend failed");
+                LogFactory.Create().Error("sim resend failed");
             }
         }
     }

@@ -32,6 +32,7 @@ namespace Shunxi.Business.Protocols.Helper
             Init().IgnorCompletion();
         }
 
+        // sim卡发送http请求的时候 ip地址必须是外网地址 局域网地址是无法访问的
         public void GetLocation()
         {
             Enqueue(new LocationCompositeDirective(x =>
@@ -40,7 +41,7 @@ namespace Shunxi.Business.Protocols.Helper
                 if (cnetScans == null) return;
                 var url =
                     $"http://{Config.SERVER_ADDR}:{Config.SERVER_PORT}/api/sim/location?mcc={cnetScans.MCC}&mnc={cnetScans.MNC}" +
-                    $"&lac={cnetScans.Lac}&ci={cnetScans.Cellid}&deviceid={Common.Utility.Common.GetUniqueId()}";
+                        $"&lac={cnetScans.Lac}&ci={cnetScans.Cellid}&deviceid={Common.Utility.Common.GetUniqueId()}";
                 Enqueue(new HttpCompositeDirective(url, p =>
                 {
                     LogFactory.Create().Info("get location " + p.Status);
@@ -104,7 +105,6 @@ namespace Shunxi.Business.Protocols.Helper
 
         private void SerialPort_ReceiveHandler(byte[] obj)
         {
-            Debug.WriteLine("start-------------------\r\n" + Encoding.UTF8.GetString(obj) + "\r\nend-------------------");
             //需要判断是否包含服务端的回复信息 如：hello 回 world
             var str = Encoding.UTF8.GetString(obj);
             if (str.IndexOf("AT+", StringComparison.Ordinal) == 0)
@@ -122,9 +122,10 @@ namespace Shunxi.Business.Protocols.Helper
                 return;
             }
 
-            Debug.WriteLine("LastCommand->" + _lastCommand.DirectiveText);
             if (_lastCommand?.isEnd(_receiveCache) ?? false)
             {
+                Debug.WriteLine("start-------------------\r\n" + _receiveCache + "\r\nend-------------------");
+
                 if (!CmdEvent.Task.IsCompleted && !CmdEvent.Task.IsCanceled)
                 {
                     CmdEvent.TrySetResult(_lastCommand?.Process(_receiveCache));

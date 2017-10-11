@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -11,7 +12,7 @@ namespace Shunxi.Business.Protocols.SimDirectives
 
         public override bool isEnd(string str)
         {
-            var regStr = "\\r\\n.*(HTTPACTION)|(ERROR)";
+            var regStr = @"\r\n.*(HTTPACTION\:\s*\d+,\d+,\d+)|(ERROR)";
             var reg = new Regex(regStr);
             var m = reg.Match(str);
             if (m.Success)
@@ -36,9 +37,9 @@ namespace Shunxi.Business.Protocols.SimDirectives
                 return new SimDirectiveResult(false, "指令返回结果未能解析");
             }
 
-            if (arr[0] != DirectiveText)
+            if (arr[0] != DirectiveText && arr[1] != DirectiveText)
             {
-                return new SimDirectiveResult(false, "指令不匹配");
+                return new SimDirectiveResult(false, arr[0] + "指令不匹配" + DirectiveText);
             }
 
             if (arr.Any(p => p.IndexOf(",200,", StringComparison.Ordinal) >0))
