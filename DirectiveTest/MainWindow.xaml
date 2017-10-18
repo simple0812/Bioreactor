@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:DirectiveTest"
+        xmlns:behaviors="clr-namespace:DirectiveTest.Behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="800">
     <StackPanel Orientation="Vertical">
@@ -44,12 +46,14 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="角度or流量or温度"></TextBlock>
+                <TextBlock VerticalAlignment="Center" Text="角度or流量or温度">
+                </TextBlock>
                 <TextBox  Text="10" x:Name="txtAngel" Height="25" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="150">
+                    <i:Interaction.Behaviors>
+                        <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                    </i:Interaction.Behaviors>
                 </TextBox>
             </StackPanel>
-
-           
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Button Width="150" Height="60" Content="开始" Click="ButtonBase_OnClick"></Button>
@@ -59,10 +63,8 @@
             <Button Width="150" Height="60" Content="暂停后轮询" Click="ButtonBase_OnClick"></Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-
             <Button Width="150" Height="60" x:Name="btnForward" Content="正转" Click="ButtonBase_OnClick"></Button>
             <Button Width="150" Height="60" x:Name="btnReverse" Content="反转" Click="ButtonBase_OnClick"></Button>
-            
         </StackPanel>
     </StackPanel>
 </Window>
