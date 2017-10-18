@@ -10,55 +10,73 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="0 30 0 0">
-        <DataGrid 
-            IsReadOnly="True"
-            CanUserAddRows="False" 
-            CanUserDeleteRows="False" 
-            CanUserReorderColumns="False" 
-            CanUserResizeColumns="False"
-            CanUserSortColumns="False" 
-            AutoGenerateColumns="False"  
-            CanUserResizeRows="False"
-            AlternatingRowBackground="Aqua" 
-            SelectionMode="Single"
-            x:Name="dg" 
-            ItemsSource="{Binding Entities}">
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Height" Value="40"></Setter>
-                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
-                </Style>
-            </DataGrid.CellStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"></DataGridTextColumn>
-                <DataGridTemplateColumn Header="Is Enable" Width="*">
-                    <DataGridTemplateColumn.CellTemplate >
-                        <DataTemplate>
-                            <StackPanel>
-                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding IsRunning, Converter={StaticResource InverseBoolToVisibilityConverter}}">
-                                    <TextBlock VerticalAlignment="Center" FontSize="18"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf058;" Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityConverter}}" ></TextBlock>
-                                    <TextBlock VerticalAlignment="Center" FontSize="18"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf057;" Visibility="{Binding IsEnabled, Converter={StaticResource InverseBoolToVisibilityConverter}}"></TextBlock>
+        
+        <StackPanel>
+            <DataGrid 
+                IsReadOnly="True"
+                CanUserAddRows="False" 
+                CanUserDeleteRows="False" 
+                CanUserReorderColumns="False" 
+                CanUserResizeColumns="False"
+                CanUserSortColumns="False" 
+                AutoGenerateColumns="False"  
+                CanUserResizeRows="False"
+                AlternatingRowBackground="Aqua" 
+                SelectionMode="Single"
+                x:Name="dg" 
+                ItemsSource="{Binding Entities}">
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Height" Value="40"></Setter>
+                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Is Enable" Width="*">
+                        <DataGridTemplateColumn.CellTemplate >
+                            <DataTemplate>
+                                <StackPanel>
+                                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding IsRunning, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                                        <TextBlock VerticalAlignment="Center" FontSize="18"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf058;" Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityConverter}}" ></TextBlock>
+                                        <TextBlock VerticalAlignment="Center" FontSize="18"  FontFamily="{StaticResource FontAwesomeFontFamily}" Text="&#xf057;" Visibility="{Binding IsEnabled, Converter={StaticResource InverseBoolToVisibilityConverter}}"></TextBlock>
+                                    </StackPanel>
+                                    <TextBlock Name="tbProgress" Text="&#xf269;" FontSize="16" FontFamily="{StaticResource FontAwesomeFontFamily}"  Visibility="{Binding IsRunning, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock.RenderTransform>
+                                            <RotateTransform Angle="0" CenterX="8" CenterY="8"></RotateTransform>
+                                        </TextBlock.RenderTransform>
+                                        <TextBlock.Triggers>
+                                            <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard  TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)">
+                                                        <DoubleAnimation   RepeatBehavior="Forever" From="0" To="360" Duration="0:0:0.5" ></DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </TextBlock.Triggers>
+                                    </TextBlock>
                                 </StackPanel>
-                                <TextBlock Name="tbProgress" Text="&#xf269;" FontSize="16" FontFamily="{StaticResource FontAwesomeFontFamily}"  Visibility="{Binding IsRunning, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock.RenderTransform>
-                                        <RotateTransform Angle="0" CenterX="8" CenterY="8"></RotateTransform>
-                                    </TextBlock.RenderTransform>
-                                    <TextBlock.Triggers>
-                                        <EventTrigger RoutedEvent="TextBlock.Loaded">
-                                            <BeginStoryboard>
-                                                <Storyboard  TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)">
-                                                    <DoubleAnimation   RepeatBehavior="Forever" From="0" To="360" Duration="0:0:0.5" ></DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
-                                    </TextBlock.Triggers>
-                                </TextBlock>
-                            </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="COM:" VerticalAlignment="Center"></TextBlock>
+                <ComboBox ItemsSource="{Binding ComPorts}" Name="cbCom" Width="150" Margin="5">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
                         </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Content="Open" Width="70" Height="25" Click="ButtonBase_OnClick"></Button>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="耗材信息"></TextBlock>
+                <TextBlock Name="txtCon" ></TextBlock>
+            </StackPanel>
+        </StackPanel>
         
         <StackPanel Grid.Row="0"
                     Margin="-5"

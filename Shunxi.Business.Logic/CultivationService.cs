@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shunxi.Business.Enums;
@@ -133,6 +134,37 @@ namespace Shunxi.Business.Logic
                 Do = new DoDevice(){DeviceId = Config.DoId, Name = "Do"},
                 Ph = new PhDevice() { DeviceId = Config.PhId, Name = "Ph"}
             };
+            
+        }
+
+        public static void cleanData()
+        {
+            Task.Run(() =>
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                using (var db = new IotContext())
+                {
+                    //只清理运行数据，不清理设置数据
+                    var delCmd = @"
+                        DELETE from PumpRecords  where CellCultivationId not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+                        DELETE from GasRecords  where CellCultivationId not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+                        DELETE from AppExceptions  where CellCultivationId not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+                        DELETE from TemperatureRecords  where CellCultivationId not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+                    ";
+
+//                    DELETE from CellCultivations  where id not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+//                    DELETE from Gases  where CellCultivationId not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+//                    DELETE from Pumps  where CellCultivationId not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+//                    DELETE from Rockers  where CellCultivationId not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+//                    DELETE from TemperatureGauges  where CellCultivationId not in(SELECT id FROM CellCultivations ORDER BY id  desc limit 0,3);
+
+
+                    db.Database.ExecuteSqlCommand(delCmd);
+                }
+                sw.Stop();
+                LogFactory.Create().Info($"clean data consume {sw.ElapsedMilliseconds}ms");
+            });
         }
 
         public static IList<CellCultivation> GetCultivationsFromDb()
@@ -265,7 +297,7 @@ namespace Shunxi.Business.Logic
 
                 db.SaveChanges();
             }
-
+            cleanData();
             return schedule;
         }
     }

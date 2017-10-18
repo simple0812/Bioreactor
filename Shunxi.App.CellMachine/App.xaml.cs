@@ -58,7 +58,7 @@ namespace Shunxi.App.CellMachine
 
             Config.DetectorId = 0x01;
 
-            SimWorker.Instance.GetLocation();
+//            SimWorker.Instance.GetLocation();
             Task.Run(() =>
             {
                 using (var ctx = new IotContext())
@@ -84,6 +84,5 @@ namespace Shunxi.App.CellMachine
             get => isBusy;
             set => SetProperty(ref isBusy, value);
         }
-
     }
 }

@@ -19,12 +19,14 @@ namespace Shunxi.Business.Protocols.Helper
         {
         }
 
-        public async Task Init()
+        //兼容虚拟串口格式COM2->COM3
+        public async Task Init(string comName)
         {
+            var name = comName.Split("->".ToCharArray())[0];
             await Task.Yield();
             if (Serial.Status == SerialPortStatus.Initialled)
             {
-                await Serial.Open("Barcode Reader");
+                await Serial.Open(name);
             }
         }
     }

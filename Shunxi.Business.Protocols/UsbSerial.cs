@@ -74,11 +74,7 @@ namespace Shunxi.Business.Protocols
                 try
                 {
                     Status = SerialPortStatus.Opening;
-                    var dis = SerialPort.GetPortNames();
-                    if (!dis.Any()) return;
-                    var p = dis.FirstOrDefault(each => each.IndexOf(portName, StringComparison.OrdinalIgnoreCase) != -1);
-                    if (p == null) return;
-                    SerialPort = new SerialPort(p);
+                    SerialPort = new SerialPort(portName);
 
                     SerialPort.WriteTimeout = WRITE_TIMEOUT;
                     SerialPort.ReadTimeout = READ_TIMEOUT;
@@ -87,6 +83,7 @@ namespace Shunxi.Business.Protocols
                     SerialPort.StopBits = StopBits.One;
                     SerialPort.DataBits = 8;
                     SerialPort.Handshake = Handshake.None;
+                    SerialPort.DtrEnable = true; // 扫码枪需要打开设置该选项 否则无法通信
                     SerialPort.WriteBufferSize = 1024;
                     SerialPort.ReadBufferSize = 1024;
 
@@ -133,7 +130,7 @@ namespace Shunxi.Business.Protocols
                         LogFactory.Create().Info("portname:" + portName);
 
                         SerialPort = new SerialPort(portName);
-                        if (SerialPort == null) continue;
+                        if (SerialPort == null || SerialPort.IsOpen) continue;
 
                         SerialPort.WriteTimeout = WRITE_TIMEOUT;
                         SerialPort.ReadTimeout = READ_TIMEOUT;

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using Shunxi.Business.Models.devices;
 using Shunxi.Business.Tables;
+using Shunxi.Common.Log;
 
 namespace Shunxi.DataAccess
 {
@@ -27,17 +29,20 @@ namespace Shunxi.DataAccess
 
         public void Initialize()
         {
+
+
             using (IotContext courseraContext = new IotContext())
             {
+                
                 int currentVersion = 0;
                 try
                 {
                     if (courseraContext.SchemaInfoes.Any())
                         currentVersion = courseraContext.SchemaInfoes.Max(x => x.Version);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    //
+                    LogFactory.Create().Warnning(e.Message);
                 }
                 var mmSqliteHelper = new ContextHelper();
 

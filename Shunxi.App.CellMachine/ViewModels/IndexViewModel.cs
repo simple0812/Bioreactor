@@ -32,6 +32,13 @@ namespace Shunxi.App.CellMachine.ViewModels
             set => SetProperty(ref _Entities, value);
         }
 
+        private ObservableCollection<COMPortInfo> _comPorts;
+        public ObservableCollection<COMPortInfo> ComPorts
+        {
+            get => _comPorts;
+            set => SetProperty(ref _comPorts, value);
+        }
+
         public ICommand CheckCommand { get; set; }
         public ICommand SelectCommand { get; set; }
 
@@ -60,6 +67,7 @@ namespace Shunxi.App.CellMachine.ViewModels
         public IndexViewModel()
         {
             CheckCommand = new DelegateCommand(CheckHandle);
+            ComPorts = new ObservableCollection<COMPortInfo>(COMPortInfo.GetCOMPortsInfo());
 
             var pumpIn = new Pump()
             {
@@ -120,9 +128,8 @@ namespace Shunxi.App.CellMachine.ViewModels
         {
             ShowBusyDialog(true);
             //await new UsbSerial().Build();
-            //SimWorker.Instance.GetLocation();
-            await QrCodeWorker.Instance.Init();
-            QrCodeWorker.Instance.Serial.ReceiveHandler += Helper_ReceiveHandler;
+//            await QrCodeWorker.Instance.Init();
+//            QrCodeWorker.Instance.Serial.ReceiveHandler += Helper_ReceiveHandler;
 
             if (CurrentContext.Status != SysStatusEnum.Unknown
                 && CurrentContext.Status != SysStatusEnum.Discarded
