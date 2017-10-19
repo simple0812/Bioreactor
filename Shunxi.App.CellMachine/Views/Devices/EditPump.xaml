@@ -37,7 +37,11 @@
                          VerticalAlignment="Center"
                          Height="30" 
                          TextWrapping="NoWrap" 
-                         Text="{Binding Entity.InitialVolume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"></TextBox>
+                         Text="{Binding Entity.InitialVolume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="初始流速" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
@@ -46,7 +50,11 @@
                          VerticalAlignment="Center"
                          Height="30" 
                          TextWrapping="NoWrap" 
-                         Text="{Binding Entity.InitialFlowRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"></TextBox>
+                         Text="{Binding Entity.InitialFlowRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="转动方向" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
@@ -66,7 +74,11 @@
                          VerticalAlignment="Center"
                          Height="30" 
                          TextWrapping="NoWrap" 
-                         Text="{Binding Entity.FirstSpan, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                         Text="{Binding Entity.FirstSpan, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock Text ="{Binding ElementName=cbTimeType, Path=SelectedItem.Name}" VerticalAlignment="Center" Margin="10 0"></TextBlock>
             </StackPanel>
 
@@ -77,7 +89,11 @@
                          VerticalAlignment="Center"
                          Height="30" 
                          TextWrapping="NoWrap" 
-                         Text="{Binding Entity.Period, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                         Text="{Binding Entity.Period, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock Text ="{Binding ElementName=cbTimeType, Path=SelectedItem.Name}" VerticalAlignment="Center" Margin="10 0"></TextBlock>
             </StackPanel>
 
@@ -100,7 +116,11 @@
                          VerticalAlignment="Center"
                          Height="30" 
                          TextWrapping="NoWrap" 
-                         Text="{Binding Entity.Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"></TextBox>
+                         Text="{Binding Entity.Volume, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal"  Visibility="{Binding Path=SelectedItem, ElementName=cbProcessMode, Converter={StaticResource processModeToVisibilityConverter}}">
                 <TextBlock Text="流速" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
@@ -109,7 +129,11 @@
                          VerticalAlignment="Center"
                          Height="30" 
                          TextWrapping="NoWrap" 
-                         Text="{Binding Entity.FlowRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"></TextBox>
+                         Text="{Binding Entity.FlowRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
             </StackPanel>
             <StackPanel  HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding ValidMsg, Converter={StaticResource EmptyStringToVisibilityConverter}}">
                 <TextBlock Text="{Binding ValidMsg}" Foreground="Red"></TextBlock>

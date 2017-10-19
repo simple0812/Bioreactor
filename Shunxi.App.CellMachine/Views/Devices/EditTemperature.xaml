@@ -27,7 +27,11 @@
                      VerticalAlignment="Center"
                      Height="30" 
                      TextWrapping="NoWrap" 
-                     Text="{Binding Entity.Temperature, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}"></TextBox>
+                     Text="{Binding Entity.Temperature, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}}">
+                <i:Interaction.Behaviors>
+                    <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                </i:Interaction.Behaviors>
+            </TextBox>
         </StackPanel>
         
         <StackPanel Orientation="Horizontal">

@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Shunxi.App.CellMachine.Controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:Shunxi.App.CellMachine.Common.Behaviors"
         mc:Ignorable="d"
         Title="EditCellCultivation" Height="600" Width="800">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center"  Margin="0 50">
@@ -14,7 +16,11 @@
                      VerticalAlignment="Center"
                      Height="30" 
                      TextWrapping="NoWrap" 
-                     Text="{Binding Entity.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                     Text="{Binding Entity.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                </i:Interaction.Behaviors>
+            </TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" >
             <TextBlock Text="UserName" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
@@ -23,7 +29,11 @@
                      VerticalAlignment="Center"
                      Height="30" 
                      TextWrapping="NoWrap" 
-                     Text="{Binding Entity.UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                     Text="{Binding Entity.UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
+                </i:Interaction.Behaviors>
+            </TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Cell" Width="100" TextAlignment="Right" Margin="10" FontSize="14"></TextBlock>
