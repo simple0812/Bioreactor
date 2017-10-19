@@ -67,12 +67,6 @@ namespace Shunxi.App.CellMachine
                 }
             });
         }
-
-        private void OnAppStartup_UpdateThemeName(object sender, StartupEventArgs e)
-        {
-
-            DevExpress.Xpf.Core.ApplicationThemeHelper.UpdateApplicationThemeName();
-        }
     }
 
     public class BusyCls : BindableBase

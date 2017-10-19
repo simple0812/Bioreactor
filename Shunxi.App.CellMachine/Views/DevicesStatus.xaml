@@ -38,9 +38,9 @@
                  ItemsSource="{Binding Devices}">
             <i:Interaction.Triggers>
                 <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->
-                <i:EventTrigger EventName="MouseDoubleClick">
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                     <!-- This action will invoke the selected command in the view model and pass the parameters of the event to it. -->
-                    <interactivity:InvokeCommandAction Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem, ElementName=lb}"   />
+                    <interactivity:InvokeCommandAction Command="{Binding EditCommand}"  />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <ListBox.ItemTemplate>

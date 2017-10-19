@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:converters="clr-namespace:Shunxi.App.CellMachine.Converters"
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+             xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -38,34 +39,18 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
-
-        <dxc:ChartControl Name="chart" Grid.Column="1"
-                          BorderThickness="0"
-                          IsManipulationEnabled="True">
-            <dxc:ChartControl.Diagram>
-                <dxc:XYDiagram2D EnableAxisXNavigation="True">
-                    <dxc:XYDiagram2D.AxisX>
-                        <dxc:AxisX2D x:Name="AxisX">
-                            <dxc:AxisX2D.NumericScaleOptions>
-                                <dxc:AutomaticNumericScaleOptions/>
-                            </dxc:AxisX2D.NumericScaleOptions>
-                        </dxc:AxisX2D>
-                    </dxc:XYDiagram2D.AxisX>
-                    <dxc:XYDiagram2D.Series>
-                        <dxc:LineSeries2D DataSource="{Binding Path=Series, Mode=OneWay}" ArgumentDataMember="Argument" ValueDataMember="Value"
-                                          ArgumentScaleType="Numerical" 
-                                          DisplayName="{Binding Path=SelectedDevice.Name}"
-                                          CrosshairLabelPattern="{}{A} : {V:n2}">
-                        </dxc:LineSeries2D>
-                    </dxc:XYDiagram2D.Series>
-                </dxc:XYDiagram2D>
-            </dxc:ChartControl.Diagram>
-            <dxc:ChartControl.Legend>
-                <dxc:Legend HorizontalPosition="Right" VerticalPosition="Top"/>
-            </dxc:ChartControl.Legend>
-            
-        </dxc:ChartControl>
-        <ProgressBar  Grid.Column="1" Height="10" IsIndeterminate="True" BorderThickness="0" Background="Aqua" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"></ProgressBar>
+        <wpf:CartesianChart Grid.Column="1" DisableAnimations="True"
+                            Series="{Binding Series}" 
+                            DataTooltip="{x:Null}"
+                            AnimationsSpeed="0:0:0.15"
+                            Zoom="Xy"/>
+        <ProgressBar  Grid.Column="1" 
+                      Height="10" 
+                      IsIndeterminate="True" 
+                      BorderThickness="0" 
+                      Background="Aqua" 
+                      Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}" >
+        </ProgressBar>
 
     </Grid>
 </UserControl>

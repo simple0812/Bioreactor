@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -150,8 +151,12 @@ namespace Shunxi.App.CellMachine.ViewModels
         public ICommand RestartCommand { get; set; }
         public ICommand StartCommand { get; set; }
 
-        private void Edit(BaseDevice device)
+        private void Edit(MouseButtonEventArgs eventArgs)
         {
+            var ctx = (FrameworkElement) eventArgs.Device.Target;
+            var device = ctx?.DataContext as BaseDevice;
+            if(device == null) return;
+
             var view = GetViewByType(device.DeviceType);
             var p = view as IEditDeviceView;
             p?.ShowView(device);
@@ -237,7 +242,7 @@ namespace Shunxi.App.CellMachine.ViewModels
             _ea = ea;
             _ea.GetEvent<CommandMessageEvent>().Subscribe(MessageReceived);
 
-            EditCommand = new DelegateCommand<BaseDevice>(Edit);
+            EditCommand = new DelegateCommand<MouseButtonEventArgs>(Edit);
 
             StartCommand = new DelegateCommand(Start);
             PauseCommand = new DelegateCommand(Pause);

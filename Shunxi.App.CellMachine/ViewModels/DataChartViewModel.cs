@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using LiveCharts;
+using LiveCharts.Geared;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -41,38 +45,43 @@ namespace Shunxi.App.CellMachine.ViewModels
 
         public DataChartViewModel()
         {
-            SelectedChangeCommand = new DelegateCommand(SelectedItemChanged);
-            Devices = new ObservableCollection<StatChart>()
-            {
-                new StatChart("温度", true),
-                new StatChart("气体浓度", true),
-//                new StatChart("进液泵", false),
-//                new StatChart("出液泵", false),
-                new StatChart("PH", true),
-                new StatChart("DO", true),
-            };
 
-            SelectedDevice = Devices.FirstOrDefault();
+            Series = new SeriesCollection();
+            SelectedChangeCommand = new DelegateCommand(SelectedItemChanged);
+                        Devices = new ObservableCollection<StatChart>()
+                        {
+                            new StatChart("温度", true),
+                            new StatChart("气体浓度", true),
+            //                new StatChart("进液泵", false),
+            //                new StatChart("出液泵", false),
+                            new StatChart("PH", true),
+                            new StatChart("DO", true),
+                        };
+
+             SelectedDevice = Devices.FirstOrDefault();
         }
 
         public void SelectedItemChanged()
         {
             Series?.Clear();
             IsBusy = true;
-            Task.Run(() =>
+            
+            Application.Current.MainWindow.Dispatcher.Invoke(() =>
             {
-                Series = new ObservableCollection<NumericPoint>(SelectedDevice.GetSeriesPoints());
+                var series = new GLineSeries
+                {
+                    Values = SelectedDevice.GetSeriesPoints().AsGearedValues().WithQuality(Quality.Low),
+                    StrokeThickness = 1,
+                    PointGeometry = null
+                };
+                Series?.Add(series);
                 IsChart = SelectedDevice.IsChart;
                 IsBusy = false;
             });
+ 
         }
 
-        public ObservableCollection<NumericPoint> _Series;
-        public ObservableCollection<NumericPoint> Series
-        {
-            get => _Series;
-            set => SetProperty(ref _Series, value);
-        }
+        public SeriesCollection Series { get; set; }
 
         public bool _isBusy = true;
         public bool IsBusy
@@ -94,7 +103,7 @@ namespace Shunxi.App.CellMachine.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            Series.Clear();
+            Series?.Clear();
         }
     }
 
@@ -130,7 +139,7 @@ namespace Shunxi.App.CellMachine.ViewModels
             IsChart = isChart;
         }
 
-        public List<NumericPoint> GetSeriesPoints()
+        public IList<double> GetSeriesPoints()
         {
             var lastId = CultivationService.GetLastCultivationId();
             using (var ctx = new IotContext())
@@ -146,25 +155,19 @@ namespace Shunxi.App.CellMachine.ViewModels
                             .ToList(); break;
                     case "进液泵":
                         return ctx.PumpRecords.Where(each => each.DeviceId == 1 && each.CellCultivationId == lastId).ToList().Select(each =>
-                                new NumericPoint(each.StartTime, each.EndTime, each.Volume))
+                                each.Volume)
                             .ToList();
                     case "出液泵":
                         return ctx.PumpRecords.Where(each => each.DeviceId == 3 && each.CellCultivationId == lastId).ToList().Select(each =>
-                                new NumericPoint(each.StartTime, each.EndTime, each.Volume))
+                                each.Volume)
                             .ToList();
-                    case "PH":
-                        return new List<NumericPoint>();
-                    case "DO":
-                        return new List<NumericPoint>();
+                    case "PH": break;
+                        //return new List<NumericPoint>();
+                    case "DO": break;
+                        //return new List<NumericPoint>();
                 }
 
-                List < NumericPoint > xLIst = new List<NumericPoint>();
-                for (var i = 0; i < list.Count; i++)
-                {
-                    xLIst.Add(new NumericPoint(i,list[i]));
-                }
-
-                return xLIst;
+                return list;
             }
         }
     }

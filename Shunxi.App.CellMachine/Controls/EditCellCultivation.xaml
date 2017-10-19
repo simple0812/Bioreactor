@@ -17,9 +17,6 @@
                      Height="30" 
                      TextWrapping="NoWrap" 
                      Text="{Binding Entity.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
-                </i:Interaction.Behaviors>
             </TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" >
@@ -30,9 +27,6 @@
                      Height="30" 
                      TextWrapping="NoWrap" 
                      Text="{Binding Entity.UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <behaviors:KeyboardBehavior></behaviors:KeyboardBehavior>
-                </i:Interaction.Behaviors>
             </TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
