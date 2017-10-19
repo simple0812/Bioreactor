@@ -151,10 +151,8 @@ namespace Shunxi.App.CellMachine.ViewModels
         public ICommand RestartCommand { get; set; }
         public ICommand StartCommand { get; set; }
 
-        private void Edit(MouseButtonEventArgs eventArgs)
+        private void Edit(BaseDevice device)
         {
-            var ctx = (FrameworkElement) eventArgs.Device.Target;
-            var device = ctx?.DataContext as BaseDevice;
             if(device == null) return;
 
             var view = GetViewByType(device.DeviceType);
@@ -242,7 +240,7 @@ namespace Shunxi.App.CellMachine.ViewModels
             _ea = ea;
             _ea.GetEvent<CommandMessageEvent>().Subscribe(MessageReceived);
 
-            EditCommand = new DelegateCommand<MouseButtonEventArgs>(Edit);
+            EditCommand = new DelegateCommand<BaseDevice>(Edit);
 
             StartCommand = new DelegateCommand(Start);
             PauseCommand = new DelegateCommand(Pause);

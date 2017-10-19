@@ -36,22 +36,22 @@
                  Width="210"
                  SelectionMode="Single"
                  ItemsSource="{Binding Devices}">
-            <i:Interaction.Triggers>
-                <!-- This event trigger will execute the action when the corresponding event is raised by the ListBox. -->
-                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <!-- This action will invoke the selected command in the view model and pass the parameters of the event to it. -->
-                    <interactivity:InvokeCommandAction Command="{Binding EditCommand}"  />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="#FFD6D6D6" BorderThickness="1">
-                    <Grid  Background="{Binding IsEnabled, Converter={StaticResource BoolToBackgroundConverter}, ConverterParameter=1}">
-                        <TextBlock Name="text" Text="" FontSize="36" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0" Opacity="0.6"/>
-                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="{Binding Name}" FontSize="13" Margin="5,0,0,3"/>
-                        <Image Source="{Binding Icon}" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Height="35" Margin="5"></Image>
-                    </Grid>
-                    </Border>
+                    <Button  Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                             CommandParameter="{Binding}">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border BorderBrush="LightBlue" BorderThickness="1" Background="Transparent">
+                                    <Grid  Background="{Binding IsEnabled, Converter={StaticResource BoolToBackgroundConverter}, ConverterParameter=1}">
+                                        <TextBlock Name="text" Text="" FontSize="36" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0" Opacity="0.6"/>
+                                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="{Binding Name}" FontSize="13" Margin="5,0,0,3"/>
+                                        <Image Source="{Binding Icon}" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top" Height="35" Margin="5"></Image>
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ItemContainerStyle>
