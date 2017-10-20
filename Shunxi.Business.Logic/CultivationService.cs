@@ -74,10 +74,10 @@ namespace Shunxi.Business.Logic
                 case ProcessModeEnum.FixedVolumeMode:
                     cultivation = JsonConvert.DeserializeObject<FixedCultivation>(content);
                     break;
-                case ProcessModeEnum.VariantVolumeMode:
-                    cultivation = JsonConvert.DeserializeObject<VariantCultivation>(content);
-                    break;
-                default:
+//                case ProcessModeEnum.VariantVolumeMode:
+//                    cultivation = JsonConvert.DeserializeObject<VariantCultivation>(content);
+//                    break;
+//                default:
                     break;
             }
 

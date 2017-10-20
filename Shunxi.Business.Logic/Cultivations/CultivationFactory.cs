@@ -11,7 +11,7 @@ namespace Shunxi.Business.Logic.Cultivations
             {
                 case ProcessModeEnum.SingleMode: return new SingleCultivation(pump);
                 case ProcessModeEnum.FixedVolumeMode: return new FixedCultivation(pump);
-                case ProcessModeEnum.VariantVolumeMode: return new VariantCultivation(pump);
+                //                case ProcessModeEnum.VariantVolumeMode: return new VariantCultivation(pump);
             }
 
             return null;

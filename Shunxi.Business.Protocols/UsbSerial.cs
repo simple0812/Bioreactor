@@ -205,7 +205,7 @@ namespace Shunxi.Business.Protocols
                 return;
             }
 
-            LogFactory.Create().Info($"receive ->{Shunxi.Common.Utility.Common.BytesToString(comBuffer)}<- receive end, {comBuffer.Length}");
+            LogFactory.Create().Info($"receive ->{Shunxi.Common.Utility.Common.BytesToString(comBuffer)}<- receive end");
 
             if (Status == SerialPortStatus.Opening || Status == SerialPortStatus.Initialled)
             {
