@@ -66,7 +66,7 @@ namespace Shunxi.App.CellMachine.ViewModels
             Series?.Clear();
             IsBusy = true;
             
-            Application.Current.MainWindow.Dispatcher.Invoke(() =>
+            Application.Current.MainWindow?.Dispatcher.Invoke(() =>
             {
                 var series = new GLineSeries
                 {
@@ -78,7 +78,7 @@ namespace Shunxi.App.CellMachine.ViewModels
                 IsChart = SelectedDevice.IsChart;
                 IsBusy = false;
             });
- 
+
         }
 
         public SeriesCollection Series { get; set; }
@@ -148,10 +148,10 @@ namespace Shunxi.App.CellMachine.ViewModels
                 switch (Name)
                 {
                     case "温度":
-                        list = ctx.TemperatureRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.Temperature)
+                        list = ctx.TemperatureRecords.ToList().Select(each => each.Temperature)
                             .ToList(); break;
                     case "气体浓度":
-                        list = ctx.GasRecords.Where(doc => doc.CellCultivationId == lastId).ToList().Select(each => each.Concentration)
+                        list = ctx.GasRecords.ToList().Select(each => each.Concentration)
                             .ToList(); break;
                     case "进液泵":
                         return ctx.PumpRecords.Where(each => each.DeviceId == 1 && each.CellCultivationId == lastId).ToList().Select(each =>
