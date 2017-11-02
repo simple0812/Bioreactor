@@ -167,6 +167,26 @@ namespace Shunxi.Business.Logic
             });
         }
 
+
+        public static void cleanRecord()
+        {
+            Task.Run(() =>
+            {
+                using (var db = new IotContext())
+                {
+                    //只清理运行数据，不清理设置数据
+                    var delCmd = @"
+                        DELETE from PumpRecords ;
+                        DELETE from GasRecords ;
+                        DELETE from AppExceptions ;
+                        DELETE from TemperatureRecords;
+                    ";
+
+                    db.Database.ExecuteSqlCommand(delCmd);
+                }
+            });
+        }
+
         public static IList<CellCultivation> GetCultivationsFromDb()
         {
             using (var db = new IotContext())

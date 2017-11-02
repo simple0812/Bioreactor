@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,15 +10,18 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Shunxi.Business.Enums;
+using Shunxi.Business.Logic;
 using Shunxi.Business.Models;
 using Shunxi.Business.Protocols;
 using Shunxi.Business.Protocols.Directives;
 using Shunxi.Business.Protocols.Helper;
+using Shunxi.Business.Tables;
 
 namespace SimpleApp
 {
@@ -27,6 +31,9 @@ namespace SimpleApp
     public partial class MainWindow : Window
     {
         private Timer _xtimer;
+        private Timer _warningTimer;
+        private double currConcentration = 0;
+        private double currTemperature = 0;
 
         public MainWindow()
         {
@@ -34,13 +41,29 @@ namespace SimpleApp
 
             DirectiveWorker.Instance.SetIsRtry(false);
             DirectiveWorker.Instance.SerialPortEvent += Worker_SerialPortEvent;
+            this.Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            var hwndSource = PresentationSource.FromVisual(this) as HwndSource;
+            hwndSource?.AddHook(WndProc);
+        }
+
+        IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == MessageHelper.WM_COPYDATA)
+            {
+                var cds = (CopyDataStruct)System.Runtime.InteropServices.Marshal.PtrToStructure(lParam, typeof(CopyDataStruct));
+                Debug.WriteLine("=======>" + cds.lpData + "," + cds.cbData);
+            }
+            return hwnd;
         }
 
         private void Worker_SerialPortEvent(SerialPortEventArgs args)
         {
             if (!args.IsSucceed)
             {
-
                 return;
             }
 
@@ -71,14 +94,29 @@ namespace SimpleApp
                     var p = data as TemperatureDirectiveData;
                     if (p != null)
                     {
+                        currTemperature = p.CenterTemperature;
                         txtTemp90.Text =
                             $"{data.DeviceId}-{data.DirectiveId}->t1:{p.CenterTemperature}, t2:{p.HeaterTemperature}, t3:{p.EnvTemperature}";
+                        DeviceService.SaveTemperatureRecord(new TemperatureRecord()
+                        {
+                            CellCultivationId = CultivationService.GetLastCultivationId(),
+                            Temperature = p.CenterTemperature,
+                            CreatedAt = DateTime.Now
+                        });
                     }
                 }
                 else if (data.DeviceId == 0x91 || data.DeviceId == 0x92)
                 {
                     var p = data as GasDirectiveData;
                     if (p == null) return;
+                    currConcentration = p.Concentration;
+                    DeviceService.SaveGasRecord(new GasRecord()
+                    {
+                        CellCultivationId = CultivationService.GetLastCultivationId(),
+                        Concentration = p.Concentration,
+                        FlowRate = p.Flowrate,
+                        CreatedAt = DateTime.Now
+                    });
                     txtGas.Text = $"{data.DeviceId}-{data.DirectiveId}->c:{p.Concentration}, v:{p.Flowrate}";
                 }
                 else if (data.DeviceId == 0x80)
@@ -137,6 +175,44 @@ namespace SimpleApp
             devicesCount = (rb3.IsChecked ?? false) ? 3 : (rb2.IsChecked ?? false) ? 2 : 1;
 
             start();
+            Warning();
+        }
+
+        private void Warning()
+        {
+            _warningTimer?.Dispose();
+            _warningTimer = new Timer(obj =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (currConcentration > con * 1.2)
+                    {
+                        txtConError.Text = $"浓度过高 期望{con},实际{currConcentration} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                    }
+                    else if (currConcentration < con * 0.8)
+                    {
+                        txtConError.Text = $"浓度过低 期望{con},实际{currConcentration} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                    }
+                    else
+                    {
+                        txtConError.Text = "";
+                    }
+
+                    if (currTemperature > temperature * 1.2)
+                    {
+                        txtTempError.Text = $"温度过高 期望{temperature},实际{currTemperature} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                    }
+                    else if (currTemperature < temperature * 0.8)
+                    {
+                        txtTempError.Text = $"温度过低 期望{temperature},实际{currTemperature} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                    }
+                    else
+                    {
+                        txtTempError.Text = "";
+                    }
+                });
+
+            }, null, TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(20));
         }
 
         private void start()
@@ -224,6 +300,8 @@ namespace SimpleApp
         private void BtnStop_OnTapped(object sender, RoutedEventArgs e)
         {
             _xtimer?.Dispose();
+            _warningTimer?.Dispose();
+
             DirectiveWorker.Instance.Clean();
             if (isRocker)
                 DirectiveWorker.Instance.PrepareDirective(new TryPauseDirective(0x80, TargetDeviceTypeEnum.Rocker));
@@ -260,6 +338,11 @@ namespace SimpleApp
             {
                 tbPortStatus.Text = "串口失败";
             }
+        }
+
+        private void BtnStat_OnClick(object sender, RoutedEventArgs e)
+        {
+            new Stat().ShowDialog();
         }
     }
 }

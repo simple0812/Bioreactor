@@ -21,6 +21,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectiveTest", "DirectiveTest\DirectiveTest.csproj", "{BDD838BD-B23E-4C08-B44C-C816D6720DF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BalanceApp", "BalanceApp\BalanceApp.csproj", "{641A334D-7A06-43AE-BCB2-BB086D20304A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{BDD838BD-B23E-4C08-B44C-C816D6720DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDD838BD-B23E-4C08-B44C-C816D6720DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDD838BD-B23E-4C08-B44C-C816D6720DF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{641A334D-7A06-43AE-BCB2-BB086D20304A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{641A334D-7A06-43AE-BCB2-BB086D20304A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{641A334D-7A06-43AE-BCB2-BB086D20304A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{641A334D-7A06-43AE-BCB2-BB086D20304A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

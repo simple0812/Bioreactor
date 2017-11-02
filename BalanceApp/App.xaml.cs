@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DirectiveTest
+namespace BalanceApp
 {
     /// <summary>
     /// App.xaml 的交互逻辑

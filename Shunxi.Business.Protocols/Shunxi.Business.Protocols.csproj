@@ -52,6 +52,7 @@
     <Compile Include="Directives\TryPauseDirective.cs" />
     <Compile Include="Directives\TryStartDirective.cs" />
     <Compile Include="Enums\ProtocolVersion.cs" />
+    <Compile Include="Helper\BalanceWorker.cs" />
     <Compile Include="Helper\DirectiveHelper.cs" />
     <Compile Include="Helper\DirectiveWorker.cs" />
     <Compile Include="Helper\COMPortInfo.cs" />

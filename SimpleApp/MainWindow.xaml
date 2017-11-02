@@ -103,18 +103,31 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <StackPanel Orientation="Horizontal">
-            <Button Content="开始" Width="140" Height="70" x:Name="btnStart" Click="BtnStart_OnClick"></Button>
-            <Button Content="停止" Width="140" Height="70" Margin="10" x:Name="btnStop" Click="BtnStop_OnTapped"></Button>
-        </StackPanel>
-        <StackPanel Orientation="Vertical">
-            <TextBlock x:Name="txtTemp90"></TextBlock>
-            <TextBlock x:Name="txtTempa0"></TextBlock>
-            <TextBlock x:Name="txtTempa1"></TextBlock>
-            <TextBlock x:Name="txtRocker"></TextBlock>
-            <TextBlock x:Name="txtPump1"></TextBlock>
-            <TextBlock x:Name="txtPump3"></TextBlock>
-            <TextBlock x:Name="txtGas"></TextBlock>
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="开始" Width="120" Height="50" x:Name="btnStart" Click="BtnStart_OnClick"></Button>
+                    <Button Content="停止" Width="120" Height="50" Margin="10" x:Name="btnStop" Click="BtnStop_OnTapped"></Button>
+                    <Button Content="统计" Width="120" Height="50" x:Name="btnStat" Click="BtnStat_OnClick"></Button>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="txtTemp90"></TextBlock>
+                    <TextBlock x:Name="txtTempa0"></TextBlock>
+                    <TextBlock x:Name="txtTempa1"></TextBlock>
+                    <TextBlock x:Name="txtRocker"></TextBlock>
+                    <TextBlock x:Name="txtPump1"></TextBlock>
+                    <TextBlock x:Name="txtPump3"></TextBlock>
+                    <TextBlock x:Name="txtGas"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock FontSize="25" x:Name="txtTempError" Foreground="Red" ></TextBlock>
+                <TextBlock FontSize="25" x:Name="txtConError" Foreground="Red" ></TextBlock>
+            </StackPanel>
+        </Grid>
     </StackPanel>
 </Window>

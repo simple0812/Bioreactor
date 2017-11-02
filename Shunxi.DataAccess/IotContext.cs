@@ -29,8 +29,6 @@ namespace Shunxi.DataAccess
 
         public void Initialize()
         {
-
-
             using (IotContext courseraContext = new IotContext())
             {
                 
