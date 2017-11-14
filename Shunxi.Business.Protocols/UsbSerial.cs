@@ -43,9 +43,37 @@ namespace Shunxi.Business.Protocols
 
         private byte[] generatePingBytes(byte id)
         {
-            var p = new byte[] { id, 0x03, 0xff, 0xfe, 0x00 };
+            var p = new byte[] { id, 0x03, 0xff, 0xfe, getDeviceTypeById(id) };
             var t = DirectiveHelper.GenerateCheckCode(p);
             return p.Concat(t).ToArray();
+        }
+
+        private byte getDeviceTypeById(byte id)
+        {
+            byte ret = 0;
+            switch (id)
+            {
+                case 0x01:
+                case 0x02:
+                case 0x03:
+                case 0x04:
+                    ret = (byte)TargetDeviceTypeEnum.Pump; break;
+                case 0x80:
+                    ret = (byte)TargetDeviceTypeEnum.Rocker; break;
+                case 0x90:
+                case 0xa0:
+                case 0xa1:
+                    ret = (byte)TargetDeviceTypeEnum.Temperature; break;
+                case 0x91:
+                case 0x92:
+                    ret = (byte)TargetDeviceTypeEnum.Gas; break;
+                case 0xb0:
+                    ret = (byte)TargetDeviceTypeEnum.Ph; break;
+                case 0xc0:
+                    ret = (byte)TargetDeviceTypeEnum.Do; break;
+            }
+
+            return ret;
         }
 
         private byte[] generatePingBytesByType(SerialEnum serialType)

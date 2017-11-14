@@ -124,7 +124,7 @@ namespace Shunxi.App.CellMachine.ViewModels
             };
         }
 
-        public async void OnNavigatedTo(NavigationContext navigationContext)
+        public void OnNavigatedTo(NavigationContext navigationContext)
         {
             ShowBusyDialog(true);
             //await new UsbSerial().Build();

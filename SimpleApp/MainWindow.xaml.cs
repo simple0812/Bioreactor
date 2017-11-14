@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -185,34 +186,68 @@ namespace SimpleApp
             {
                 Dispatcher.Invoke(() =>
                 {
+                    string err = "";
                     if (currConcentration > con * 1.2)
                     {
-                        txtConError.Text = $"浓度过高 期望{con},实际{currConcentration} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                        err = txtConError.Text = $"浓度过高 期望{con},实际{currConcentration} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}\r\n";
                     }
                     else if (currConcentration < con * 0.8)
                     {
-                        txtConError.Text = $"浓度过低 期望{con},实际{currConcentration} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                        err = txtConError.Text = $"浓度过低 期望{con},实际{currConcentration} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}\r\n";
                     }
                     else
                     {
-                        txtConError.Text = "";
+                        err = txtConError.Text = "";
                     }
 
                     if (currTemperature > temperature * 1.2)
                     {
-                        txtTempError.Text = $"温度过高 期望{temperature},实际{currTemperature} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                        err += txtTempError.Text = $"温度过高 期望{temperature},实际{currTemperature} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
                     }
                     else if (currTemperature < temperature * 0.8)
                     {
-                        txtTempError.Text = $"温度过低 期望{temperature},实际{currTemperature} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                        err += txtTempError.Text = $"温度过低 期望{temperature},实际{currTemperature} at {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
                     }
                     else
                     {
-                        txtTempError.Text = "";
+                        err += txtTempError.Text = "";
                     }
+
+                    SendMail("lan.hu@sunscell.com", err);
                 });
 
-            }, null, TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(20));
+            }, null, TimeSpan.FromHours(2), TimeSpan.FromHours(2));
+        }
+
+        private bool SendMail(string to, string msg)
+        {
+            MailMessage message = new MailMessage();
+            message.To.Add(to);
+            message.From = new MailAddress("lei.zhang@sunscell.com", "lei", Encoding.UTF8);
+            message.Subject = "生物反应器异常警报";
+            message.SubjectEncoding = Encoding.UTF8;
+            message.Body = msg;
+            message.BodyEncoding = Encoding.UTF8;
+            message.IsBodyHtml = false;
+            message.Priority = MailPriority.Normal;
+            // Attachment att = new Attachment("text.txt");//添加附件，确保路径正确
+            // message.Attachments.Add(att);
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Credentials = new System.Net.NetworkCredential("lei.zhang@sunscell.com", "1qazxsw2!@QW");
+            smtp.Host = "smtp.exmail.qq.com";
+            object userState = message;
+
+            try
+            {
+                smtp.SendAsync(message, userState);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Tips");
+                return false;
+            }
         }
 
         private void start()

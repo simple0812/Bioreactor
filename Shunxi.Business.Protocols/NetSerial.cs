@@ -12,7 +12,6 @@ using Shunxi.Business.Enums;
 using Shunxi.Business.Protocols.Helper;
 using Shunxi.Common.Log;
 using Shunxi.Infrastructure.Common.Extension;
-using SuperSocket.ProtoBase;
 
 namespace Shunxi.Business.Protocols
 {
